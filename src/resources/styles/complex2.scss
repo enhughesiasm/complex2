@@ -1,0 +1,122 @@
+@import 'variables.scss';
+
+.columns {
+	&.is-full-height {
+		min-height: 100vh;
+	}
+	.column {
+		&.is-full-height {
+			min-height: 100vh;
+		}
+	}
+}
+
+:root {
+	--heart-size: 70px;
+}
+
+.heart {
+	background-color: $red;
+	animation: heartbeat 1.3s infinite;
+
+	&.is-warning {
+		background-color: $yellow;
+	}
+	&.is-danger {
+		background-color: $blue;
+	}
+	&.is-success {
+		background-color: $red;
+	}
+
+	display: inline-block;
+	height: var(--heart-size);
+	margin: 4rem auto;
+	transform: rotate(-45deg);
+	width: var(--heart-size);
+
+	&:before,
+	&:after {
+		content: '';
+		border-radius: 50%;
+		height: var(--heart-size);
+		position: absolute;
+		width: var(--heart-size);
+		background-color: $red;
+	}
+
+	&.is-warning:before,
+	&.is-warning:after {
+		background-color: $yellow;
+	}
+	&.is-danger:before,
+	&.is-danger:after {
+		background-color: $blue;
+	}
+	&.is-success:before,
+	&.is-success:after {
+		background-color: $red;
+	}
+
+	&:before {
+		top: calc(-1 * var(--heart-size) / 2);
+		left: 0;
+	}
+
+	&:after {
+		left: calc(var(--heart-size) / 2);
+		top: 0;
+	}
+}
+
+@keyframes attack {
+	0% {
+		transform: scale(1) translateY(0rem);
+		opacity: 0.9;
+	}
+	25% {
+		transform: scale(1.02) translateY(0.5rem);
+		opacity: 1;
+	}
+	50% {
+		transform: scale(1) translateY(0rem);
+		opacity: 0.9;
+	}
+	75% {
+		transform: scale(1.02) translateY(-0.5rem);
+		opacity: 1;
+	}
+}
+
+.attacks {
+	position: relative;
+	animation: linear attack 3s infinite;
+
+	.attack {
+		position: absolute;
+		font-family: 'Roboto Slab';
+		padding: 0.4rem 0.8rem;
+		border-radius: 20px;
+		font-size: 0.82rem;
+
+		&:before {
+			content: '"';
+		}
+
+		&:after {
+			content: '"';
+		}
+
+		&.NEGATIVE {
+			&.THOUGHT {
+				background: $dangerFaded;
+			}
+		}
+
+		&.POSITIVE {
+			&.THOUGHT {
+				background: $successFaded;
+			}
+		}
+	}
+}

@@ -1,0 +1,80 @@
+$family-sans-serif: 'Nunito', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$family-secondary: 'Roboto Slab', Georgia, 'Palatino Linotype', 'Book Antiqua',
+	serif;
+$title-family: 'Roboto Slab';
+$subtitle-family: 'Roboto Slab';
+$button-family: 'Nunito', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+
+$grey-darker: #271e0e;
+$white-ter: #fefefe;
+$dark-mode: false;
+
+$scheme-main: $white-ter;
+$scheme-invert: $grey-darker;
+
+@if $dark-mode {
+	$scheme-main: $grey-darker;
+	$scheme-invert: $white-ter;
+}
+
+$pink: #fbc5d2;
+
+// primary
+$primary: #254f5c;
+$info: #f06b1a;
+$success: #6f9027;
+$warning: #f5d671;
+$danger: #e12836;
+$link: #fbc5d2; // #f06b1a;
+$link-hover: #f57191;
+
+$turquoise: $primary;
+$cyan: $info;
+$green: $success;
+$yellow: $warning;
+$red: $danger;
+$blue: $link;
+
+$title-color: $scheme-invert;
+$subtitle-color: $scheme-invert;
+
+$menu-item-color: $scheme-invert;
+$menu-label-color: $scheme-invert;
+
+@if not $dark-mode {
+	$menu-item-color: $scheme-main;
+	$menu-label-color: $scheme-main;
+}
+
+$fadeOpacity: 0.42;
+
+$dangerFaded: rgba($danger, $fadeOpacity);
+$successFaded: rgba($success, $fadeOpacity);
+
+$body-size: 18px;
+
+$section-padding: 2rem 1.4rem;
+$notification-padding: 1rem 2.5rem 1rem 1.5rem;
+
+$column-gap: 0.8rem;
+
+$navbar-padding-vertical: 0rem;
+$navbar-height: 0rem;
+
+$footer-background-color: $grey-darker;
+$footer-padding: 0.3rem 0;
+// $footer-padding: #{$footer-vertical-padding} 1.5rem 6rem;
+// $wrapper-height: calc(100vh - #{$navbar-height} - #{$footer-height} - #{$footer-vertical-padding} - #{$footer-vertical-padding});
+// arrived at experimentally:
+// $wrapper-height: calc(100vh - 16rem);
+
+// $blockquote-background: rgba(17,138,178,.13); // #e6ebed;
+// $blockquote-text: #073b4c; // hsl(0, 0%, 21%);
+// $blockquote-cite: #275b6c;
+
+// $custom-colors: (
+// //   "lime": (lime),
+// //   "tomato": (tomato, white),
+// //   "orange": ($orange, $orange-invert, $orange-light),
+// //   "lavender": ($lavender, $lavender-invert, $lavender-light, $lavender-dark)
+// );
