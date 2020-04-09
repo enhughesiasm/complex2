@@ -10,13 +10,24 @@
 	}
 }
 
-.footer {
-	position: fixed;
-	bottom: 0;
-	min-width: 100%;
+html {
+	height: 100%;
+}
+body,
+#app,
+#complexPage {
+	height: 100%;
+	min-height: 100%;
+}
+
+.sidebarFooter {
+	position: sticky;
+	top: 100vh;
 	display: flex;
 	align-items: center;
 	justify-content: space-evenly;
+	flex-direction: column;
+	width: 100%;
 }
 
 // main {
@@ -67,18 +78,6 @@ p.has-drop-cap::first-line {
 	font-variant-caps: all-small-caps;
 	line-height: 1;
 	font-size: 133%;
-}
-
-@keyframes heartbeat {
-	0% {
-		transform: scale(1) rotate(-45deg);
-	}
-	20% {
-		transform: scale(1.25) translateX(5%) translateY(5%) rotate(-45deg);
-	}
-	40% {
-		transform: scale(1.5) translateX(9%) translateY(10%) rotate(-45deg);
-	}
 }
 
 @import 'node_modules/bulma/bulma';

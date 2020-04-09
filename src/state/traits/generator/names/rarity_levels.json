@@ -1,0 +1,30 @@
+[
+	{
+		"name": "neutral",
+		"level": 0
+	},
+	{
+		"name": "positive_basic",
+		"level": 1
+	},
+	{
+		"name": "negative_basic",
+		"level": 2
+	},
+	{
+		"name": "preferences_basic",
+		"level": 3
+	},
+	{
+		"name": "positive_rare",
+		"level": 4
+	},
+	{
+		"name": "negative_rare",
+		"level": 5
+	},
+	{
+		"name": "preferences_rare",
+		"level": 6
+	}
+]

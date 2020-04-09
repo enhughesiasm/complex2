@@ -6,8 +6,8 @@ require('./customise.scss');
 
 // require('./bulma-slider.css');
 
-// // my responsive fixes
+// my responsive fixes
 // require('./responsive.scss');
 
-// // feelings specific
+// app specific
 require('./complex2.scss');

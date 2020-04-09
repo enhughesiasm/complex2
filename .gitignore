@@ -42,3 +42,8 @@ node_modules
 
 # environment files
 .env
+
+TODO.txt
+
+# allow typescript types
+!*.d.ts
