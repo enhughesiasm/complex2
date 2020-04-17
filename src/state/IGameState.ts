@@ -1,9 +1,11 @@
 import IWorldState from './IWorldState';
 
 export enum GameTabs {
-	HOME,
-	PRODUCTION,
-	STATS,
+	HANDS = 'HANDS',
+	LETTERS = 'LETTERS',
+
+	PRODUCTION = 'PRODUCTION',
+	STATS = 'STATS',
 }
 
 export default interface IGameState {
@@ -14,8 +16,10 @@ export default interface IGameState {
 
 	tickLengthMs: number;
 
-	visibleTab: GameTabs;
+	activeTab: GameTabs;
 	patchNotesActive: boolean;
+
+	changeActiveTab(tab: GameTabs): void;
 
 	areSurroundingsUnlocked(): boolean;
 

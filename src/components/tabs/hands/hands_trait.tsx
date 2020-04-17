@@ -44,7 +44,10 @@ const HandsTrait: React.FC<HandsTraitProps> = (props) => {
 				))}
 				<img alt={'trait: ' + props.trait.name} src={image} />
 			</span>
-			<span className='traitName is-small-caps'>{props.trait.name}</span>
+			<span className='traitName is-small-caps'>
+				{props.trait.name} {props.trait.rarity}
+			</span>
+
 			<button
 				className={
 					'button is-small is-rounded' +

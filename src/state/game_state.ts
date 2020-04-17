@@ -4,20 +4,28 @@ import IGameState from './IGameState';
 import IWorldState from './IWorldState';
 import generateTrait from './traits/generator/generate_trait';
 
+const debug = true;
+
 export default class GameState implements IGameState {
 	constructor(worldState: IWorldState) {
 		this.worldState = worldState;
 	}
 
-	debug: boolean = false;
+	debug: boolean = debug;
+	activeTab: GameTabs = !debug ? GameTabs.HANDS : GameTabs.LETTERS;
+
 	version: string = version;
 	tickLengthMs: number = tickLengthMs;
-	visibleTab: GameTabs = GameTabs.HOME;
+
 	patchNotesActive: boolean = false;
 	worldState: IWorldState;
 
 	togglePatchNotes = () => {
 		this.patchNotesActive = !this.patchNotesActive;
+	};
+
+	changeActiveTab = (tab: GameTabs) => {
+		this.activeTab = tab;
 	};
 
 	areSurroundingsUnlocked() {

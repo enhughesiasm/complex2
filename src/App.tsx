@@ -25,6 +25,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
 	timerID?: number;
 
 	constructor(props: IAppProps) {
+		console.log('new app');
 		super(props);
 
 		const worldState = loadWorldState();

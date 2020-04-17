@@ -1,3 +1,5 @@
+import { ILettersManager } from './letters/letter_manager';
+import { IInventory } from './inventory/inventory';
 import { ITraitGenerator } from './traits/ITraitGenerator';
 import ITrait from './traits/ITrait';
 
@@ -16,6 +18,10 @@ export default interface IWorldState {
 	favours: number;
 	totalTraitsProduced: number;
 	totalTraitsDelivered: number;
+
+	inventory: IInventory;
+
+	letterManager: ILettersManager;
 
 	handTraits: Array<ITrait>;
 	handSurroundings: IHandsStorage;
