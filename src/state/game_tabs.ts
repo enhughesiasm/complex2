@@ -1,0 +1,7 @@
+export enum GameTabs {
+	HANDS = 'STARTTEMP',
+	LETTERS = 'LETTERS',
+
+	PRODUCTION = 'PRODUCTION',
+	STATS = 'STATS',
+}

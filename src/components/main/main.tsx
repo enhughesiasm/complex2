@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import HandsTab from '../tabs/hands/hands_tab';
 import AppContext from '../../state/app_context';
-import { GameTabs } from '../../state/IGameState';
 import LettersTab from '../tabs/letters/letters_tab';
+import { GameTabs } from '../../state/game_tabs';
 
 interface MainProps {}
 

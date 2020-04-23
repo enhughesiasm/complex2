@@ -1,7 +1,11 @@
-import { ILettersManager } from './letters/letter_manager';
-import { IInventory } from './inventory/inventory';
-import { ITraitGenerator } from './traits/ITraitGenerator';
-import ITrait from './traits/ITrait';
+import { ILettersManager } from "./letters/letter_manager";
+import Inventory from "./inventory/inventory";
+import { ITraitGenerator } from "./traits/ITraitGenerator";
+import ITrait from "./traits/ITrait";
+import Flags from "./world_flags";
+import WorldOperations from "./world_operations";
+import PlayerAttributes from "./player_attributes";
+import TraitStorage from "./trait_storage/trait_storage";
 
 export interface IHandsStorage {
 	name: string;
@@ -19,12 +23,15 @@ export default interface IWorldState {
 	totalTraitsProduced: number;
 	totalTraitsDelivered: number;
 
-	inventory: IInventory;
+	inventory: Inventory;
+
+	worldFlags: Flags;
+	worldOperations: WorldOperations;
+	playerAttributes: PlayerAttributes;
 
 	letterManager: ILettersManager;
 
-	handTraits: Array<ITrait>;
-	handSurroundings: IHandsStorage;
+	storage: TraitStorage;
 
 	traitGenerator: ITraitGenerator;
 

@@ -1,4 +1,5 @@
 import moment from 'moment';
+import { create_guid } from '../../components/shared/functions';
 
 export enum LettersContents {
 	Dummy,
@@ -6,6 +7,8 @@ export enum LettersContents {
 }
 
 export interface ILetter {
+	id: string;
+
 	from: string;
 	subject: string;
 
@@ -16,6 +19,8 @@ export interface ILetter {
 }
 
 export default class Letter implements ILetter {
+	id: string;
+
 	available: boolean = false;
 	unread: boolean = true;
 
@@ -32,6 +37,7 @@ export default class Letter implements ILetter {
 		subject: string,
 		receivedAt?: moment.Moment
 	) {
+		this.id = create_guid();
 		this.available = available;
 		this.unread = unread;
 		this.receivedAt = receivedAt;

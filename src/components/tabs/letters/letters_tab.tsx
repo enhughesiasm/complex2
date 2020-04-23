@@ -38,7 +38,9 @@ const LettersTab: React.FC = (props) => {
 								<a
 									onClick={() => {
 										setActiveIndex(i);
-										worldState.letterManager.markAsRead(i);
+										worldState.letterManager.markAsRead(
+											l.id
+										);
 									}}
 									className={
 										'panel-block lettersPanel' +

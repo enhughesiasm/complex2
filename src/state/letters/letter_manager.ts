@@ -5,7 +5,7 @@ export interface ILettersManager {
 
 	getUnreadCount(): number;
 	getAvailableLetters(): Array<ILetter>;
-	markAsRead(index: number): void;
+	markAsRead(id: string): void;
 }
 
 export default class LettersManager implements ILettersManager {
@@ -42,12 +42,19 @@ export default class LettersManager implements ILettersManager {
 		return this.allLetters.filter((a) => a.unread).length;
 	}
 
-	markAsRead(index: number) {
-		if (index >= 0 && index < this.getAvailableLetters().length) {
-			this.allLetters[index].unread = false;
-		} else {
-			console.error('Marking unreadable letter as read, index: ', index);
+	markAsRead(id: string) {
+		if (!id) {
+			console.error("Can't mark letter as read, no id provided.");
+			return;
 		}
+
+		const l = this.allLetters.find((a) => a.id === id);
+		if (!l) {
+			console.error('Marking nonexistent letter as read!', id);
+			return;
+		}
+
+		l.unread = false;
 	}
 
 	getAvailableLetters() {

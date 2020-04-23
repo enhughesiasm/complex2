@@ -1,11 +1,10 @@
-import React from 'react';
-import IGameState from './IGameState';
-import IWorldState from './IWorldState';
-import WorldState from './world_state';
-import GameState from './game_state';
+import React from "react";
+import IWorldState from "./IWorldState";
+import WorldState from "./world_state";
+import GameState from "./game_state";
 
 interface IAppContext {
-	gameState: IGameState;
+	gameState: GameState;
 	worldState: IWorldState;
 }
 

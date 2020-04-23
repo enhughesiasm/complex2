@@ -1,5 +1,5 @@
 import React, { useContext } from 'react';
-import IGameState, { GameTabs } from '../../state/IGameState';
+import { GameTabs } from '../../state/game_tabs';
 import AppContext from '../../state/app_context';
 import FontAwesome from '../shared/font_awesome';
 

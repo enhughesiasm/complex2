@@ -1,18 +1,57 @@
-import { version, tickLengthMs } from './constants';
-import { GameTabs } from './IGameState';
-import IGameState from './IGameState';
-import IWorldState from './IWorldState';
-import generateTrait from './traits/generator/generate_trait';
+import { version, tickLengthMs } from "./constants";
+import { GameTabs } from "./game_tabs";
+import IWorldState from "./IWorldState";
+import generateTrait from "./traits/generator/generate_trait";
 
 const debug = true;
 
-export default class GameState implements IGameState {
+// export interface IGameState {
+// 	debug: boolean;
+// 	version: string;
+
+// 	worldState: IWorldState;
+
+// 	tickLengthMs: number;
+
+// 	activeTab: GameTabs;
+// 	patchNotesActive: boolean;
+
+// 	changeActiveTab(tab: GameTabs): void;
+
+// 	areSurroundingsUnlocked(): boolean;
+
+// 	handProduceTrait(): void;
+// 	handDeliverTrait(id: string): void;
+
+// 	gatherBasicIngredients(): void;
+// 	isGatheringBasicIngredients(): boolean;
+
+// 	[index: string]: any; // string index
+// }
+
+export default class GameState {
 	constructor(worldState: IWorldState) {
 		this.worldState = worldState;
 	}
 
+	gatherBasicIngredients(): void {
+		if (this.worldState.worldFlags.isGatheringBasicIngredients) {
+			console.error("trying to gather basics twice!");
+			return;
+		}
+
+		this.worldState.worldFlags.isGatheringBasicIngredients = true;
+		this.worldState.worldFlags.manualGatherCount++;
+	}
+	isGatheringBasicIngredients(): boolean {
+		return this.worldState.worldFlags.isGatheringBasicIngredients;
+	}
+	askForHelpGatheringBasicIngredients(): void {
+		this.worldState.worldFlags.manualGatherHelpCycles += 5;
+	}
+
 	debug: boolean = debug;
-	activeTab: GameTabs = !debug ? GameTabs.HANDS : GameTabs.LETTERS;
+	activeTab: GameTabs = !debug ? GameTabs.HANDS : GameTabs.HANDS;
 
 	version: string = version;
 	tickLengthMs: number = tickLengthMs;
@@ -29,22 +68,32 @@ export default class GameState implements IGameState {
 	};
 
 	areSurroundingsUnlocked() {
-		return this.worldState.totalTraitsProduced > 0;
+		return (
+			this.worldState.totalTraitsProduced > 0 ||
+			this.worldState.storage.handTraits.length > 0
+		);
 	}
 
-	handProduceTrait(): void {
-		this.worldState.handTraits.push(
-			generateTrait(this.worldState.traitGenerator)
-		);
+	handMixIngredients(): void {
+		if (this.worldState.worldFlags.isHandMixingIngredients) {
+			console.error("trying to mix ingredients twice!");
+			return;
+		}
 
-		this.worldState.totalTraitsProduced++;
+		this.worldState.worldFlags.isHandMixingIngredients = true;
+	}
+
+	isHandMixingIngredients(): boolean {
+		return this.worldState.worldFlags.isHandMixingIngredients;
 	}
 
 	handDeliverTrait(id: string) {
-		const index = this.worldState.handTraits.findIndex((f) => f.id === id);
+		const index = this.worldState.storage.handTraits.findIndex(
+			(f) => f.id === id
+		);
 
 		if (index >= 0) {
-			this.worldState.handTraits.splice(index, 1);
+			this.worldState.storage.handTraits.splice(index, 1);
 		}
 	}
 

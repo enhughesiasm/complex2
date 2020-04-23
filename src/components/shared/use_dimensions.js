@@ -1,5 +1,5 @@
-import { useState, useLayoutEffect } from 'react';
-import useWindowDimensions from './use_window_dimensions';
+import { useState, useLayoutEffect } from "react";
+import useWindowDimensions from "./use_window_dimensions";
 
 export function useDimensions(ref) {
 	const [dimensions, setDimensions] = useState({});
@@ -7,7 +7,6 @@ export function useDimensions(ref) {
 	const windowDimensions = useWindowDimensions();
 
 	useLayoutEffect(() => {
-		console.log('running!');
 		setDimensions(ref.current.getBoundingClientRect().toJSON());
 	}, [windowDimensions.width, ref]);
 	return { ref: ref, dimensions: dimensions };

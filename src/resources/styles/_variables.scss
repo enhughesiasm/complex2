@@ -1,9 +1,9 @@
-$family-sans-serif: 'Nunito', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-$family-secondary: 'Roboto Slab', Georgia, 'Palatino Linotype', 'Book Antiqua',
+$family-sans-serif: "Nunito", "Helvetica Neue", Helvetica, Arial, sans-serif;
+$family-secondary: "Roboto Slab", Georgia, "Palatino Linotype", "Book Antiqua",
 	serif;
-$title-family: 'Roboto Slab';
-$subtitle-family: 'Roboto Slab';
-$button-family: 'Nunito', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+$title-family: "Roboto Slab";
+$subtitle-family: "Roboto Slab";
+$button-family: "Nunito", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
 $grey-darker: #271e0e;
 $white-ter: #fefefe;
@@ -27,6 +27,16 @@ $warning: #f5d671;
 $danger: #e12836;
 $link: #fbc5d2; // #f06b1a;
 $link-hover: #f57191;
+
+:root {
+	--primary: #{$primary};
+	--info: #{$info};
+	--success: #{$success};
+	--warning: #{$warning};
+	--danger: #{$danger};
+	--link: #{$link};
+	--link-hover: #{$link-hover};
+}
 
 $turquoise: $primary;
 $cyan: $info;

@@ -1,13 +1,13 @@
-import React, { useContext, useState } from 'react';
-import ITrait from '../../../state/traits/ITrait';
+import React, { useContext, useState } from "react";
+import ITrait from "../../../state/traits/ITrait";
 
-import jar1 from './../../../resources/images/jar1_t.png';
-import jar2 from './../../../resources/images/jar2_t.png';
-import jar3 from './../../../resources/images/jar3_t.png';
-import jar4 from './../../../resources/images/jar4_t.png';
-import jar5 from './../../../resources/images/jar5_t.png';
-import AppContext from '../../../state/app_context';
-import IGameState from '../../../state/IGameState';
+import jar1 from "./../../../resources/images/jar1_t.png";
+import jar2 from "./../../../resources/images/jar2_t.png";
+import jar3 from "./../../../resources/images/jar3_t.png";
+import jar4 from "./../../../resources/images/jar4_t.png";
+import jar5 from "./../../../resources/images/jar5_t.png";
+import AppContext from "../../../state/app_context";
+import GameState from "../../../state/game_state";
 
 const images = [jar1, jar2, jar3, jar4, jar5];
 
@@ -17,7 +17,7 @@ interface HandsTraitProps {
 
 function handleDelivery(
 	id: string,
-	gameState: IGameState,
+	gameState: GameState,
 	setDelivered: Function
 ) {
 	setDelivered(true);
@@ -34,26 +34,26 @@ const HandsTrait: React.FC<HandsTraitProps> = (props) => {
 
 	return (
 		<div
-			className='handsTrait'
-			onClick={() =>
-				handleDelivery(props.trait.id, gameState, setDelivered)
-			}>
-			<span className='imgContainer'>
+			className="handsTrait"
+			onClick={() => handleDelivery(props.trait.id, gameState, setDelivered)}
+		>
+			<span className="imgContainer">
 				{[...Array(bubbles)].map((a, i) => (
-					<div key={i} className='bubble' />
+					<div key={i} className="bubble" />
 				))}
-				<img alt={'trait: ' + props.trait.name} src={image} />
+				<img alt={"trait: " + props.trait.name} src={image} />
 			</span>
-			<span className='traitName is-small-caps'>
+			<span className="traitName is-small-caps">
 				{props.trait.name} {props.trait.rarity}
 			</span>
 
 			<button
 				className={
-					'button is-small is-rounded' +
-					(delivered ? ' is-success ' : ' is-warning ')
-				}>
-				{delivered ? 'delivering' : 'deliver'}
+					"button is-small is-rounded" +
+					(delivered ? " is-success " : " is-warning ")
+				}
+			>
+				{delivered ? "delivering" : "deliver"}
 			</button>
 		</div>
 	);
