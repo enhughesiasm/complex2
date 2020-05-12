@@ -4,4 +4,5 @@ export default class WorldOperations {
 	handMixIngredientsProgress: number = 0;
 
 	handDeliverBatchProgress: number = 0;
+	volunteerHandDeliverBatchProgress : number = 0;
 }

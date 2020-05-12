@@ -8,6 +8,7 @@ import WorldOperations from "./world_operations";
 import PlayerAttributes from "./player_attributes";
 import TraitStorage from "./trait_storage/trait_storage";
 import Shop from "./shop/shop";
+import DeliveryManager from "./delivery/delivery_manager";
 
 export default class WorldState implements IWorldState {
 	favours: number = 0;
@@ -24,6 +25,7 @@ export default class WorldState implements IWorldState {
 	playerAttributes: PlayerAttributes = new PlayerAttributes();
 
 	letterManager: ILettersManager = new LettersManager();
+	deliveryManager: DeliveryManager = new DeliveryManager();
 
 	inventory: Inventory = new Inventory();
 	shop: Shop = new Shop();

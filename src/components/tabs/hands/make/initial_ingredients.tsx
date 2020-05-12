@@ -9,26 +9,14 @@ import styleVariables from "../../../../resources/styles/styles";
 const InitialIngredients: React.FC = (props) => {
 	const { gameState, worldState } = useContext(AppContext);
 
+	const basicIngredientCount = worldState.inventory.getIngredientAmount(ingredientLevel.Basic);
+
 	return (
 		<>
 			<div className="is-divider" data-content="INGREDIENTS" />
-			{worldState.inventory.getTotalIngredientCount() == 0 && (
-				<span className="has-text-danger">You have no ingredients.</span>
-			)}
-
+			
 			<div className="content">
-				<div className="tags">
-					{Object.keys(ingredientLevel).map((il) => {
-						const amount = worldState.inventory.ingredients.get(il) || 0;
-						if (amount <= 0) return <></>;
-						return (
-							<div key={il}>
-								<span className="tag is-info">{il}</span>
-								<span className="tag is-success">{amount}</span>
-							</div>
-						);
-					})}
-				</div>
+				<span className={'has-text-' + (basicIngredientCount > 0  ? 'success':'danger')}>You have { basicIngredientCount } basic ingredients.</span>
 			</div>
 
 			<div className="level">

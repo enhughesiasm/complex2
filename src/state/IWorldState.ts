@@ -7,6 +7,7 @@ import WorldOperations from "./world_operations";
 import PlayerAttributes from "./player_attributes";
 import TraitStorage from "./trait_storage/trait_storage";
 import Shop from "./shop/shop";
+import DeliveryManager from "./delivery/delivery_manager";
 
 export interface IHandsStorage {
 	name: string;
@@ -31,6 +32,8 @@ export default interface IWorldState {
 	playerAttributes: PlayerAttributes;
 
 	letterManager: ILettersManager;
+	deliveryManager: DeliveryManager;
+
 
 	shop: Shop;
 

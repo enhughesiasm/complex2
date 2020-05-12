@@ -31,7 +31,9 @@ export default class Inventory {
 	}
 
 	getIngredientAmount(level: ingredientLevel): number {
-		return this.ingredients.get(level) || 0;
+		const amount = this.ingredients.get(level);
+		if(amount === null || amount === undefined) throw "changing nonexistent level";
+		return  amount || 0;
 	}
 
 	setIngredientAmount(level: ingredientLevel, amount: number): void {
@@ -39,7 +41,6 @@ export default class Inventory {
 	}
 
 	changeIngredientAmount(level: ingredientLevel, amount: number): void {
-		if (!this.ingredients.get(level)) throw "changing nonexistent level";
-		this.ingredients.set(level, (this.ingredients.get(level) || 0) + amount);
+		this.ingredients.set(level, this.getIngredientAmount(level) + amount);
 	}
 }

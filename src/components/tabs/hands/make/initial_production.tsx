@@ -7,6 +7,8 @@ import styleVariables from "../../../../resources/styles/styles";
 const InitialProduction: React.FC = (props) => {
 	const { gameState, worldState } = useContext(AppContext);
 
+	const canAskForHelp = worldState.totalTraitsProduced > 2;
+
 	return (
 		<>
 			<div className="is-divider" data-content="MAKE" />
@@ -38,6 +40,30 @@ const InitialProduction: React.FC = (props) => {
 					</div>
 				</div>
 			</div>
+
+			{ canAskForHelp &&
+				worldState.worldFlags.initialProductionHelpCycles > 0 && (
+					<div className="message is-success">
+						<div className="message-body">
+							A friend will help mix{" "}
+							{worldState.worldFlags.initialProductionHelpCycles} ingredients.
+						</div>
+					</div>
+				)}
+
+			{ canAskForHelp  &&
+				worldState.worldFlags.initialProductionHelpCycles === 0 && (
+					<div className="message is-danger">
+						<div className="message-body">
+							Mixing is tedious.
+							<button
+								className="button is-info is-small is-rounded"
+								onClick={() => gameState.askForHelpMixingBasicIngredients()}
+							>ask for help
+							</button>
+						</div>
+					</div>
+				)}
 		</>
 	);
 };

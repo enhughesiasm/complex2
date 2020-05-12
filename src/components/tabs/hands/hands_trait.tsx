@@ -12,6 +12,7 @@ const images = [jar1, jar2, jar3, jar4, jar5];
 
 interface HandsTraitProps {
 	trait: ITrait;
+	tag?: string;
 }
 
 const HandsTrait: React.FC<HandsTraitProps> = (props) => {
@@ -24,6 +25,9 @@ const HandsTrait: React.FC<HandsTraitProps> = (props) => {
 			className="handsTrait"
 			// onClick={() => handleDelivery(props.trait.id, gameState, setDelivered)}
 		>
+			{ props.tag && <span className={'tag is-' + (props.tag ==='You' ? 'success' : 'primary')}>
+				{props.tag}
+				</span>}
 			<span className="imgContainer">
 				{[...Array(bubbles)].map((a, i) => (
 					<div key={i} className="bubble" />

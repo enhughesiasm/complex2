@@ -14,8 +14,10 @@ let isTicking = false;
 
 export function tick_game(delta_sec: number, gameState: GameState): GameState {
 	if (isTicking) {
-		alert("double tick"); // TK TODO remove this
+		console.error('ERROR: repeat tick');
 	}
+
+	try{
 
 	const nextState = produce(gameState, (newGameState) => {
 		isTicking = true;
@@ -32,7 +34,7 @@ export function tick_game(delta_sec: number, gameState: GameState): GameState {
 		// TK: pay workers first, then all workers operate by multiplied amounts accordingly
 
 		// TK gather progress / ALL progresses?? think on this!
-		progress(delta_sec, flags, operations, playerAttributes);
+		progress(delta_sec, flags, operations, playerAttributes, worldState);
 
 		// gather results
 		results(
@@ -56,18 +58,29 @@ export function tick_game(delta_sec: number, gameState: GameState): GameState {
 
 		isTicking = false;
 	});
-
 	return nextState;
+
+	}catch(e){
+		console.error('Uh-oh, couldn\'t calculate the next tick.', e);
+	}
+
+	return gameState; // if we got here, just return the old state
 }
 
-// TK: this probably can be refactored way more cleverly but for now let's just get it up and running...
+
+	// TK: this probably can be refactored way more cleverly but for now let's just get it up and running...
+// all these Math.rounds could be moved to a single place at the end for cleanliness...
 
 function progress(
 	delta_sec: number,
 	flags: Flags,
 	operations: WorldOperations,
-	attributes: PlayerAttributes
+	attributes: PlayerAttributes,
+	worldState: IWorldState
 ): void {
+
+	const { inventory } = worldState;
+
 	// manual ingredient gathering progress
 	if (flags.isGatheringBasicIngredients) {
 		operations.gatherBasicIngredientsProgress +=
@@ -86,12 +99,29 @@ function progress(
 
 	// manual mixing process
 	if (flags.isHandMixingIngredients) {
+		
+		if(operations.handMixIngredientsProgress === 0){
+			worldState.inventory.changeIngredientAmount(ingredientLevel.Basic, -1);
+		}
+
 		operations.handMixIngredientsProgress +=
 			attributes.mixIngredientsPerSecond * delta_sec;
 		operations.handMixIngredientsProgress =
 			Math.round(operations.handMixIngredientsProgress * 1e3) / 1e3;
 	}
+	
+	// help from friends with basic mixing
+	if (flags.initialProductionHelpCycles > 0) {
 
+		if(operations.handMixIngredientsProgress === 0){
+			worldState.inventory.changeIngredientAmount(ingredientLevel.Basic, -1);
+		}
+
+		operations.handMixIngredientsProgress +=
+			attributes.mixIngredientsPerSecond * delta_sec;
+		operations.handMixIngredientsProgress =
+			Math.round(operations.handMixIngredientsProgress * 1e3) / 1e3;
+	}
 	// manual delivery process
 	if (flags.isHandDeliveringBatch) {
 		operations.handDeliverBatchProgress +=
@@ -99,6 +129,14 @@ function progress(
 		operations.handDeliverBatchProgress =
 			Math.round(operations.handDeliverBatchProgress * 1e3) / 1e3;
 	}
+
+	// initial volunteer delivery 
+	if(flags.isVolunteerHandDeliveringBatch){
+		operations.volunteerHandDeliverBatchProgress += attributes.handDeliveryProgressPerSecond * delta_sec;
+		operations.volunteerHandDeliverBatchProgress =
+			Math.round(operations.volunteerHandDeliverBatchProgress * 1e3) / 1e3;
+	}
+	
 }
 
 function results(
@@ -148,18 +186,35 @@ function results(
 			storage.addHandTrait(generateTrait(traitGenerator));
 			worldState.totalTraitsProduced++;
 		}
+		if (flags.initialProductionHelpCycles > 0) {
+			flags.initialProductionHelpCycles -= mixed;
+			flags.initialProductionHelpCycles = Math.max(0, flags.initialProductionHelpCycles);
+		}
 	}
 
 	// hand deliver batch
 
 	while (operations.handDeliverBatchProgress >= 100) {
 		// on completion, we deliver everything in the handtraits, which should be a limited storage
-		const traits = storage.handTraits;
+		const traits = worldState.deliveryManager.handDeliveries;
 		traits.forEach((t) => {
 			worldState.shop.receiveTraitsAtLevelNumber(t.rarity, 1);
 			worldState.favours += worldState.shop.getTraitPayment(t.rarity, 1);
 		});
-		worldState.storage.handTraits = [];
+		worldState.deliveryManager.handDeliveries = [];
+		flags.isHandDeliveringBatch = false;
+		operations.handDeliverBatchProgress = 0;
+		flags.handDeliveredFirstBatch = true;
+	}
+
+	while (operations.volunteerHandDeliverBatchProgress >= 100) {
+		// on completion, we deliver everything in the handtraits, which should be a limited storage
+		const traits = worldState.deliveryManager.volunteerHandDeliveries;
+		traits.forEach((t) => {
+			worldState.shop.receiveTraitsAtLevelNumber(t.rarity, 1);
+			worldState.favours += worldState.shop.getTraitPayment(t.rarity, 1);
+		});
+		worldState.deliveryManager.volunteerHandDeliveries = [];
 		flags.isHandDeliveringBatch = false;
 		operations.handDeliverBatchProgress = 0;
 		flags.handDeliveredFirstBatch = true;

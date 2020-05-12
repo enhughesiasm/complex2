@@ -84,8 +84,6 @@ export default class GameState {
 			console.error("trying to mix ingredients twice!");
 			return;
 		}
-
-		this.worldState.inventory.changeIngredientAmount(ingredientLevel.Basic, -1);
 		this.worldState.worldFlags.isHandMixingIngredients = true;
 	}
 
@@ -101,12 +99,29 @@ export default class GameState {
 		return this.worldState.worldFlags.isHandMixingIngredients;
 	}
 
+	askForHelpMixingBasicIngredients() : void {
+		this.worldState.worldFlags.initialProductionHelpCycles += 5;
+	}
+
 	canHandDeliver(): boolean {
-		return !this.worldState.worldFlags.isHandDeliveringBatch;
+		return !this.worldState.worldFlags.isHandDeliveringBatch && this.worldState.storage.handTraits.length > 0;
 	}
 
 	beginHandDeliverBatch() {
 		this.worldState.worldFlags.isHandDeliveringBatch = true;
+		this.worldState.deliveryManager.handDeliveries = this.worldState.storage.handTraits.slice(0);
+		this.worldState.storage.handTraits = [];
+	}
+
+	canVolunteerHandDeliver() : boolean {
+		return !this.worldState.worldFlags.isVolunteerHandDeliveringBatch && this.worldState.storage.handTraits.length > 0;
+	}
+
+	beginVolunteerHandDeliverBatch() {
+		this.worldState.worldFlags.isVolunteerHandDeliveringBatch = true;
+		this.worldState.deliveryManager.volunteerHandDeliveries = this.worldState.storage.handTraits.slice(0);
+		this.worldState.storage.handTraits = [];
+	
 	}
 
 	[index: string]: any; // implement string index
