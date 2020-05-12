@@ -1,10 +1,10 @@
-import debugValues from './debug_values';
-import IWorldState from './IWorldState';
-import WorldState from './world_state';
+import debugValues from "./debug_values";
+import IWorldState from "./IWorldState";
+import WorldState from "./world_state";
 
-const debug = true && process.env.NODE_ENV === 'development';
+const debug = true && process.env.NODE_ENV === "development";
 
-export const localStorageKey = 'feelings_save_v1';
+export const localStorageKey = "feelings_save_v1";
 
 function encodeSave(world_state: IWorldState): string {
 	return btoa(JSON.stringify(world_state));
@@ -16,7 +16,7 @@ function decodeSave(save: string): IWorldState {
 
 export function saveFeelingsStateToLocalStorage(world_state: IWorldState) {
 	if (!world_state) {
-		console.error('no state to save!');
+		console.error("no state to save!");
 		return;
 	}
 

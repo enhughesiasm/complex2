@@ -6,6 +6,7 @@ import Flags from "./world_flags";
 import WorldOperations from "./world_operations";
 import PlayerAttributes from "./player_attributes";
 import TraitStorage from "./trait_storage/trait_storage";
+import Shop from "./shop/shop";
 
 export interface IHandsStorage {
 	name: string;
@@ -21,7 +22,7 @@ export interface IResearchCompleted {}
 export default interface IWorldState {
 	favours: number;
 	totalTraitsProduced: number;
-	totalTraitsDelivered: number;
+	totalTraitsDelivered(): number;
 
 	inventory: Inventory;
 
@@ -30,6 +31,8 @@ export default interface IWorldState {
 	playerAttributes: PlayerAttributes;
 
 	letterManager: ILettersManager;
+
+	shop: Shop;
 
 	storage: TraitStorage;
 

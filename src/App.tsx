@@ -1,5 +1,4 @@
 import React from "react";
-
 import IWorldState from "./state/IWorldState";
 import loadWorldState from "./state/load_state";
 import GameState from "./state/game_state";
@@ -9,8 +8,6 @@ import AppContext from "./state/app_context";
 import Sidebar from "./components/sidebar/sidebar";
 import Main from "./components/main/main";
 import QuickviewContainer from "./components/quickviews/quickview_container";
-
-require("./components/shared/type_extensions");
 
 interface IAppProps {}
 

@@ -19,7 +19,7 @@ const HandsTab: React.FC = (props) => {
 
 	return (
 		<section className="columns">
-			<div className="column is-one-quarter">
+			<div className="column is-one-third">
 				<MakeBox />
 			</div>
 

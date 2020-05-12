@@ -37,4 +37,9 @@ export default class Inventory {
 	setIngredientAmount(level: ingredientLevel, amount: number): void {
 		this.ingredients.set(level, amount);
 	}
+
+	changeIngredientAmount(level: ingredientLevel, amount: number): void {
+		if (!this.ingredients.get(level)) throw "changing nonexistent level";
+		this.ingredients.set(level, (this.ingredients.get(level) || 0) + amount);
+	}
 }

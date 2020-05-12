@@ -8,14 +8,6 @@ const Surroundings: React.FC = () => {
 	return (
 		<div className="column">
 			<HandStorage />
-
-			<div className="box">
-				<p>People nearby goes here</p>
-				<p>
-					possibly: remove deliver buttons from the jars, as they're just
-					storage!
-				</p>
-			</div>
 		</div>
 	);
 };

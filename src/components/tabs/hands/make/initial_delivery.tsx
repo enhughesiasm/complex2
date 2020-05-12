@@ -1,24 +1,23 @@
 import React, { useContext } from "react";
 import AppContext from "../../../../state/app_context";
-import { ingredientLevel } from "../../../../state/data/ingredient_levels";
 import Circle from "react-circle";
 import styleVariables from "../../../../resources/styles/styles";
 
-const InitialProduction: React.FC = (props) => {
+const InitialDelivery: React.FC = (props) => {
 	const { gameState, worldState } = useContext(AppContext);
 
 	return (
 		<>
-			<div className="is-divider" data-content="MAKE" />
+			<div className="is-divider" data-content="DELIVER" />
 			<div className="level">
 				<div className="level-left">
 					<div className="level-item">
 						<button
 							className="button is-small is-rounded is-primary"
-							onClick={() => gameState.handMixIngredients()}
-							disabled={!gameState.canHandMixIngredients()}
+							onClick={() => gameState.beginHandDeliverBatch()}
+							disabled={!gameState.canHandDeliver()}
 						>
-							mix ingredients
+							take batch to the shop
 						</button>
 					</div>
 				</div>
@@ -26,7 +25,7 @@ const InitialProduction: React.FC = (props) => {
 				<div className="level-right">
 					<div className="level-item">
 						<Circle
-							progress={worldState.worldOperations.handMixIngredientsProgress}
+							progress={worldState.worldOperations.handDeliverBatchProgress}
 							animate={true}
 							animationDuration={"10ms"}
 							showPercentage={false}
@@ -42,4 +41,4 @@ const InitialProduction: React.FC = (props) => {
 	);
 };
 
-export default InitialProduction;
+export default InitialDelivery;

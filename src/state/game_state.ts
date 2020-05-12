@@ -1,7 +1,9 @@
 import { version, tickLengthMs } from "./constants";
-import { GameTabs } from "./game_tabs";
+import { GameTabType } from "./game_tabs";
 import IWorldState from "./IWorldState";
 import generateTrait from "./traits/generator/generate_trait";
+import { ingredientLevel } from "./data/ingredient_levels";
+import ITrait from "./traits/ITrait";
 
 const debug = true;
 
@@ -43,15 +45,18 @@ export default class GameState {
 		this.worldState.worldFlags.isGatheringBasicIngredients = true;
 		this.worldState.worldFlags.manualGatherCount++;
 	}
-	isGatheringBasicIngredients(): boolean {
-		return this.worldState.worldFlags.isGatheringBasicIngredients;
+	canGatherBasicIngredients(): boolean {
+		return (
+			!this.worldState.worldFlags.isGatheringBasicIngredients &&
+			!this.worldState.worldFlags.isHandDeliveringBatch
+		);
 	}
 	askForHelpGatheringBasicIngredients(): void {
 		this.worldState.worldFlags.manualGatherHelpCycles += 5;
 	}
 
 	debug: boolean = debug;
-	activeTab: GameTabs = !debug ? GameTabs.HANDS : GameTabs.HANDS;
+	activeTab: GameTabType = !debug ? GameTabType.HANDS : GameTabType.HANDS;
 
 	version: string = version;
 	tickLengthMs: number = tickLengthMs;
@@ -63,7 +68,7 @@ export default class GameState {
 		this.patchNotesActive = !this.patchNotesActive;
 	};
 
-	changeActiveTab = (tab: GameTabs) => {
+	changeActiveTab = (tab: GameTabType) => {
 		this.activeTab = tab;
 	};
 
@@ -80,21 +85,28 @@ export default class GameState {
 			return;
 		}
 
+		this.worldState.inventory.changeIngredientAmount(ingredientLevel.Basic, -1);
 		this.worldState.worldFlags.isHandMixingIngredients = true;
+	}
+
+	canHandMixIngredients(): boolean {
+		return (
+			!this.isHandMixingIngredients() &&
+			!this.worldState.worldFlags.isHandDeliveringBatch &&
+			this.worldState.inventory.getIngredientAmount(ingredientLevel.Basic) > 0
+		);
 	}
 
 	isHandMixingIngredients(): boolean {
 		return this.worldState.worldFlags.isHandMixingIngredients;
 	}
 
-	handDeliverTrait(id: string) {
-		const index = this.worldState.storage.handTraits.findIndex(
-			(f) => f.id === id
-		);
+	canHandDeliver(): boolean {
+		return !this.worldState.worldFlags.isHandDeliveringBatch;
+	}
 
-		if (index >= 0) {
-			this.worldState.storage.handTraits.splice(index, 1);
-		}
+	beginHandDeliverBatch() {
+		this.worldState.worldFlags.isHandDeliveringBatch = true;
 	}
 
 	[index: string]: any; // implement string index

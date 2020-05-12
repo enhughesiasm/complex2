@@ -36,7 +36,7 @@ const InitialIngredients: React.FC = (props) => {
 					<div className="level-item">
 						<button
 							className="button is-small is-rounded is-primary"
-							disabled={gameState.isGatheringBasicIngredients()}
+							disabled={!gameState.canGatherBasicIngredients()}
 							onClick={() => gameState.gatherBasicIngredients()}
 						>
 							gather yourself

@@ -1,18 +1,16 @@
 import {
 	RandomNumberWeighting,
 	lerp,
-} from './../../../components/shared/functions';
-import { IRarityLevel } from './names/data/IRarityLevel';
-import { ITraitGenerator } from './../ITraitGenerator';
-import ITrait from '../ITrait';
-import _rarityLevels from './names/rarity_levels.json';
-import generateTraitName from './names/generate_names';
+} from "./../../../components/shared/functions";
+import rarityLevels, { IRarityLevel } from "./names/data/IRarityLevel";
+import { ITraitGenerator } from "./../ITraitGenerator";
+import ITrait from "../ITrait";
+import generateTraitName from "./names/generate_names";
 import {
 	create_guid,
 	getWeightedRandomInteger,
-} from '../../../components/shared/functions';
+} from "../../../components/shared/functions";
 
-const rarityLevels = _rarityLevels as Array<IRarityLevel>;
 const actualMaxLevels = Math.max(...rarityLevels.map((a) => a.level));
 
 export default function generateTrait(generator: ITraitGenerator): ITrait {

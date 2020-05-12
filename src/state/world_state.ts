@@ -7,11 +7,17 @@ import Flags from "./world_flags";
 import WorldOperations from "./world_operations";
 import PlayerAttributes from "./player_attributes";
 import TraitStorage from "./trait_storage/trait_storage";
+import Shop from "./shop/shop";
 
 export default class WorldState implements IWorldState {
 	favours: number = 0;
 	totalTraitsProduced: number = 0;
-	totalTraitsDelivered: number = 0;
+
+	totalTraitsDelivered(): number {
+		let total: number = 0;
+		this.shop.received.forEach((t) => (total += t));
+		return total;
+	}
 
 	worldFlags: Flags = new Flags();
 	worldOperations: WorldOperations = new WorldOperations();
@@ -20,6 +26,7 @@ export default class WorldState implements IWorldState {
 	letterManager: ILettersManager = new LettersManager();
 
 	inventory: Inventory = new Inventory();
+	shop: Shop = new Shop();
 
 	traitGenerator: ITraitGenerator = new TraitGenerator();
 

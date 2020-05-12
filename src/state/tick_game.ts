@@ -91,6 +91,14 @@ function progress(
 		operations.handMixIngredientsProgress =
 			Math.round(operations.handMixIngredientsProgress * 1e3) / 1e3;
 	}
+
+	// manual delivery process
+	if (flags.isHandDeliveringBatch) {
+		operations.handDeliverBatchProgress +=
+			attributes.handDeliveryProgressPerSecond * delta_sec;
+		operations.handDeliverBatchProgress =
+			Math.round(operations.handDeliverBatchProgress * 1e3) / 1e3;
+	}
 }
 
 function results(
@@ -135,9 +143,25 @@ function results(
 	}
 
 	if (mixed > 0) {
+		operations.handMixIngredientsProgress = 0;
 		for (let i = 0; i < mixed; i++) {
-			storage.handTraits.push(generateTrait(traitGenerator));
+			storage.addHandTrait(generateTrait(traitGenerator));
 			worldState.totalTraitsProduced++;
 		}
+	}
+
+	// hand deliver batch
+
+	while (operations.handDeliverBatchProgress >= 100) {
+		// on completion, we deliver everything in the handtraits, which should be a limited storage
+		const traits = storage.handTraits;
+		traits.forEach((t) => {
+			worldState.shop.receiveTraitsAtLevelNumber(t.rarity, 1);
+			worldState.favours += worldState.shop.getTraitPayment(t.rarity, 1);
+		});
+		worldState.storage.handTraits = [];
+		flags.isHandDeliveringBatch = false;
+		operations.handDeliverBatchProgress = 0;
+		flags.handDeliveredFirstBatch = true;
 	}
 }

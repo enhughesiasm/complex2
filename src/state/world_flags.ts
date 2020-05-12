@@ -4,4 +4,6 @@ export default class Flags {
 	manualGatherHelpCycles = 0;
 
 	isHandMixingIngredients = false;
+	isHandDeliveringBatch = false;
+	handDeliveredFirstBatch = false;
 }
