@@ -3,7 +3,7 @@ import IWorldState from "./state/IWorldState";
 import loadWorldState from "./state/load_state";
 import GameState from "./state/game_state";
 import moment from "moment";
-import { tick_game } from "./state/tick_game";
+import { tick_game } from "./state/tick/tick_game";
 import AppContext from "./state/app_context";
 import Sidebar from "./components/sidebar/sidebar";
 import Main from "./components/main/main";

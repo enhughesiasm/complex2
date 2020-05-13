@@ -1,6 +1,6 @@
 import { ILettersManager } from "./letters/letter_manager";
 import Inventory from "./inventory/inventory";
-import { ITraitGenerator } from "./traits/ITraitGenerator";
+import { ITraitGenerator } from "./traits/generator/ITraitGenerator";
 import ITrait from "./traits/ITrait";
 import Flags from "./world_flags";
 import WorldOperations from "./world_operations";
@@ -8,6 +8,7 @@ import PlayerAttributes from "./player_attributes";
 import TraitStorage from "./trait_storage/trait_storage";
 import Shop from "./shop/shop";
 import DeliveryManager from "./delivery/delivery_manager";
+import { ITickProcess } from "./tick/ITickProcess";
 
 export interface IHandsStorage {
 	name: string;
@@ -25,6 +26,8 @@ export default interface IWorldState {
 	totalTraitsProduced: number;
 	totalTraitsDelivered(): number;
 
+	processList: Array<ITickProcess>;
+
 	inventory: Inventory;
 
 	worldFlags: Flags;
@@ -33,7 +36,6 @@ export default interface IWorldState {
 
 	letterManager: ILettersManager;
 	deliveryManager: DeliveryManager;
-
 
 	shop: Shop;
 

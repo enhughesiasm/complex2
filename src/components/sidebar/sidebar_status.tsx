@@ -7,7 +7,7 @@ const SidebarStatus: React.FC = (props) => {
 
 	return (
 		<aside className="has-text-centered notification is-light">
-			<div>
+			<div className="notification is-warning">
 				<span className="has-text-weight-bold">Favours: </span>
 				<span className="">{worldState.favours}</span>
 			</div>
