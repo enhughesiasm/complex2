@@ -12,7 +12,11 @@ const HandStorage: React.FC = () => {
 		handSurroundings: surroundings,
 	} = worldState.storage;
 
-	const traitTransitions = useTransition(traits, (item) => item.id, transitionConfig);
+	const traitTransitions = useTransition(
+		traits,
+		(item) => item.id,
+		transitionConfig
+	);
 
 	return (
 		<div
@@ -26,6 +30,11 @@ const HandStorage: React.FC = () => {
 			}}
 		>
 			<h3 className="subtitle has-text-weight-bold">{surroundings.name}</h3>
+			<p>
+				{" "}
+				{worldState.storage.handTraits.length} /{" "}
+				{worldState.storage.maxHandTraitSize}{" "}
+			</p>
 			{traitTransitions.map(({ item, props, key }) => (
 				<animated.div key={key} style={props}>
 					<HandsTrait trait={item} />

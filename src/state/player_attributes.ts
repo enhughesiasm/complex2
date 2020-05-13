@@ -1,5 +1,5 @@
 export default class PlayerAttributes {
-	gatherBasicIngredientsPerSecond: number = 50;
+	gatherBasicIngredientsPerSecond: number = 60;
 
 	mixIngredientsPerSecond: number = 50;
 

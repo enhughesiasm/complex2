@@ -3,6 +3,7 @@ import {
 	ingredientLevelStrings,
 } from "./../../data/ingredient_levels";
 import IWorldState from "../../IWorldState";
+import { toast } from "react-toastify";
 
 export const initialMixIngredients_progress = {
 	enabled: true,
@@ -84,7 +85,11 @@ export const initialMixIngredients_complete = {
 				if (storage.handTraits.length < storage.maxHandTraitSize) {
 					storage.addHandTrait(traitGenerator.generateSingle());
 				} else {
-					alert("wasted storage, add toast notification to toastQueue");
+					toast.error(
+						`Out of space! Had to throw away ${mixed} trait${
+							mixed > 1 ? "s" : ""
+						}.`
+					);
 				}
 				worldState.totalTraitsProduced++;
 			}

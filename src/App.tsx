@@ -8,6 +8,8 @@ import AppContext from "./state/app_context";
 import Sidebar from "./components/sidebar/sidebar";
 import Main from "./components/main/main";
 import QuickviewContainer from "./components/quickviews/quickview_container";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 interface IAppProps {}
 
@@ -68,6 +70,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
 						<Main />
 					</div>
 					<QuickviewContainer />
+					<ToastContainer position="bottom-center" />
 				</AppContext.Provider>
 			</>
 		);
