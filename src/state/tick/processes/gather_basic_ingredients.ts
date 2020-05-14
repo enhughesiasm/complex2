@@ -1,12 +1,12 @@
 import { ingredientLevel } from "./../../data/ingredient_levels";
-import IWorldState from "../../IWorldState";
+import WorldState from "../../world_state";
 
 export const gatherBasicIngredients_progress = {
 	enabled: true,
 
 	priority: 10,
 
-	run(worldState: IWorldState, delta_sec: number) {
+	run(worldState: WorldState, delta_sec: number) {
 		const {
 			worldFlags: flags,
 			worldOperations: operations,
@@ -43,7 +43,7 @@ export const gatherBasicIngredients_complete = {
 
 	priority: 40,
 
-	run(worldState: IWorldState, delta_sec: number) {
+	run(worldState: WorldState, delta_sec: number) {
 		const {
 			worldFlags: flags,
 			inventory,

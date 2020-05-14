@@ -4,7 +4,7 @@ export interface ILettersManager {
 	allLetters: Array<ILetter>;
 
 	getUnreadCount(): number;
-	getAvailableLetters(): Array<ILetter>;
+	getInboxLetters(): Array<ILetter>;
 	markAsRead(id: string): void;
 }
 
@@ -57,7 +57,7 @@ export default class LettersManager implements ILettersManager {
 		l.unread = false;
 	}
 
-	getAvailableLetters() {
+	getInboxLetters() {
 		return this.allLetters.filter((a) => a.available);
 	}
 }

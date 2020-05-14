@@ -20,7 +20,7 @@ const Tabs: React.FC = (props) => {
 			<Tab
 				icon={"home"}
 				iconStatus={"dark"}
-				type={GameTabType.HANDS}
+				type={GameTabType.HOME}
 				enabled={true}
 			>
 				YOUR HOUSE

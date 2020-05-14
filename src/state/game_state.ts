@@ -1,13 +1,37 @@
 import { version, tickLengthMs } from "./constants";
 import { GameTabType } from "./game_tabs";
-import IWorldState from "./IWorldState";
 import { ingredientLevel } from "./data/ingredient_levels";
+import WorldState from "./world_state";
 
 const debug = true;
 
 export default class GameState {
-	constructor(worldState: IWorldState) {
+	debug: boolean = debug;
+
+	version: string = version;
+	tickLengthMs: number = tickLengthMs;
+
+	// UI
+	activeTab: GameTabType = !debug ? GameTabType.HOME : GameTabType.HOME;
+	patchNotesActive: boolean = false;
+
+	// state
+	worldState: WorldState;
+
+	constructor(worldState: WorldState) {
 		this.worldState = worldState;
+	}
+
+	spendFavours(amount: number): boolean {
+		if (this.worldState.favours >= amount) {
+			this.worldState.favours -= amount;
+			this.worldState.favoursSpent += amount;
+			return true;
+		}
+		console.error(
+			`Tried to spend ${amount} favours, only have ${this.worldState.favours}. Check the stack - missing a check somewhere!`
+		);
+		return false;
 	}
 
 	gatherBasicIngredients(): void {
@@ -26,17 +50,14 @@ export default class GameState {
 		);
 	}
 	askForHelpGatheringBasicIngredients(): void {
-		this.worldState.worldFlags.manualGatherHelpCycles += 5;
+		this.worldState.worldFlags.manualGatherHelpCycles += this.worldState.playerAttributes.manualGatherHelpAmount;
+
+		this.worldState.playerAttributes.manualGatherHelpAmount += 1;
+		this.worldState.playerAttributes.manualGatherHelpAmount = Math.min(
+			this.worldState.playerAttributes.manualGatherHelpAmount,
+			10
+		);
 	}
-
-	debug: boolean = debug;
-	activeTab: GameTabType = !debug ? GameTabType.HANDS : GameTabType.HANDS;
-
-	version: string = version;
-	tickLengthMs: number = tickLengthMs;
-
-	patchNotesActive: boolean = false;
-	worldState: IWorldState;
 
 	togglePatchNotes = () => {
 		this.patchNotesActive = !this.patchNotesActive;
@@ -49,7 +70,7 @@ export default class GameState {
 	areSurroundingsUnlocked() {
 		return (
 			this.worldState.totalTraitsProduced > 0 ||
-			this.worldState.storage.handTraits.length > 0
+			this.worldState.storage.initialStorageTraits.length > 0
 		);
 	}
 
@@ -74,13 +95,19 @@ export default class GameState {
 	}
 
 	askForHelpMixingBasicIngredients(): void {
-		this.worldState.worldFlags.initialProductionHelpCycles += 5;
+		this.worldState.worldFlags.initialProductionHelpCycles += this.worldState.playerAttributes.initialProductionHelpAmount;
+
+		this.worldState.playerAttributes.initialProductionHelpAmount += 1;
+		this.worldState.playerAttributes.initialProductionHelpAmount = Math.min(
+			this.worldState.playerAttributes.initialProductionHelpAmount,
+			10
+		);
 	}
 
 	canHandDeliver(): boolean {
 		return (
 			!this.worldState.worldFlags.isHandDeliveringBatch &&
-			this.worldState.storage.handTraits.length > 0
+			this.worldState.storage.initialStorageTraits.length > 0
 		);
 	}
 
@@ -91,12 +118,29 @@ export default class GameState {
 	canVolunteerHandDeliver(): boolean {
 		return (
 			!this.worldState.worldFlags.isVolunteerHandDeliveringBatch &&
-			this.worldState.storage.handTraits.length > 0
+			this.worldState.storage.initialStorageTraits.length > 0
 		);
 	}
 
 	beginVolunteerHandDeliverBatch() {
 		this.worldState.worldFlags.isVolunteerHandDeliveringBatch = true;
+	}
+
+	canExpandInitialStorage(): boolean {
+		return (
+			this.worldState.favours >= this.getCost_ExpandInitialStorage() &&
+			this.worldState.storage.canExpandInitialStorage()
+		);
+	}
+
+	getCost_ExpandInitialStorage(): number {
+		return this.worldState.storage.currentMaxInitialStorageSize;
+	}
+
+	expandInitialStorage(): void {
+		if (this.spendFavours(this.getCost_ExpandInitialStorage())) {
+			this.worldState.storage.expandInitialStorage();
+		}
 	}
 
 	[index: string]: any; // implement string index

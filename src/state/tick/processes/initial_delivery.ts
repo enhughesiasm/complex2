@@ -2,14 +2,14 @@ import {
 	ingredientLevel,
 	ingredientLevelStrings,
 } from "./../../data/ingredient_levels";
-import IWorldState from "../../IWorldState";
+import WorldState from "../../world_state";
 
 export const initialDelivery_progress = {
 	enabled: true,
 
 	priority: 10,
 
-	run(worldState: IWorldState, delta_sec: number) {
+	run(worldState: WorldState, delta_sec: number) {
 		const {
 			worldFlags: flags,
 			worldOperations: operations,
@@ -29,13 +29,15 @@ export const initialDelivery_progress = {
 			operations.handDeliverBatchProgress === 0
 		) {
 			// is there anything to deliver?
-			if (storage.handTraits.length === 0) {
+			if (storage.initialStorageTraits.length === 0) {
 				// no, give up
 				flags.isHandDeliveringBatch = false;
 				return;
 			} else {
-				worldState.deliveryManager.handDeliveries = storage.handTraits.slice(0);
-				storage.handTraits = [];
+				worldState.deliveryManager.handDeliveries = storage.initialStorageTraits.slice(
+					0
+				);
+				storage.initialStorageTraits = [];
 			}
 		}
 
@@ -45,15 +47,15 @@ export const initialDelivery_progress = {
 			operations.volunteerHandDeliverBatchProgress === 0
 		) {
 			// is there anything to deliver?
-			if (storage.handTraits.length === 0) {
+			if (storage.initialStorageTraits.length === 0) {
 				// no, give up
 				flags.isVolunteerHandDeliveringBatch = false;
 				return;
 			} else {
-				worldState.deliveryManager.volunteerHandDeliveries = storage.handTraits.slice(
+				worldState.deliveryManager.volunteerHandDeliveries = storage.initialStorageTraits.slice(
 					0
 				);
-				storage.handTraits = [];
+				storage.initialStorageTraits = [];
 			}
 		}
 
@@ -90,7 +92,7 @@ export const initialDelivery_complete = {
 
 	priority: 40,
 
-	run(worldState: IWorldState, delta_sec: number) {
+	run(worldState: WorldState, delta_sec: number) {
 		const {
 			worldFlags: flags,
 			inventory,

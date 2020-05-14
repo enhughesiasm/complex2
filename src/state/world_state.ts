@@ -1,6 +1,6 @@
+import { goals, IGoal } from "./tick/goals/goals";
 import LettersManager, { ILettersManager } from "./letters/letter_manager";
 import { ITraitGenerator } from "./traits/generator/ITraitGenerator";
-import IWorldState, { IHandsStorage, IResearchCompleted } from "./IWorldState";
 import TraitGenerator from "./traits/generator/trait_generator";
 import Inventory from "./inventory/inventory";
 import Flags from "./world_flags";
@@ -11,16 +11,11 @@ import Shop from "./shop/shop";
 import DeliveryManager from "./delivery/delivery_manager";
 import { ITickProcess } from "./tick/ITickProcess";
 import initialProcesses from "./tick/initial_processes";
+import Employees from "./employees/employee_manager";
 
-export default class WorldState implements IWorldState {
+export default class WorldState {
 	favours: number = 0;
 	totalTraitsProduced: number = 0;
-
-	totalTraitsDelivered(): number {
-		let total: number = 0;
-		this.shop.received.forEach((t) => (total += t));
-		return total;
-	}
 
 	processList: Array<ITickProcess> = initialProcesses;
 
@@ -33,12 +28,13 @@ export default class WorldState implements IWorldState {
 
 	inventory: Inventory = new Inventory();
 	shop: Shop = new Shop();
+	goals: Array<IGoal> = goals;
 
 	traitGenerator: ITraitGenerator = new TraitGenerator();
 
-	storage: TraitStorage = new TraitStorage();
+	employees: Employees = new Employees();
 
-	researchCompleted: IResearchCompleted = {};
+	storage: TraitStorage = new TraitStorage();
 
 	[index: string]: any;
 }

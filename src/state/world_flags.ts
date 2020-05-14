@@ -1,6 +1,6 @@
 export default class Flags {
 	isGatheringBasicIngredients = false;
-	
+
 	// initial gathering
 	manualGatherCount = 0;
 	manualGatherHelpCycles = 0;

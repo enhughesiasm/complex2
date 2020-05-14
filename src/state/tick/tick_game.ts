@@ -1,5 +1,7 @@
+import { goals } from "./goals/goals";
 import GameState from "../game_state";
 import produce from "immer";
+import WorldState from "../world_state";
 
 let isTicking = false;
 
@@ -20,6 +22,14 @@ export function tick_game(delta_sec: number, gameState: GameState): GameState {
 				.sort((a, b) => (a.priority > b.priority ? 1 : -1)) // lower priority first
 				.forEach((p) => p.run(worldState, delta_sec));
 
+			worldState.goals
+				.filter((g) => !g.completed)
+				.forEach((g) => {
+					if (g.distanceFromCompletion(worldState) <= 0) {
+						g.onCompletion(worldState);
+					}
+				});
+
 			isTicking = false;
 		});
 		return nextState;
@@ -29,3 +39,5 @@ export function tick_game(delta_sec: number, gameState: GameState): GameState {
 
 	return gameState; // if we got here, just return the old state
 }
+
+function checkGoals(worldState: WorldState) {}

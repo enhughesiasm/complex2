@@ -2,15 +2,15 @@ import {
 	ingredientLevel,
 	ingredientLevelStrings,
 } from "./../../data/ingredient_levels";
-import IWorldState from "../../IWorldState";
 import { toast } from "react-toastify";
+import WorldState from "../../world_state";
 
 export const initialMixIngredients_progress = {
 	enabled: true,
 
 	priority: 10,
 
-	run(worldState: IWorldState, delta_sec: number) {
+	run(worldState: WorldState, delta_sec: number) {
 		const {
 			worldFlags: flags,
 			worldOperations: operations,
@@ -61,7 +61,7 @@ export const initialMixIngredients_complete = {
 
 	priority: 40,
 
-	run(worldState: IWorldState, delta_sec: number) {
+	run(worldState: WorldState, delta_sec: number) {
 		const {
 			worldFlags: flags,
 			inventory,
@@ -82,8 +82,11 @@ export const initialMixIngredients_complete = {
 		if (mixed > 0) {
 			operations.handMixIngredientsProgress = 0;
 			for (let i = 0; i < mixed; i++) {
-				if (storage.handTraits.length < storage.maxHandTraitSize) {
-					storage.addHandTrait(traitGenerator.generateSingle());
+				if (
+					storage.initialStorageTraits.length <
+					storage.currentMaxInitialStorageSize
+				) {
+					storage.addToInitialStorage(traitGenerator.generateSingle());
 				} else {
 					toast.error(
 						`Out of space! Had to throw away ${mixed} trait${

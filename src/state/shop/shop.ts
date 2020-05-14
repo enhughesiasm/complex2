@@ -7,6 +7,8 @@ export default class Shop {
 
 	received: Map<IRarityLevel, number>;
 
+	totalReceived: number = 0;
+
 	constructor() {
 		this.demand = new Map<IRarityLevel, boolean>();
 		this.received = new Map<IRarityLevel, number>();
@@ -25,6 +27,7 @@ export default class Shop {
 	receiveTraits(level: IRarityLevel, amount: number) {
 		const prev = this.received.get(level) || 0;
 		this.received.set(level, prev + amount);
+		this.totalReceived += amount;
 	}
 
 	receiveTraitsAtLevelNumber(level: number, amount: number) {

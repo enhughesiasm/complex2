@@ -1,7 +1,7 @@
-import IWorldState from "../IWorldState";
+import WorldState from "../world_state";
 
 export interface ITickProcess {
 	enabled: boolean;
 	priority: number;
-	run(worldState: IWorldState, delta_sec: number): void;
+	run(worldState: WorldState, delta_sec: number): void;
 }

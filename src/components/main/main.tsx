@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import HandsTab from "../tabs/hands/hands_tab";
+import HomeTab from "../tabs/home/home_tab";
 import AppContext from "../../state/app_context";
 import LettersTab from "../tabs/letters/letters_tab";
 import { GameTabType } from "../../state/game_tabs";
@@ -12,7 +12,7 @@ const Main: React.SFC<MainProps> = (props) => {
 	return (
 		<>
 			<main className="column is-full-height">
-				{gameState.activeTab === GameTabType.HANDS && <HandsTab />}
+				{gameState.activeTab === GameTabType.HOME && <HomeTab />}
 				{gameState.activeTab === GameTabType.LETTERS && <LettersTab />}
 			</main>
 		</>

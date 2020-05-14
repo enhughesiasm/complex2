@@ -1,11 +1,10 @@
 import React from "react";
-import IWorldState from "./IWorldState";
 import WorldState from "./world_state";
 import GameState from "./game_state";
 
 interface IAppContext {
 	gameState: GameState;
-	worldState: IWorldState;
+	worldState: WorldState;
 }
 
 const temp_ws = new WorldState();

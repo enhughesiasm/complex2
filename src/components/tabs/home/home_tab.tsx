@@ -4,7 +4,7 @@ import MakeBox from "./make/make_box";
 import Surroundings from "./surroundings/surroundings";
 import { useTransition, animated } from "react-spring";
 
-const HandsTab: React.FC = (props) => {
+const HomeTab: React.FC = (props) => {
 	const { gameState, worldState } = useContext(AppContext);
 
 	const surroundingsTransition = useTransition(
@@ -37,4 +37,4 @@ const HandsTab: React.FC = (props) => {
 	);
 };
 
-export default HandsTab;
+export default HomeTab;

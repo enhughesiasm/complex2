@@ -1,5 +1,4 @@
 import React from "react";
-import IWorldState from "./state/IWorldState";
 import loadWorldState from "./state/load_state";
 import GameState from "./state/game_state";
 import moment from "moment";
@@ -10,12 +9,13 @@ import Main from "./components/main/main";
 import QuickviewContainer from "./components/quickviews/quickview_container";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import WorldState from "./state/world_state";
 
 interface IAppProps {}
 
 interface IAppState {
 	lastTickTime: moment.Moment;
-	worldState: IWorldState;
+	worldState: WorldState;
 	gameState: GameState;
 }
 

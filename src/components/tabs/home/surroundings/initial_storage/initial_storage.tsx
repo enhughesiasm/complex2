@@ -3,13 +3,14 @@ import AppContext from "../../../../../state/app_context";
 import HandsTrait from "../../hands_trait";
 import { useTransition, animated } from "react-spring";
 import transitionConfig from "../surroundings_transitions";
+import Cost from "../../../../shared/complex/cost";
 
-const HandStorage: React.FC = () => {
+const InitialStorage: React.FC = () => {
 	const { gameState, worldState } = useContext(AppContext);
 
 	const {
-		handTraits: traits,
-		handSurroundings: surroundings,
+		initialStorageTraits: traits,
+		initialStorage: surroundings,
 	} = worldState.storage;
 
 	const traitTransitions = useTransition(
@@ -32,8 +33,19 @@ const HandStorage: React.FC = () => {
 			<h3 className="subtitle has-text-weight-bold">{surroundings.name}</h3>
 			<p>
 				{" "}
-				{worldState.storage.handTraits.length} /{" "}
-				{worldState.storage.maxHandTraitSize}{" "}
+				{worldState.storage.initialStorageTraits.length} /{" "}
+				{worldState.storage.currentMaxInitialStorageSize}{" "}
+				{worldState.storage.currentMaxInitialStorageSize <
+					worldState.storage.absoluteMaxInitialStorageSize && (
+					<button
+						className="button is-small is-rounded is-dark"
+						disabled={!gameState.canExpandInitialStorage()}
+						onClick={() => gameState.expandInitialStorage()}
+					>
+						make more room{" - "}
+						<Cost amount={gameState.getCost_ExpandInitialStorage()} />
+					</button>
+				)}
 			</p>
 			{traitTransitions.map(({ item, props, key }) => (
 				<animated.div key={key} style={props}>
@@ -44,4 +56,4 @@ const HandStorage: React.FC = () => {
 	);
 };
 
-export default HandStorage;
+export default InitialStorage;

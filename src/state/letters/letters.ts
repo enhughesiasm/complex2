@@ -1,9 +1,10 @@
-import moment from 'moment';
-import { create_guid } from '../../components/shared/functions';
+import moment from "moment";
+import { create_guid } from "../../components/shared/functions";
 
 export enum LettersContents {
 	Dummy,
 	Intro,
+	UnlockEmployees,
 }
 
 export interface ILetter {
@@ -24,8 +25,8 @@ export default class Letter implements ILetter {
 	available: boolean = false;
 	unread: boolean = true;
 
-	from: string = 'Person';
-	subject: string = 'A Subject';
+	from: string = "Person";
+	subject: string = "A Subject";
 	receivedAt: moment.Moment | undefined;
 	contents: LettersContents = LettersContents.Dummy;
 
