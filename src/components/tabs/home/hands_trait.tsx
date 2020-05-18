@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useState } from "react";
 import ITrait from "../../../state/traits/ITrait";
 
 import jar1 from "./../../../resources/images/jar1_t.png";
@@ -16,7 +16,7 @@ interface HandsTraitProps {
 }
 
 const HandsTrait: React.FC<HandsTraitProps> = (props) => {
-	const [image, setImage] = useState(chooseRandomElement(images));
+	const [image] = useState(chooseRandomElement(images));
 
 	const bubbles = 10;
 
@@ -25,9 +25,13 @@ const HandsTrait: React.FC<HandsTraitProps> = (props) => {
 			className="handsTrait"
 			// onClick={() => handleDelivery(props.trait.id, gameState, setDelivered)}
 		>
-			{ props.tag && <span className={'tag is-' + (props.tag ==='You' ? 'success' : 'primary')}>
-				{props.tag}
-				</span>}
+			{props.tag && (
+				<span
+					className={"tag is-" + (props.tag === "You" ? "success" : "primary")}
+				>
+					{props.tag}
+				</span>
+			)}
 			<span className="imgContainer">
 				{[...Array(bubbles)].map((a, i) => (
 					<div key={i} className="bubble" />

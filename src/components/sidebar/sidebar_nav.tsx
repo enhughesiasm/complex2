@@ -1,10 +1,10 @@
 import React from "react";
-import Tabs from "./tabs";
+import TabsList from "./tabs_list";
 
 const SidebarNav: React.FC = (props) => {
 	return (
 		<aside className="has-text-centered menu">
-			<Tabs />
+			<TabsList />
 		</aside>
 	);
 };

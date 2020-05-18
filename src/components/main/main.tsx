@@ -3,17 +3,33 @@ import HomeTab from "../tabs/home/home_tab";
 import AppContext from "../../state/app_context";
 import LettersTab from "../tabs/letters/letters_tab";
 import { GameTabType } from "../../state/game_tabs";
+import ShopTab from "../tabs/shop/shop_tab";
+import Enumerable from "linq";
+import EmployeesTab from "../tabs/employees/employees_tab";
 
 interface MainProps {}
 
+// TK remove this later
+const implementedTabs = Enumerable.from([
+	GameTabType.HOME,
+	GameTabType.LETTERS,
+	GameTabType.SHOP,
+	GameTabType.EMPLOYEES,
+]);
+
 const Main: React.SFC<MainProps> = (props) => {
-	const { gameState } = useContext(AppContext);
+	const { worldState } = useContext(AppContext);
 
 	return (
 		<>
 			<main className="column is-full-height">
-				{gameState.activeTab === GameTabType.HOME && <HomeTab />}
-				{gameState.activeTab === GameTabType.LETTERS && <LettersTab />}
+				{worldState.activeTab === GameTabType.HOME && <HomeTab />}
+				{worldState.activeTab === GameTabType.LETTERS && <LettersTab />}
+				{worldState.activeTab === GameTabType.SHOP && <ShopTab />}
+				{worldState.activeTab === GameTabType.EMPLOYEES && <EmployeesTab />}
+				{!implementedTabs.contains(worldState.activeTab) && (
+					<span>tab {worldState.activeTab} not implemented in main</span>
+				)}
 			</main>
 		</>
 	);

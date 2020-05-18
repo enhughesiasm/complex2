@@ -3,9 +3,11 @@ import Tab from "./tab";
 import { GameTabType } from "../../state/game_tabs";
 import AppContext from "../../state/app_context";
 
-const Tabs: React.FC = (props) => {
+const TabsList: React.FC = (props) => {
 	const { gameState, worldState } = useContext(AppContext);
 	const unreadLetters = worldState.letterManager.getUnreadCount() > 0;
+	const unclaimedRewards =
+		worldState.targets.find((a) => a.completed && !a.claimed) != undefined;
 
 	return (
 		<ul className="menu-list">
@@ -14,6 +16,8 @@ const Tabs: React.FC = (props) => {
 				iconStatus={unreadLetters ? "danger" : ""}
 				type={GameTabType.LETTERS}
 				enabled={true}
+				visible={true}
+				needsAttention={unreadLetters}
 			>
 				LETTERS
 			</Tab>
@@ -22,19 +26,33 @@ const Tabs: React.FC = (props) => {
 				iconStatus={"dark"}
 				type={GameTabType.HOME}
 				enabled={true}
+				visible={true}
+				needsAttention={false}
 			>
 				YOUR HOUSE
 			</Tab>
 			<Tab
 				icon={"circle"}
-				iconStatus={"warning"}
+				iconStatus={!unclaimedRewards ? "light" : "danger"}
 				type={GameTabType.SHOP}
 				enabled={worldState.worldFlags.handDeliveredFirstBatch}
+				visible={worldState.worldFlags.handDeliveredFirstBatch}
+				needsAttention={unclaimedRewards}
 			>
 				SHOP
+			</Tab>
+			<Tab
+				icon={"circle"}
+				iconStatus={"light"}
+				type={GameTabType.EMPLOYEES}
+				enabled={worldState.employees.unlocked}
+				visible={worldState.employees.unlocked}
+				needsAttention={false}
+			>
+				EMPLOYEES
 			</Tab>
 		</ul>
 	);
 };
 
-export default Tabs;
+export default TabsList;

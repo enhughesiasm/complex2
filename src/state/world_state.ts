@@ -1,5 +1,5 @@
-import { goals, IGoal } from "./tick/goals/goals";
-import LettersManager, { ILettersManager } from "./letters/letter_manager";
+import { GameTabType } from "./game_tabs";
+import { targets, ITarget } from "./targets/targets";
 import { ITraitGenerator } from "./traits/generator/ITraitGenerator";
 import TraitGenerator from "./traits/generator/trait_generator";
 import Inventory from "./inventory/inventory";
@@ -12,8 +12,12 @@ import DeliveryManager from "./delivery/delivery_manager";
 import { ITickProcess } from "./tick/ITickProcess";
 import initialProcesses from "./tick/initial_processes";
 import Employees from "./employees/employee_manager";
+import LettersManager from "./letters/letter_manager";
 
 export default class WorldState {
+	debug: boolean = false; // overwritten in load_state if necessary
+	activeTab: GameTabType = GameTabType.HOME;
+
 	favours: number = 0;
 	totalTraitsProduced: number = 0;
 
@@ -23,12 +27,12 @@ export default class WorldState {
 	worldOperations: WorldOperations = new WorldOperations();
 	playerAttributes: PlayerAttributes = new PlayerAttributes();
 
-	letterManager: ILettersManager = new LettersManager();
+	letterManager: LettersManager = new LettersManager();
 	deliveryManager: DeliveryManager = new DeliveryManager();
 
 	inventory: Inventory = new Inventory();
 	shop: Shop = new Shop();
-	goals: Array<IGoal> = goals;
+	targets: Array<ITarget> = targets;
 
 	traitGenerator: ITraitGenerator = new TraitGenerator();
 

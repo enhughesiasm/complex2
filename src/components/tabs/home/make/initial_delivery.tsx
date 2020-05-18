@@ -26,7 +26,7 @@ const InitialDelivery: React.FC = (props) => {
 					</div>
 				</div>
 
-				<div className="level-right">
+				{/* <div className="level-right">
 					<div className="level-item">
 						<Circle
 							progress={worldState.worldOperations.handDeliverBatchProgress}
@@ -39,7 +39,7 @@ const InitialDelivery: React.FC = (props) => {
 							lineWidth="50"
 						/>
 					</div>
-				</div>
+				</div> */}
 			</div>
 
 			{canAskForHelp && worldState.worldFlags.isVolunteerHandDeliveringBatch && (

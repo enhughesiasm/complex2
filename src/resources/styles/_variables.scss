@@ -27,6 +27,8 @@ $warning: #f5d671;
 $danger: #e12836;
 $link: #fbc5d2; // #f06b1a;
 $link-hover: #f57191;
+$dark: $grey-darker;
+$light: $white-ter;
 
 :root {
 	--primary: #{$primary};
@@ -36,6 +38,8 @@ $link-hover: #f57191;
 	--danger: #{$danger};
 	--link: #{$link};
 	--link-hover: #{$link-hover};
+	--dark: #{$dark};
+	--light: #{$light};
 }
 
 $turquoise: $primary;

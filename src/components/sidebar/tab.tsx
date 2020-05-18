@@ -8,6 +8,8 @@ interface ITabProps {
 	icon: string;
 	iconStatus: string;
 	enabled: boolean;
+	visible: boolean;
+	needsAttention: boolean;
 }
 
 const Tab: React.FC<ITabProps> = ({
@@ -16,29 +18,35 @@ const Tab: React.FC<ITabProps> = ({
 	iconStatus,
 	enabled,
 	children,
+	visible,
+	needsAttention,
 }) => {
 	const { gameState, worldState } = useContext(AppContext);
 
 	return (
-		<li>
-			<a
-				className={
-					(gameState.activeTab === type ? "is-active" : "") +
-					" " +
-					(enabled ? "is-enabled" : "")
-				}
-				href="#"
-				onClick={() => {
-					if (enabled) {
-						gameState.changeActiveTab(type);
-					}
-				}}
-			>
-				<FontAwesome icon={icon || "circle"} status={iconStatus} />
+		<>
+			{visible && (
+				<li className={needsAttention ? "needs-attention" : ""}>
+					<a
+						className={
+							(worldState.activeTab === type ? "is-active" : "") +
+							" " +
+							(enabled ? "is-enabled" : "")
+						}
+						href="#"
+						onClick={() => {
+							if (enabled) {
+								gameState.changeActiveTab(type);
+							}
+						}}
+					>
+						<FontAwesome icon={icon || "circle"} status={iconStatus} />
 
-				{children}
-			</a>
-		</li>
+						{children}
+					</a>
+				</li>
+			)}
+		</>
 	);
 };
 

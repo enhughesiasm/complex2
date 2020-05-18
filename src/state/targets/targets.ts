@@ -1,32 +1,41 @@
-import WorldState from "../../world_state";
-import GameState from "../../game_state";
+import WorldState from "../world_state";
+import { LetterTypes } from "../letters/letters";
 
-export interface IGoal {
+export interface ITarget {
 	name: string;
 	description: string;
 	completed: boolean;
 	distanceFromCompletion(worldState: WorldState): number;
 	progressTowardsCompletion(worldState: WorldState): number;
-	goalValue: number;
+	targetValue: number;
+	targetUnits: string;
 	onCompletion(worldState: WorldState): void;
+	claimed: boolean;
+	claim(worldState: WorldState): void;
 }
 
-export const goals: Array<IGoal> = [
+// TK: each of these can be defined in their own file
+export const targets: Array<ITarget> = [
 	{
 		name: "An Enticement",
 		description:
 			"The Shopkeeper mentioned she had an idea for you. But she probably wants some more traits first...",
 		completed: false,
-		goalValue: 10, // total traits received
+		targetValue: 10, // total traits received
+		targetUnits: "traits delivered to the Shop",
 		distanceFromCompletion(worldState: WorldState) {
-			return this.goalValue - worldState.shop.totalReceived;
+			return this.targetValue - worldState.shop.totalReceived;
 		},
 		progressTowardsCompletion(worldState: WorldState) {
 			return worldState.shop.totalReceived;
 		},
 		onCompletion(worldState: WorldState) {
-			alert("woo");
 			this.completed = true;
+		},
+		claimed: false,
+		claim(worldState: WorldState) {
+			worldState.letterManager.sendLetter(LetterTypes.UnlockEmployees);
+			this.claimed = true;
 		},
 	},
 ];

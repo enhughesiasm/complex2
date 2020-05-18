@@ -3,16 +3,10 @@ import { GameTabType } from "./game_tabs";
 import { ingredientLevel } from "./data/ingredient_levels";
 import WorldState from "./world_state";
 
-const debug = true;
-
 export default class GameState {
-	debug: boolean = debug;
-
 	version: string = version;
 	tickLengthMs: number = tickLengthMs;
 
-	// UI
-	activeTab: GameTabType = !debug ? GameTabType.HOME : GameTabType.HOME;
 	patchNotesActive: boolean = false;
 
 	// state
@@ -64,7 +58,7 @@ export default class GameState {
 	};
 
 	changeActiveTab = (tab: GameTabType) => {
-		this.activeTab = tab;
+		this.worldState.activeTab = tab;
 	};
 
 	areSurroundingsUnlocked() {
@@ -141,6 +135,15 @@ export default class GameState {
 		if (this.spendFavours(this.getCost_ExpandInitialStorage())) {
 			this.worldState.storage.expandInitialStorage();
 		}
+	}
+
+	unlockEmployees(): void {
+		if (this.worldState.employees.unlocked) {
+			console.error("Unlocking employees twice!");
+			return;
+		}
+
+		this.worldState.employees.unlocked = true;
 	}
 
 	[index: string]: any; // implement string index

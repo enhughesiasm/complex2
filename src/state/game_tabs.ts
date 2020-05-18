@@ -4,6 +4,9 @@ export enum GameTabType {
 	SHOP = "SHOP",
 	EMPLOYEES = "EMPLOYEES",
 
+	EXPLORATION = "EXPLORE",
+	DEFENCE = "DEFEND",
+
 	PRODUCTION = "PRODUCTION",
 	STATS = "STATS",
 }

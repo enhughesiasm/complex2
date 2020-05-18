@@ -1,63 +1,56 @@
-import Letter, { ILetter, LettersContents } from './letters';
+import { ILetter } from "./ILetter";
+import moment from "moment";
+import { create_guid } from "../../components/shared/functions";
+import letterDefinitions, { LetterTypes } from "./letters";
 
-export interface ILettersManager {
-	allLetters: Array<ILetter>;
+export default class LettersManager {
+	inbox: Array<ILetter> = [];
 
-	getUnreadCount(): number;
-	getInboxLetters(): Array<ILetter>;
-	markAsRead(id: string): void;
-}
-
-export default class LettersManager implements ILettersManager {
-	allLetters: Array<ILetter>;
-
-	init() {
-		console.log('LetterManager needs proper init once all letters defined');
+	getInboxLetters(): Array<ILetter> {
+		return this.inbox.filter((a) => a.available);
 	}
 
-	constructor() {
-		this.init();
-		this.allLetters = [];
-		this.allLetters.push(
-			new Letter(
-				true,
-				true,
-				LettersContents.Intro,
-				'Management',
-				'Welcome Aboard'
-			)
-		);
-		this.allLetters.push(
-			new Letter(
-				true,
-				false,
-				LettersContents.Dummy,
-				'Management',
-				'And another thing...'
-			)
-		);
+	getUnreadCount(): number {
+		return this.inbox.filter((a) => a.unread).length;
 	}
 
-	getUnreadCount() {
-		return this.allLetters.filter((a) => a.unread).length;
-	}
-
-	markAsRead(id: string) {
+	markAsRead(id: string): void {
 		if (!id) {
 			console.error("Can't mark letter as read, no id provided.");
 			return;
 		}
 
-		const l = this.allLetters.find((a) => a.id === id);
+		const l = this.inbox.find((a) => a.id === id);
 		if (!l) {
-			console.error('Marking nonexistent letter as read!', id);
+			console.error("Marking nonexistent letter as read!", id);
 			return;
 		}
 
 		l.unread = false;
 	}
 
-	getInboxLetters() {
-		return this.allLetters.filter((a) => a.available);
+	sendLetter(type: LetterTypes): void {
+		switch (type) {
+			case LetterTypes.Dummy:
+				console.error("Sending dummy letter");
+				console.trace();
+				break;
+			// TK: implement 'template style' letters here than can be randomly generated
+			default:
+				const definition = letterDefinitions.find((a) => a.type === type);
+				if (!definition) {
+					console.error(`Missing letter type ${type}. Failed to send.`);
+					return;
+				}
+				this.inbox.push({
+					id: create_guid(),
+					type: type,
+					from: definition.from,
+					subject: definition.subject,
+					receivedAt: moment(),
+					available: true,
+					unread: true,
+				});
+		}
 	}
 }

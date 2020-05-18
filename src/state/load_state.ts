@@ -23,7 +23,9 @@ export function saveFeelingsStateToLocalStorage(world_state: WorldState) {
 }
 
 export default function loadWorldState(): WorldState {
+	console.log("loading...");
 	let values = new WorldState();
+	values.debug = debug;
 
 	let rawSave = localStorage.getItem(localStorageKey);
 

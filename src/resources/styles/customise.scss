@@ -1,4 +1,4 @@
-@import 'variables.scss';
+@import "variables.scss";
 
 @if $dark-mode {
 	.quickview {
@@ -46,6 +46,9 @@ body,
 	a {
 		// color: $success;
 	}
+	p {
+		color: $white-ter;
+	}
 }
 
 $lightenOpacity: 0.2;
@@ -80,7 +83,7 @@ p.has-drop-cap::first-line {
 	font-size: 133%;
 }
 
-@import 'node_modules/bulma/bulma';
+@import "node_modules/bulma/bulma";
 // @import 'node_modules/bulma-extensions/bulma-tooltip/dist/css/bulma-tooltip.sass';
-@import 'node_modules/bulma-extensions/bulma-quickview/dist/css/bulma-quickview.sass';
-@import 'node_modules/bulma-extensions/bulma-divider/dist/css/bulma-divider.sass';
+@import "node_modules/bulma-extensions/bulma-quickview/dist/css/bulma-quickview.sass";
+@import "node_modules/bulma-extensions/bulma-divider/dist/css/bulma-divider.sass";

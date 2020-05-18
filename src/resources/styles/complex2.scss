@@ -11,6 +11,27 @@
 	color: #999;
 }
 
+@keyframes needsAttention {
+	0% {
+		background-color: $info;
+	}
+	30% {
+		background-color: $dark;
+	}
+	85% {
+		background-color: $dark;
+	}
+	100% {
+		background-color: $info;
+	}
+}
+
+.menu-list {
+	li.needs-attention {
+		animation: needsAttention 3s infinite;
+	}
+}
+
 .tile {
 	&.is-full-height {
 		height: 100%;

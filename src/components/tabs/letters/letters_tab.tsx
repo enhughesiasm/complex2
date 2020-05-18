@@ -64,7 +64,7 @@ const LettersTab: React.FC = (props) => {
 				</div>
 				{activeIndex !== -1 && (
 					<LetterContents
-						contents={worldState.letterManager.allLetters[activeIndex].contents}
+						contents={worldState.letterManager.inbox[activeIndex].type}
 					/>
 				)}
 			</div>
