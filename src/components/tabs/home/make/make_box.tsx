@@ -6,7 +6,7 @@ import InitialProduction from "./initial_production";
 import InitialDelivery from "./initial_delivery";
 
 const MakeBox: React.FC = () => {
-	const { gameState, worldState } = useContext(AppContext);
+	const { worldState } = useContext(AppContext);
 
 	const canShowProduction =
 		worldState.inventory.getTotalIngredientCount() > 0 ||

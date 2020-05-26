@@ -1,6 +1,4 @@
-import rarityLevels, {
-	IRarityLevel,
-} from "./../traits/generator/names/data/IRarityLevel";
+import rarities, { IRarityLevel } from "../traits/rarity_levels";
 
 export default class Shop {
 	demand: Map<IRarityLevel, boolean>;
@@ -13,7 +11,7 @@ export default class Shop {
 		this.demand = new Map<IRarityLevel, boolean>();
 		this.received = new Map<IRarityLevel, number>();
 
-		for (let i of rarityLevels) {
+		for (let i of rarities.rarityLevels) {
 			this.demand.set(i, i.level === 0 ? true : false);
 			this.received.set(i, 0);
 		}
@@ -31,7 +29,9 @@ export default class Shop {
 	}
 
 	receiveTraitsAtLevelNumber(level: number, amount: number) {
-		const l = rarityLevels.find((a) => a.level === level) || rarityLevels[0];
+		const l =
+			rarities.rarityLevels.find((a) => a.level === level) ||
+			rarities.rarityLevels[0];
 		this.receiveTraits(l, amount);
 	}
 }

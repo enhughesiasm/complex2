@@ -1,6 +1,6 @@
+import moment from "moment";
 import GameState from "../game_state";
 import produce from "immer";
-import WorldState from "../world_state";
 
 let isTicking = false;
 
@@ -9,8 +9,13 @@ export function tick_game(delta_sec: number, gameState: GameState): GameState {
 		console.error("ERROR: repeat tick");
 	}
 
+	if (gameState.worldState.paused) {
+		return gameState;
+	}
+
 	if (gameState.worldState.debug) {
-		delta_sec *= 5;
+		// TK remove this
+		gameState.worldState.playerAttributes.overallWorkFactor = 2;
 	}
 
 	try {
@@ -18,13 +23,17 @@ export function tick_game(delta_sec: number, gameState: GameState): GameState {
 			isTicking = true;
 			const { worldState } = newGameState;
 
+			worldState.now = moment();
+
 			const { processList: tickProcesses } = worldState;
 
+			// run each process
 			tickProcesses
 				.filter((a) => a.enabled)
 				.sort((a, b) => (a.priority > b.priority ? 1 : -1)) // lower priority first
 				.forEach((p) => p.run(worldState, delta_sec));
 
+			// check for target completion
 			worldState.targets
 				.filter((g) => !g.completed)
 				.forEach((g) => {

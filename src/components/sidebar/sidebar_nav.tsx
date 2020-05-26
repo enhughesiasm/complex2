@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import TabsList from "./tabs_list";
 
 const SidebarNav: React.FC = (props) => {

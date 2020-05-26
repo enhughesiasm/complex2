@@ -29,6 +29,12 @@ export default class LettersManager {
 		l.unread = false;
 	}
 
+	markAllRead(): void {
+		this.inbox.forEach((l) => {
+			this.markAsRead(l.id);
+		});
+	}
+
 	sendLetter(type: LetterTypes): void {
 		switch (type) {
 			case LetterTypes.Dummy:

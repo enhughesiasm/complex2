@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import AppContext from "../../../../state/app_context";
-import { ingredientLevel } from "../../../../state/data/ingredient_levels";
 import Circle from "react-circle";
 import styleVariables from "../../../../resources/styles/styles";
 
@@ -41,17 +40,16 @@ const InitialProduction: React.FC = (props) => {
 				</div>
 			</div>
 
-			{ canAskForHelp &&
-				worldState.worldFlags.initialProductionHelpCycles > 0 && (
-					<div className="message is-success">
-						<div className="message-body">
-							A friend will help mix{" "}
-							{worldState.worldFlags.initialProductionHelpCycles} ingredients.
-						</div>
+			{canAskForHelp && worldState.worldFlags.initialProductionHelpCycles > 0 && (
+				<div className="message is-success">
+					<div className="message-body">
+						A friend will help mix{" "}
+						{worldState.worldFlags.initialProductionHelpCycles} ingredients.
 					</div>
-				)}
+				</div>
+			)}
 
-			{ canAskForHelp  &&
+			{canAskForHelp &&
 				worldState.worldFlags.initialProductionHelpCycles === 0 && (
 					<div className="message is-danger">
 						<div className="message-body">
@@ -59,7 +57,8 @@ const InitialProduction: React.FC = (props) => {
 							<button
 								className="button is-info is-small is-rounded"
 								onClick={() => gameState.askForHelpMixingBasicIngredients()}
-							>ask for help
+							>
+								ask for help
 							</button>
 						</div>
 					</div>

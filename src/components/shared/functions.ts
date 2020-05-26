@@ -1,5 +1,3 @@
-import { useEffect, useRef } from "react";
-
 export function create_guid() {
 	var dt = new Date().getTime();
 	var uuid = "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (
@@ -139,4 +137,25 @@ export const hasBodyClass = (className: string) =>
 
 export function chooseRandomElement<T>(arr: Array<T>): T {
 	return arr[Math.floor(Math.random() * arr.length)];
+}
+
+/**
+ * @param toNearest Integer value to round to nearest, e.g. 1000 to round to nearest 1000
+ */
+export function roundToNearest(value: number, toNearest: number): number {
+	return Math.ceil(value / toNearest) * toNearest;
+}
+
+/**
+ * a wrapper for .find() for those cases when I'm searching through an array I *know* to be populated with an object I need to find
+ */
+export function ensure<T>(
+	argument: T | undefined | null,
+	message: string = "This value was promised to be there."
+): T {
+	if (argument === undefined || argument === null) {
+		throw new TypeError(message);
+	}
+
+	return argument;
 }

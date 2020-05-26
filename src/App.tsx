@@ -7,7 +7,7 @@ import AppContext from "./state/app_context";
 import Sidebar from "./components/sidebar/sidebar";
 import Main from "./components/main/main";
 import QuickviewContainer from "./components/quickviews/quickview_container";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import WorldState from "./state/world_state";
 
@@ -23,7 +23,6 @@ export default class App extends React.Component<IAppProps, IAppState> {
 	timerID?: number;
 
 	constructor(props: IAppProps) {
-		console.log("new app");
 		super(props);
 
 		const worldState = loadWorldState();

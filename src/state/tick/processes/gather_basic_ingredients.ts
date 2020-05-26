@@ -3,7 +3,7 @@ import WorldState from "../../world_state";
 
 export const gatherBasicIngredients_progress = {
 	enabled: true,
-
+	id: "GBI_PROGRESS",
 	priority: 10,
 
 	run(worldState: WorldState, delta_sec: number) {
@@ -40,15 +40,15 @@ export const gatherBasicIngredients_progress = {
 
 export const gatherBasicIngredients_complete = {
 	enabled: true,
+	id: "GBI_COMPLETE",
 
-	priority: 40,
+	priority: 15,
 
 	run(worldState: WorldState, delta_sec: number) {
 		const {
 			worldFlags: flags,
 			inventory,
 			worldOperations: operations,
-			playerAttributes: attributes,
 		} = worldState;
 
 		let gathered = 0;

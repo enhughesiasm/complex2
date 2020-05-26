@@ -37,17 +37,22 @@ body,
 
 .has-background-primary,
 .has-background-dark {
-	.title {
-		color: $white-ter;
-	}
-	.subtitle {
-		color: $white-ter;
-	}
-	a {
-		// color: $success;
-	}
-	p {
-		color: $white-ter;
+	&:not(.is-light) {
+		.title {
+			color: $white-ter;
+		}
+		.subtitle {
+			color: $white-ter;
+		}
+		a {
+			color: $white-ter;
+		}
+		p {
+			color: $white-ter;
+		}
+		.content {
+			color: $white-ter;
+		}
 	}
 }
 
@@ -71,6 +76,18 @@ $lightenOpacity: 0.2;
 	}
 }
 
+.has-background-primary {
+	&.is-light {
+		background-color: rgba($primary, $lightenOpacity) !important;
+	}
+}
+
+.has-background-dark {
+	&.is-light {
+		background-color: rgba($dark, $lightenOpacity) !important;
+	}
+}
+
 p.has-drop-cap::first-letter {
 	font-size: 60px;
 	padding-right: 1px;
@@ -81,6 +98,16 @@ p.has-drop-cap::first-line {
 	font-variant-caps: all-small-caps;
 	line-height: 1;
 	font-size: 133%;
+}
+
+.wrap-child-tiles {
+	flex-wrap: wrap;
+}
+
+table.is-centered {
+	td {
+		text-align: center !important;
+	}
 }
 
 @import "node_modules/bulma/bulma";

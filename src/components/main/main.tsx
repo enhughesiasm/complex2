@@ -6,6 +6,7 @@ import { GameTabType } from "../../state/game_tabs";
 import ShopTab from "../tabs/shop/shop_tab";
 import Enumerable from "linq";
 import EmployeesTab from "../tabs/employees/employees_tab";
+import StorageTab from "../tabs/storage/storage_tab";
 
 interface MainProps {}
 
@@ -15,6 +16,7 @@ const implementedTabs = Enumerable.from([
 	GameTabType.LETTERS,
 	GameTabType.SHOP,
 	GameTabType.EMPLOYEES,
+	GameTabType.STORAGE,
 ]);
 
 const Main: React.SFC<MainProps> = (props) => {
@@ -27,6 +29,7 @@ const Main: React.SFC<MainProps> = (props) => {
 				{worldState.activeTab === GameTabType.LETTERS && <LettersTab />}
 				{worldState.activeTab === GameTabType.SHOP && <ShopTab />}
 				{worldState.activeTab === GameTabType.EMPLOYEES && <EmployeesTab />}
+				{worldState.activeTab === GameTabType.STORAGE && <StorageTab />}
 				{!implementedTabs.contains(worldState.activeTab) && (
 					<span>tab {worldState.activeTab} not implemented in main</span>
 				)}

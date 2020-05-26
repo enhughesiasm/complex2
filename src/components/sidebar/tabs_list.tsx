@@ -4,10 +4,10 @@ import { GameTabType } from "../../state/game_tabs";
 import AppContext from "../../state/app_context";
 
 const TabsList: React.FC = (props) => {
-	const { gameState, worldState } = useContext(AppContext);
+	const { worldState } = useContext(AppContext);
 	const unreadLetters = worldState.letterManager.getUnreadCount() > 0;
 	const unclaimedRewards =
-		worldState.targets.find((a) => a.completed && !a.claimed) != undefined;
+		worldState.targets.find((a) => a.completed && !a.claimed) !== undefined;
 
 	return (
 		<ul className="menu-list">
@@ -23,7 +23,7 @@ const TabsList: React.FC = (props) => {
 			</Tab>
 			<Tab
 				icon={"home"}
-				iconStatus={"dark"}
+				iconStatus={"light"}
 				type={GameTabType.HOME}
 				enabled={true}
 				visible={true}
@@ -50,6 +50,16 @@ const TabsList: React.FC = (props) => {
 				needsAttention={false}
 			>
 				EMPLOYEES
+			</Tab>
+			<Tab
+				icon={"circle"}
+				iconStatus={"light"}
+				type={GameTabType.STORAGE}
+				enabled={worldState.employees.unlocked}
+				visible={worldState.employees.unlocked}
+				needsAttention={worldState.storage.isFull()}
+			>
+				STORAGE
 			</Tab>
 		</ul>
 	);

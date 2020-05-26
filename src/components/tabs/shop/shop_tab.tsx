@@ -1,11 +1,10 @@
-import React, { useContext } from "react";
-import AppContext from "../../../state/app_context";
+import React from "react";
 import shopImg from "./../../../resources/images/shop.jpg";
-import { useTransition, animated } from "react-spring";
+// import { useTransition, animated } from "react-spring";
 import CurrentTargets from "./current_targets";
 
 const ShopTab: React.FC = (props) => {
-	const { gameState, worldState } = useContext(AppContext);
+	// const { gameState, worldState } = useContext(AppContext);
 
 	// const surroundingsTransition = useTransition(
 	// 	gameState.areSurroundingsUnlocked(),
@@ -24,7 +23,11 @@ const ShopTab: React.FC = (props) => {
 				<div className="tile is-child">
 					<div className="content">
 						<h3 className="subtitle">welcome to The Shop Before Life</h3>
-						<img src={shopImg} style={{ width: "100px" }} />
+						<img
+							alt="The Shop Before Life"
+							src={shopImg}
+							style={{ width: "100px" }}
+						/>
 						{/* TK fix all this */}
 						<p>a greeting from the Shopkeeper here</p>
 					</div>

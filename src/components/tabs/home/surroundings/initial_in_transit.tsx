@@ -1,8 +1,8 @@
 import * as React from "react";
 import AppContext from "../../../../state/app_context";
 import HandsTrait from "../hands_trait";
-import { useTransition, animated, UseTransitionResult } from "react-spring";
-import transitionConfig from "./surroundings_transitions";
+// import { useTransition, animated, UseTransitionResult } from "react-spring";
+// import transitionConfig from "./surroundings_transitions";
 import Enumerable from "linq";
 import ITrait from "../../../../state/traits/ITrait";
 import Circle from "react-circle";
@@ -17,7 +17,7 @@ interface IInTransitGroup {
 }
 
 const InitialInTransit: React.FC = (props) => {
-	const { gameState, worldState } = React.useContext(AppContext);
+	const { worldState } = React.useContext(AppContext);
 
 	const [handTraits, setHandTraits] = React.useState<
 		IInTransitGroup | undefined

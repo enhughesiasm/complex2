@@ -16,6 +16,10 @@ export default class GameState {
 		this.worldState = worldState;
 	}
 
+	togglePause() {
+		this.worldState.paused = !this.worldState.paused;
+	}
+
 	spendFavours(amount: number): boolean {
 		if (this.worldState.favours >= amount) {
 			this.worldState.favours -= amount;
@@ -144,6 +148,13 @@ export default class GameState {
 		}
 
 		this.worldState.employees.unlocked = true;
+		// TK these string ids should be an enum, really
+		const process = this.worldState.processList.find(
+			(a) => a.id === "EMPLOYEES_TICK"
+		);
+		if (process) {
+			process.enabled = true;
+		}
 	}
 
 	[index: string]: any; // implement string index

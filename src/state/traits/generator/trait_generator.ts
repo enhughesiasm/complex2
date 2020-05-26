@@ -2,7 +2,7 @@ import {
 	RandomNumberWeighting,
 	lerp,
 } from "./../../../components/shared/functions";
-import rarityLevels, { IRarityLevel } from "./names/data/IRarityLevel";
+import rarities, { IRarityLevel } from "../rarity_levels";
 import { ITraitGenerator } from "./ITraitGenerator";
 import generateTraitName from "./names/generate_names";
 import {
@@ -10,6 +10,8 @@ import {
 	getWeightedRandomInteger,
 } from "../../../components/shared/functions";
 import ITrait from "../ITrait";
+
+const rarityLevels = rarities.rarityLevels;
 
 export default class TraitGenerator implements ITraitGenerator {
 	maxRarityLevel: number = 0;

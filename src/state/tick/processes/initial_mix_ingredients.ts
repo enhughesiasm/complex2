@@ -1,13 +1,10 @@
-import {
-	ingredientLevel,
-	ingredientLevelStrings,
-} from "./../../data/ingredient_levels";
+import { ingredientLevel } from "./../../data/ingredient_levels";
 import { toast } from "react-toastify";
 import WorldState from "../../world_state";
 
 export const initialMixIngredients_progress = {
 	enabled: true,
-
+	id: "IMIX_PROGRESS",
 	priority: 10,
 
 	run(worldState: WorldState, delta_sec: number) {
@@ -58,15 +55,13 @@ export const initialMixIngredients_progress = {
 
 export const initialMixIngredients_complete = {
 	enabled: true,
-
-	priority: 40,
+	id: "IMIX_COMPLETE",
+	priority: 15,
 
 	run(worldState: WorldState, delta_sec: number) {
 		const {
 			worldFlags: flags,
-			inventory,
 			worldOperations: operations,
-			playerAttributes: attributes,
 			traitGenerator,
 			storage,
 		} = worldState;

@@ -1,3 +1,4 @@
+import moment, { Moment } from "moment";
 import { GameTabType } from "./game_tabs";
 import { targets, ITarget } from "./targets/targets";
 import { ITraitGenerator } from "./traits/generator/ITraitGenerator";
@@ -12,14 +13,20 @@ import DeliveryManager from "./delivery/delivery_manager";
 import { ITickProcess } from "./tick/ITickProcess";
 import initialProcesses from "./tick/initial_processes";
 import Employees from "./employees/employee_manager";
-import LettersManager from "./letters/letter_manager";
+import LettersManager from "./letters/letters_manager";
 
 export default class WorldState {
 	debug: boolean = false; // overwritten in load_state if necessary
+
+	paused: boolean = false;
+
 	activeTab: GameTabType = GameTabType.HOME;
+
+	now: Moment = moment();
 
 	favours: number = 0;
 	totalTraitsProduced: number = 0;
+	totalTraitsWasted: number = 0;
 
 	processList: Array<ITickProcess> = initialProcesses;
 

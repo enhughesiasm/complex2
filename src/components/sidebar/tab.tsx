@@ -33,8 +33,9 @@ const Tab: React.FC<ITabProps> = ({
 							" " +
 							(enabled ? "is-enabled" : "")
 						}
-						href="#"
-						onClick={() => {
+						href="/"
+						onClick={(e) => {
+							e.preventDefault();
 							if (enabled) {
 								gameState.changeActiveTab(type);
 							}

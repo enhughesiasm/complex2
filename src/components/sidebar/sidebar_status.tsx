@@ -3,7 +3,7 @@ import AppContext from "../../state/app_context";
 import { ingredientLevel } from "../../state/data/ingredient_levels";
 
 const SidebarStatus: React.FC = (props) => {
-	const { worldState, gameState } = useContext(AppContext);
+	const { worldState } = useContext(AppContext);
 
 	return (
 		<aside className="has-text-centered notification is-light">
@@ -11,10 +11,28 @@ const SidebarStatus: React.FC = (props) => {
 				<span className="has-text-weight-bold">Favours: </span>
 				<span className="">{worldState.favours}</span>
 			</div>
-			<div className="is-divider" data-content="TRAITS"></div>
+			<div className="is-divider" data-content="TRAITS temp"></div>
 			<div>
 				<span className="has-text-weight-bold">Produced: </span>
 				<span className="">{worldState.totalTraitsProduced}</span>
+			</div>
+			<div>
+				<span className="has-text-weight-bold">Wasted: </span>
+				<span className="">{worldState.totalTraitsWasted}</span>
+			</div>
+			<div>
+				<span className="has-text-weight-bold">Stored: </span>
+				<span
+					className={
+						worldState.storage.getTotalStored() >=
+						worldState.storage.getCapacity()
+							? "has-text-danger"
+							: ""
+					}
+				>
+					{worldState.storage.getTotalStored()} /{" "}
+					{worldState.storage.getCapacity()}
+				</span>
 			</div>
 			<div>
 				<span className="has-text-weight-bold">Delivered: </span>

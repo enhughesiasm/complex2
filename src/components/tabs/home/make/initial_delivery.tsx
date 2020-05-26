@@ -1,7 +1,5 @@
 import React, { useContext } from "react";
 import AppContext from "../../../../state/app_context";
-import Circle from "react-circle";
-import styleVariables from "../../../../resources/styles/styles";
 
 const InitialDelivery: React.FC = (props) => {
 	const { gameState, worldState } = useContext(AppContext);

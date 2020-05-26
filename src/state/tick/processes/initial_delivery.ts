@@ -1,12 +1,8 @@
-import {
-	ingredientLevel,
-	ingredientLevelStrings,
-} from "./../../data/ingredient_levels";
 import WorldState from "../../world_state";
 
 export const initialDelivery_progress = {
 	enabled: true,
-
+	id: "IDELIVERY_PROGRESS",
 	priority: 10,
 
 	run(worldState: WorldState, delta_sec: number) {
@@ -14,7 +10,6 @@ export const initialDelivery_progress = {
 			worldFlags: flags,
 			worldOperations: operations,
 			playerAttributes: attributes,
-			inventory,
 			storage,
 		} = worldState;
 
@@ -89,18 +84,12 @@ export const initialDelivery_progress = {
 
 export const initialDelivery_complete = {
 	enabled: true,
+	id: "IDELIVERY_COMPLETE",
 
-	priority: 40,
+	priority: 15,
 
 	run(worldState: WorldState, delta_sec: number) {
-		const {
-			worldFlags: flags,
-			inventory,
-			worldOperations: operations,
-			playerAttributes: attributes,
-			traitGenerator,
-			storage,
-		} = worldState;
+		const { worldFlags: flags, worldOperations: operations } = worldState;
 
 		while (operations.handDeliverBatchProgress >= 100) {
 			// on completion, we deliver everything in the handtraits, which should be a limited storage

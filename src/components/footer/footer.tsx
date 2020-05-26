@@ -1,6 +1,5 @@
-import React, { useContext } from 'react';
-import PatchNotes from './patch_notes';
-import AppContext from './../../state/app_context';
+import React, { useContext } from "react";
+import AppContext from "./../../state/app_context";
 
 const Footer: React.FC = (props) => {
 	var currentYear = new Date().getFullYear();
@@ -8,23 +7,25 @@ const Footer: React.FC = (props) => {
 
 	return (
 		<>
-			<aside className='sidebarFooter has-background-dark has-text-light is-size-7'>
+			<aside className="sidebarFooter has-background-dark has-text-light is-size-7">
 				<span>v{gameState.version}&nbsp;</span>
 				<button
-					className='button is-light is-small is-rounded'
-					onClick={gameState.togglePatchNotes}>
+					className="button is-light is-small is-rounded"
+					onClick={gameState.togglePatchNotes}
+				>
 					changelog
 				</button>
 				<span>
-					&copy;{' '}
+					&copy;{" "}
 					<a
-						href='https://enhughesiasm.com'
-						target='_blank'
-						rel='noopener noreferrer'>
+						href="https://enhughesiasm.com"
+						target="_blank"
+						rel="noopener noreferrer"
+					>
 						Neil Hughes
-					</a>{' '}
+					</a>{" "}
 					2020
-					{currentYear !== 2020 ? '—' + currentYear : ''}
+					{currentYear !== 2020 ? "—" + currentYear : ""}
 				</span>
 			</aside>
 		</>

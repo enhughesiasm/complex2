@@ -3,7 +3,7 @@ import AppContext from "../../../state/app_context";
 import LetterContents from "./letter_contents";
 
 const LettersTab: React.FC = (props) => {
-	const { gameState, worldState } = useContext(AppContext);
+	const { worldState } = useContext(AppContext);
 
 	const unreadCount = worldState.letterManager.getUnreadCount();
 
@@ -19,7 +19,7 @@ const LettersTab: React.FC = (props) => {
 							{unreadCount > 1 ? "s" : ""}.
 						</section>
 					)}
-					{unreadCount == 0 && (
+					{unreadCount === 0 && (
 						<section className="box notification is-light">
 							It&apos;s always nice to get something in the post.
 						</section>
@@ -33,7 +33,7 @@ const LettersTab: React.FC = (props) => {
 						<p className="panel-heading">LETTERS</p>
 
 						{worldState.letterManager.getInboxLetters().map((l, i) => (
-							<a
+							<div
 								onClick={() => {
 									setActiveIndex(i);
 									worldState.letterManager.markAsRead(l.id);
@@ -43,7 +43,7 @@ const LettersTab: React.FC = (props) => {
 									(i === activeIndex ? " is-active paper " : " ") +
 									(l.unread ? " is-danger " : " ")
 								}
-								style={{ justifyContent: "space-between" }}
+								style={{ justifyContent: "space-between", cursor: "pointer" }}
 							>
 								<span
 									className={
@@ -58,7 +58,7 @@ const LettersTab: React.FC = (props) => {
 								</span>
 								<span className="has-text-weight-bold">{l.from}</span>
 								<span style={{ color: "#777" }}>{l.subject}</span>
-							</a>
+							</div>
 						))}
 					</nav>
 				</div>

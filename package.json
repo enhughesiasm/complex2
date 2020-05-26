@@ -23,7 +23,8 @@
 		"react-scripts": "3.4.1",
 		"react-spring": "^8.0.27",
 		"react-toastify": "^6.0.4",
-		"typescript": "^3.7.5"
+		"typescript": "^3.7.5",
+		"unique-names-generator": "^4.2.0"
 	},
 	"scripts": {
 		"start": "react-scripts start",
@@ -32,9 +33,6 @@
 		"eject": "react-scripts eject",
 		"predeploy": "npm run build",
 		"deploy": "gh-pages -d build"
-	},
-	"eslintConfig": {
-		"extends": "react-app"
 	},
 	"browserslist": {
 		"production": [
