@@ -34,10 +34,10 @@ export const targets: Array<ITarget> = [
 		targetValue: 100,
 		targetUnits: "traits delivered to the Shop",
 		distanceFromCompletion(worldState: WorldState) {
-			return this.targetValue - worldState.shop.totalReceived;
+			return this.targetValue - worldState.shop.totalReceived();
 		},
 		progressTowardsCompletion(worldState: WorldState) {
-			return worldState.shop.totalReceived;
+			return worldState.shop.totalReceived();
 		},
 		onCompletion(worldState: WorldState) {
 			this.completed = true;

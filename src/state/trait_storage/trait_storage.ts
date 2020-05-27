@@ -1,7 +1,7 @@
-import { ITraitsSet } from "./traits_set";
+import { ITraitGenerator } from "./../traits/generator/ITraitGenerator";
 import ITrait from "../traits/ITrait";
 import initialStorages from "../data/initial_storages";
-import rarities from "../traits/rarity_levels";
+import TraitsSet from "./traits_set";
 
 export interface IInitialStorage {
 	name: string;
@@ -13,27 +13,14 @@ export interface IInitialStorage {
 }
 
 export default class TraitStorage {
-	storedAmount: Array<ITraitsSet>;
-
-	constructor() {
-		this.storedAmount = [];
-
-		for (let level of rarities.rarityLevels) {
-			this.storedAmount.push({
-				amount: 0,
-				rarity: level,
-			});
-		}
-	}
+	stored: TraitsSet = new TraitsSet();
 
 	getCapacity(): number {
 		return 20;
 	}
 
 	getTotalStored(): number {
-		return this.storedAmount
-			.map((a) => a.amount)
-			.reduce((total, n) => total + n, 0);
+		return this.stored.getTotal();
 	}
 
 	isFull(): boolean {
@@ -41,7 +28,11 @@ export default class TraitStorage {
 	}
 
 	/** add traits to storage and return the amount that were successfully added */
-	addTraits(amount: number, maximumRarityLevel: number): number {
+	addTraits(
+		amount: number,
+		maximumRarityLevel: number,
+		generator: ITraitGenerator
+	): number {
 		if (amount <= 0) return 0;
 		if (maximumRarityLevel < 0) return 0;
 
@@ -53,7 +44,11 @@ export default class TraitStorage {
 
 		// TK: calculate probability of getting amounts at various rarities
 		// for now, just create them at the maximum allowed level
-		this.storedAmount[0].amount += amountToMake;
+		// TK: call traitGenerator
+		// const madeTraits = generator.generateMany(amountToMake) :TraitsSet;
+		//  TraitsSet needs an addSet(set:TraitsSet) option
+		const levelToMake = 0;
+		this.stored.change(levelToMake, amountToMake);
 
 		return Math.max(amountToMake, 0);
 	}
@@ -62,22 +57,10 @@ export default class TraitStorage {
 		return amount <= this.getTotalStored();
 	}
 
-	/** remove traits from storage, returning the amount that are successfully removed */
-	removeTraits(amount: number): number {
-		if (amount <= 0) return 0;
-
-		// TK: this needs to remove by rarity and be MUCH cleverer
-		// think about how to make this bug-free :(
-
-		if (amount < this.getTotalStored()) {
-			this.storedAmount[0].amount -= amount;
-			return amount;
-		}
-
-		// asking for everything, so empty the storage
-		const prevStored = this.getTotalStored();
-		this.storedAmount[0].amount = 0;
-		return prevStored;
+	/** remove traits from storage, returning only the amount that are successfully removed */
+	removeTraits(amount: number): TraitsSet {
+		if (amount <= 0) return new TraitsSet();
+		return this.stored.removeRarestFirst(amount);
 	}
 
 	/* INITIAL HOME STORAGE BELOW */

@@ -36,7 +36,7 @@ const SidebarStatus: React.FC = (props) => {
 			</div>
 			<div>
 				<span className="has-text-weight-bold">Delivered: </span>
-				<span className="">{worldState.shop.totalReceived}</span>
+				<span className="">{worldState.shop.totalReceived()}</span>
 			</div>
 			<div className="is-divider" data-content="INGREDIENTS (mebbe move)"></div>
 			<div>

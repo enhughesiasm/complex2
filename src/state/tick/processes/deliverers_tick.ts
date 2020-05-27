@@ -6,6 +6,7 @@ import WorldState from "../../world_state";
 import Employee from "../../employees/employee";
 import PlayerAttributes from "../../player_attributes";
 import TraitStorage from "../../trait_storage/trait_storage";
+import TraitsSet from "../../trait_storage/traits_set";
 
 interface IAction {
 	action: string;
@@ -106,12 +107,11 @@ function tickDeliverer(
 				// pick up traits
 				if (storage.canRemove(attributes.minimumDeliveryBatchSize)) {
 					// as long as we can take our minimum we take as many as exist in storage up to the current carry capacity
-					const actuallyCarried = storage.removeTraits(
-						attributes.deliveryCarryCapacity
-					);
+					emp.carrying = storage.removeTraits(attributes.deliveryCarryCapacity);
 
-					emp.currentActionAmount = actuallyCarried;
-					emp.currentAction = action.nextAction;
+					if (emp.carrying.getTotal() >= attributes.minimumDeliveryBatchSize) {
+						emp.currentAction = action.nextAction;
+					}
 				}
 				break;
 			case deliveryActionTypes.Travelling:
@@ -120,18 +120,18 @@ function tickDeliverer(
 				break;
 			case deliveryActionTypes.Delivering:
 				// perform the delivery
-				// TK!!! can't deliver anything other than basic traits
-				const toDeliver = emp.currentActionAmount || 0;
-				if (toDeliver === 0) {
+				const toDeliver = emp.carrying || new TraitsSet();
+				if (toDeliver.getTotal() === 0) {
 					// indicates a bug elsewhere but won't affect behaviour
 					console.error("Unexpectedly delivering 0 traits.");
 				}
-				worldState.shop.receiveTraitsAtLevelNumber(0, toDeliver);
-				worldState.favours += worldState.shop.getTraitPayment(0, toDeliver);
-				emp.currentActionAmount = undefined;
+				worldState.shop.deliverTraitsSet(toDeliver, worldState);
+				const delivered = toDeliver.getTotal();
+
+				emp.carrying = undefined;
 				emp.currentAction = action.nextAction;
 				emp.secsSinceCompleted = 0;
-				emp.completedMessage = `+${toDeliver}`;
+				emp.completedMessage = `+${delivered}`;
 				break;
 			case deliveryActionTypes.Returning:
 				// nothing to do, just arrive

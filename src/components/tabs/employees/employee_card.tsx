@@ -63,8 +63,8 @@ const EmployeeCard: React.FC<IEmployeeCardProps> = ({ employee }) => {
 					</div>
 					<div className="card-footer-item">
 						{employee.currentAction || "Idle"}
-						{employee.currentActionAmount && (
-							<span> ({employee.currentActionAmount})</span>
+						{employee.carrying && (
+							<span> ({employee.carrying.getTotal()})</span>
 						)}
 					</div>
 					<div className="card-footer-item">

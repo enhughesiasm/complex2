@@ -61,7 +61,11 @@ function tickMixer(
 		emp.currentJobProgress = 0;
 		// TK add experience here
 
-		const made = storage.addTraits(mixed, attributes.maximumRarityLevel);
+		const made = storage.addTraits(
+			mixed,
+			attributes.maximumRarityLevel,
+			worldState.traitGenerator
+		);
 		worldState.totalTraitsProduced += made;
 		worldState.totalTraitsWasted += mixed - made;
 

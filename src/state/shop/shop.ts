@@ -1,20 +1,18 @@
 import rarities, { IRarityLevel } from "../traits/rarity_levels";
+import TraitsSet from "../trait_storage/traits_set";
+import WorldState from "../world_state";
 
 export default class Shop {
-	demand: Map<IRarityLevel, boolean>;
+	demand: TraitsSet;
+	received: TraitsSet;
 
-	received: Map<IRarityLevel, number>;
-
-	totalReceived: number = 0;
+	totalReceived(): number {
+		return this.received.getTotal();
+	}
 
 	constructor() {
-		this.demand = new Map<IRarityLevel, boolean>();
-		this.received = new Map<IRarityLevel, number>();
-
-		for (let i of rarities.rarityLevels) {
-			this.demand.set(i, i.level === 0 ? true : false);
-			this.received.set(i, 0);
-		}
+		this.demand = new TraitsSet();
+		this.received = new TraitsSet();
 	}
 
 	getTraitPayment(level: number, amount: number) {
@@ -22,10 +20,17 @@ export default class Shop {
 		return (level + 1) * amount;
 	}
 
+	/** updates the Shop received totals and pays out favours */
+	deliverTraitsSet(traits: TraitsSet, worldState: WorldState): void {
+		this.received.addTraitsSet(traits);
+
+		traits.getIterator().forEach((t) => {
+			worldState.favours += this.getTraitPayment(t.level, t.amount);
+		});
+	}
+
 	receiveTraits(level: IRarityLevel, amount: number) {
-		const prev = this.received.get(level) || 0;
-		this.received.set(level, prev + amount);
-		this.totalReceived += amount;
+		this.received.change(level.level, amount);
 	}
 
 	receiveTraitsAtLevelNumber(level: number, amount: number) {

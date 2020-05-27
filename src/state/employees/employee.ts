@@ -1,6 +1,7 @@
 import { JobTypes } from "./../jobs/job_types";
 import { create_guid } from "../../components/shared/functions";
 import { generatePersonName } from "../../components/shared/names/name_generator";
+import TraitsSet from "../trait_storage/traits_set";
 export interface IEmployeeExperience {
 	jobType: JobTypes;
 	level: number;
@@ -30,7 +31,7 @@ export default class Employee {
 	secsSinceCompleted: number;
 	completedMessage?: string;
 	currentAction?: string;
-	currentActionAmount?: number = undefined;
+	carrying?: TraitsSet = undefined;
 
 	// TK: current Job Progress, etc
 
