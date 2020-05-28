@@ -1,4 +1,3 @@
-import { ingredientLevel } from "./data/ingredient_levels";
 import WorldState from "./world_state";
 import { GameTabType } from "./game_tabs";
 import { targetIDs } from "./targets/target_ids";
@@ -10,13 +9,14 @@ debugValues.debug = true;
 debugValues.activeTab = GameTabType.EMPLOYEES;
 
 debugValues.storage.initialStorageTraits.push(
-	debugValues.traitGenerator.generateSingle()
+	debugValues.traitGenerator.generateSingle(debugValues.playerAttributes)
 );
 debugValues.storage.initialStorageTraits.push(
-	debugValues.traitGenerator.generateSingle()
+	debugValues.traitGenerator.generateSingle(debugValues.playerAttributes)
 );
 
-debugValues.inventory.setIngredientAmount(ingredientLevel.Basic, 5);
+debugValues.inventory.setIngredientAmount(0, 5);
+debugValues.inventory.setIngredientAmount(5, 0);
 debugValues.totalTraitsProduced = 2;
 
 debugValues.shop.receiveTraitsAtLevelNumber(0, 100);
@@ -28,6 +28,8 @@ debugValues.targets[0].claim(debugValues);
 debugValues.employees.unlocked = true;
 
 debugValues.letterManager.markAllRead();
+
+debugValues.favours = 1000;
 
 const process = debugValues.processList.find((a) => a.id === "EMPLOYEES_TICK");
 if (process) {

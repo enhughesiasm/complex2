@@ -1,6 +1,10 @@
 export default class PlayerAttributes {
 	overallWorkFactor: number = 1;
 
+	maximumRarityLevel = 0; // this is a basic upgrade
+	rarityIncreaseFlatRate = 0.02;
+	rarityIncreaseBonusChance = 0.1; // adding to this is a POWERFUL upgrade
+
 	// base speed for initial gathering
 	gatherBasicIngredientsPerSecond: number = 60;
 
@@ -21,15 +25,17 @@ export default class PlayerAttributes {
 	employeeHappiness_min: number = 0.5;
 	employeeHappiness_max: number = 2;
 
+	// simple tasks like fetching ingredients etc
+	simple_task_baseSpeed = 40;
+
 	// employee gatherers
 	e_gath_baseSpeed = 30;
 
 	// employee mixers
 	e_mix_baseSpeed = 20;
-	maximumRarityLevel = 0;
 
 	// employee deliverers
-	e_deliver_baseSpeed = 5;
+	e_travel_baseSpeed = 5;
 	deliveryCarryCapacity = 5;
 	minimumDeliveryBatchSize = 3; // TK: expose this as clickable option
 }

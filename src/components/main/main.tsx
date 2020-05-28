@@ -25,6 +25,7 @@ const Main: React.SFC<MainProps> = (props) => {
 	return (
 		<>
 			<main className="column is-full-height">
+				<div className="notification is-dark">top-main</div>
 				{worldState.activeTab === GameTabType.HOME && <HomeTab />}
 				{worldState.activeTab === GameTabType.LETTERS && <LettersTab />}
 				{worldState.activeTab === GameTabType.SHOP && <ShopTab />}

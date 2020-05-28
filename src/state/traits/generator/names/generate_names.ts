@@ -10,12 +10,12 @@ import adverbs from "./data/adverbs.json";
 import { chooseRandomElement } from "../../../../components/shared/functions";
 
 export default function generateTraitName(
-	level: string,
+	type: string,
 	nuanceFraction: number
 ) {
 	let name = "NONE";
 
-	switch (level) {
+	switch (type) {
 		case "neutral":
 			name = chooseRandomElement(neutrals);
 			break;
@@ -45,7 +45,7 @@ export default function generateTraitName(
 			break;
 
 		default:
-			console.error("trait generator not implemented; level: ", level);
+			console.error("trait generator not implemented; level: ", type);
 			name = "ERROR";
 			break;
 	}

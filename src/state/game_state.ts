@@ -1,6 +1,6 @@
 import { version, tickLengthMs } from "./constants";
 import { GameTabType } from "./game_tabs";
-import { ingredientLevel } from "./data/ingredient_levels";
+
 import WorldState from "./world_state";
 
 export default class GameState {
@@ -84,7 +84,7 @@ export default class GameState {
 		return (
 			!this.isHandMixingIngredients() &&
 			!this.worldState.worldFlags.isHandDeliveringBatch &&
-			this.worldState.inventory.getIngredientAmount(ingredientLevel.Basic) > 0
+			this.worldState.inventory.getIngredientAmount(0) > 0 // always uses Basic ingredients, hence (0)
 		);
 	}
 
@@ -154,6 +154,16 @@ export default class GameState {
 		);
 		if (process) {
 			process.enabled = true;
+		}
+	}
+
+	hireEmployee(): void {
+		if (this.worldState.employees.canHire(this.worldState)) {
+			const cost = this.worldState.employees.getHireCost();
+			this.worldState.employees.hire();
+			this.spendFavours(cost);
+		} else {
+			console.error("tried to hire employee while unable");
 		}
 	}
 

@@ -1,6 +1,5 @@
 import React, { useContext } from "react";
 import AppContext from "../../../../state/app_context";
-import { ingredientLevel } from "../../../../state/data/ingredient_levels";
 import Circle from "react-circle";
 import styleVariables from "../../../../resources/styles/styles";
 
@@ -9,14 +8,20 @@ import styleVariables from "../../../../resources/styles/styles";
 const InitialIngredients: React.FC = (props) => {
 	const { gameState, worldState } = useContext(AppContext);
 
-	const basicIngredientCount = worldState.inventory.getIngredientAmount(ingredientLevel.Basic);
+	const basicIngredientCount = worldState.inventory.getIngredientAmount(0);
 
 	return (
 		<>
 			<div className="is-divider" data-content="INGREDIENTS" />
-			
+
 			<div className="content">
-				<span className={'has-text-' + (basicIngredientCount > 0  ? 'success':'danger')}>You have { basicIngredientCount } basic ingredients.</span>
+				<span
+					className={
+						"has-text-" + (basicIngredientCount > 0 ? "success" : "danger")
+					}
+				>
+					You have {basicIngredientCount} basic ingredients.
+				</span>
 			</div>
 
 			<div className="level">

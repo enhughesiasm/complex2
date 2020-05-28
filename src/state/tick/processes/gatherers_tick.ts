@@ -4,7 +4,6 @@ import WorldState from "../../world_state";
 import Employee from "../../employees/employee";
 import PlayerAttributes from "../../player_attributes";
 import Inventory from "../../inventory/inventory";
-import { ingredientLevel } from "../../data/ingredient_levels";
 
 export const gatherers_tick = {
 	enabled: true,
@@ -50,7 +49,7 @@ function tickGatherer(
 	if (gathered > 0) {
 		emp.currentJobProgress = 0;
 		// TK add experience here
-		inventory.changeIngredientAmount(ingredientLevel.Basic, gathered);
+		inventory.changeIngredientAmount(0, gathered); // TK only gathers on level 0 atm!!
 		emp.secsSinceCompleted = 0;
 		emp.completedMessage = `+${gathered}`; // `+${gathered} basic ingredient${
 		// 	gathered > 1 ? "s" : ""

@@ -7,12 +7,7 @@ import Employee from "../../employees/employee";
 import PlayerAttributes from "../../player_attributes";
 import TraitStorage from "../../trait_storage/trait_storage";
 import TraitsSet from "../../trait_storage/traits_set";
-
-interface IAction {
-	action: string;
-	nextAction: string;
-	baseSpeed: number;
-}
+import IAction from "./IAction";
 
 const deliveryActionTypes = {
 	Fetching: "Fetching",
@@ -25,22 +20,30 @@ const deliveryActions: Array<IAction> = [
 	{
 		action: deliveryActionTypes.Fetching,
 		nextAction: deliveryActionTypes.Travelling,
-		baseSpeed: 40,
+		getSpeed(attributes: PlayerAttributes) {
+			return attributes.simple_task_baseSpeed;
+		},
 	},
 	{
 		action: deliveryActionTypes.Travelling,
 		nextAction: deliveryActionTypes.Delivering,
-		baseSpeed: 5,
+		getSpeed(attributes: PlayerAttributes) {
+			return attributes.e_travel_baseSpeed;
+		},
 	},
 	{
 		action: deliveryActionTypes.Delivering,
 		nextAction: deliveryActionTypes.Returning,
-		baseSpeed: 40,
+		getSpeed(attributes: PlayerAttributes) {
+			return attributes.simple_task_baseSpeed;
+		},
 	},
 	{
 		action: deliveryActionTypes.Returning,
 		nextAction: deliveryActionTypes.Fetching,
-		baseSpeed: 5,
+		getSpeed(attributes: PlayerAttributes) {
+			return attributes.e_travel_baseSpeed;
+		},
 	},
 ];
 
@@ -86,7 +89,7 @@ function tickDeliverer(
 	if (!action) return;
 
 	emp.currentJobProgress +=
-		action.baseSpeed * attributes.overallWorkFactor * delta_sec;
+		action.getSpeed(attributes) * attributes.overallWorkFactor * delta_sec;
 
 	emp.secsSinceCompleted += delta_sec;
 
@@ -98,8 +101,6 @@ function tickDeliverer(
 
 	if (completed > 0) {
 		emp.currentJobProgress = 0;
-
-		// amount of completions matters
 
 		// TK: add experience gain
 		switch (action.action) {

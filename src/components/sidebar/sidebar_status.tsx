@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import AppContext from "../../state/app_context";
-import { ingredientLevel } from "../../state/data/ingredient_levels";
+import rarities from "../../state/traits/rarity_levels";
 
 const SidebarStatus: React.FC = (props) => {
 	const { worldState } = useContext(AppContext);
@@ -40,10 +40,10 @@ const SidebarStatus: React.FC = (props) => {
 			</div>
 			<div className="is-divider" data-content="INGREDIENTS (mebbe move)"></div>
 			<div>
-				<span className="has-text-weight-bold">{ingredientLevel.Basic}: </span>
-				<span className="">
-					{worldState.inventory.ingredients.get(ingredientLevel.Basic)}
+				<span className="has-text-weight-bold">
+					{rarities.getLevel(0).ingredientDisplay}:{" "}
 				</span>
+				<span className="">{worldState.inventory.ingredients.get(0)}</span>
 			</div>
 		</aside>
 	);

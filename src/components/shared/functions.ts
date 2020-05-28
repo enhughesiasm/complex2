@@ -41,6 +41,10 @@ export function getHashCode(str: string) {
 	return hash;
 }
 
+export function clamp(number: number, min: number, max: number): number {
+	return Math.max(min, Math.min(number, max));
+}
+
 // export function useTraceUpdate(props: any) {
 // 	const prev = useRef(props);
 // 	useEffect(() => {

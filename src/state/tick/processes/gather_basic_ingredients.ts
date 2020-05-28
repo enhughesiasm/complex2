@@ -1,4 +1,3 @@
-import { ingredientLevel } from "./../../data/ingredient_levels";
 import WorldState from "../../world_state";
 
 export const gatherBasicIngredients_progress = {
@@ -68,7 +67,7 @@ export const gatherBasicIngredients_complete = {
 					flags.manualGatherHelpCycles
 				);
 			}
-			inventory.changeIngredientAmount(ingredientLevel.Basic, gathered);
+			inventory.changeIngredientAmount(0, gathered); // always level 0
 		}
 	},
 };

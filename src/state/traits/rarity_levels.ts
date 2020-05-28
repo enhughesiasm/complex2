@@ -5,6 +5,7 @@ export interface IRarityLevel {
 	name: string;
 	display: string;
 	level: number;
+	ingredientDisplay: string;
 }
 
 /** a helper object around the JSON data which defines the rarity levels */

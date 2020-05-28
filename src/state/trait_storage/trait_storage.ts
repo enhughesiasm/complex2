@@ -2,6 +2,7 @@ import { ITraitGenerator } from "./../traits/generator/ITraitGenerator";
 import ITrait from "../traits/ITrait";
 import initialStorages from "../data/initial_storages";
 import TraitsSet from "./traits_set";
+import PlayerAttributes from "../player_attributes";
 
 export interface IInitialStorage {
 	name: string;
@@ -16,7 +17,7 @@ export default class TraitStorage {
 	stored: TraitsSet = new TraitsSet();
 
 	getCapacity(): number {
-		return 20;
+		return 2000000;
 	}
 
 	getTotalStored(): number {
@@ -29,28 +30,45 @@ export default class TraitStorage {
 
 	/** add traits to storage and return the amount that were successfully added */
 	addTraits(
-		amount: number,
+		toMake: TraitsSet,
 		maximumRarityLevel: number,
-		generator: ITraitGenerator
-	): number {
-		if (amount <= 0) return 0;
-		if (maximumRarityLevel < 0) return 0;
+		generator: ITraitGenerator,
+		attributes: PlayerAttributes
+	): TraitsSet {
+		if (!toMake || toMake.getTotal() <= 0 || maximumRarityLevel < 0)
+			return new TraitsSet();
 
+		const originalTarget = toMake.getTotal();
+
+		// can't make traits any higher than the max ingredient input
+		const maxPermittedLevel = toMake.getMaxNonZeroLevel();
+
+		// scale down the amount to make based on storage capacity - if full, the ingredients are wasted
 		let prevStored = this.getTotalStored();
-		let newTotal = Math.min(prevStored + amount, this.getCapacity());
+		let newTotal = Math.min(prevStored + toMake.getTotal(), this.getCapacity());
 
-		let amountToMake = Math.max(newTotal - prevStored);
-		if (amountToMake <= 0) return 0;
+		let canMakeWithinCapacity = Math.max(newTotal - prevStored);
+		if (canMakeWithinCapacity <= 0) return new TraitsSet();
 
-		// TK: calculate probability of getting amounts at various rarities
-		// for now, just create them at the maximum allowed level
-		// TK: call traitGenerator
-		// const madeTraits = generator.generateMany(amountToMake) :TraitsSet;
-		//  TraitsSet needs an addSet(set:TraitsSet) option
-		const levelToMake = 0;
-		this.stored.change(levelToMake, amountToMake);
+		const wastedIngredientAmount = toMake.getTotal() - canMakeWithinCapacity;
 
-		return Math.max(amountToMake, 0);
+		if (wastedIngredientAmount > 0) {
+			// scale down what we're going to make
+			toMake.removeCommonFirst(wastedIngredientAmount);
+		}
+
+		const madeTraits = generator.generateMany(
+			toMake,
+			attributes,
+			maxPermittedLevel
+		);
+		this.stored.addTraitsSet(madeTraits);
+
+		if (madeTraits.getTotal() + wastedIngredientAmount !== originalTarget) {
+			console.error("incorrect wasting in storage.addTraits");
+		}
+
+		return madeTraits;
 	}
 
 	canRemove(amount: number): boolean {

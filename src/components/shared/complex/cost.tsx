@@ -16,7 +16,7 @@ const Cost: React.FC<CostProps> = ({ amount }) => {
 			<FontAwesome
 				icon="thumbs-up"
 				size="small"
-				status={worldState.favours >= amount ? "success" : "danger"}
+				status={worldState.favours >= amount ? "primary" : "info"}
 			/>
 		</>
 	);

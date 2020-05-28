@@ -1,11 +1,33 @@
-import { toast } from "react-toastify";
 import { ITraitGenerator } from "./../../traits/generator/ITraitGenerator";
-import moment from "moment";
 import { JobTypes } from "./../../jobs/job_types";
 import WorldState from "../../world_state";
 import Employee from "../../employees/employee";
 import PlayerAttributes from "../../player_attributes";
 import TraitStorage from "../../trait_storage/trait_storage";
+import IAction from "./IAction";
+import TraitsSet from "../../trait_storage/traits_set";
+
+const mixerActionTypes = {
+	Fetching: "Fetching",
+	Mixing: "Mixing",
+};
+
+const mixerActions: Array<IAction> = [
+	{
+		action: mixerActionTypes.Fetching,
+		nextAction: mixerActionTypes.Mixing,
+		getSpeed(attributes: PlayerAttributes) {
+			return attributes.simple_task_baseSpeed;
+		},
+	},
+	{
+		action: mixerActionTypes.Mixing,
+		nextAction: mixerActionTypes.Fetching,
+		getSpeed(attributes: PlayerAttributes) {
+			return attributes.e_mix_baseSpeed;
+		},
+	},
+];
 
 export const mixers_tick = {
 	enabled: true,
@@ -27,7 +49,7 @@ export const mixers_tick = {
 		if (mixers.length === 0) return;
 
 		mixers.forEach((m) =>
-			tickMixer(m, attributes, storage, generator, worldState, delta_sec)
+			tickMixer(m, attributes, storage, worldState, delta_sec)
 		);
 	},
 };
@@ -36,40 +58,82 @@ function tickMixer(
 	emp: Employee,
 	attributes: PlayerAttributes,
 	storage: TraitStorage,
-	generator: ITraitGenerator,
 	worldState: WorldState,
 	delta_sec: number
 ) {
-	// TK
-	// this is just BASIC ingredients. need to have them TRAVEL to a location, then gather, then return
-	// state machines for each type...!
-	// jobStatus == Gather_Travel, etc
+	const { inventory } = worldState;
 
-	// TK also needs to take into account employee experience
+	if (!emp.currentAction) {
+		emp.currentAction = mixerActions[0].action;
+	}
+
+	const action = mixerActions.find((a) => a.action === emp.currentAction);
+	if (!action) return;
+
 	emp.currentJobProgress +=
-		attributes.e_mix_baseSpeed * attributes.overallWorkFactor * delta_sec;
-	emp.currentAction = "Mixing";
+		action.getSpeed(attributes) * attributes.overallWorkFactor * delta_sec;
+
 	emp.secsSinceCompleted += delta_sec;
 
-	let mixed = 0;
+	let completed = 0;
 	while (emp.currentJobProgress >= 100) {
-		mixed++;
+		completed++;
 		emp.currentJobProgress -= 100;
 	}
 
-	if (mixed > 0) {
+	if (completed > 0) {
 		emp.currentJobProgress = 0;
 		// TK add experience here
 
-		const made = storage.addTraits(
-			mixed,
-			attributes.maximumRarityLevel,
-			worldState.traitGenerator
-		);
-		worldState.totalTraitsProduced += made;
-		worldState.totalTraitsWasted += mixed - made;
+		switch (action.action) {
+			case mixerActionTypes.Fetching:
+				// pick up ingredients, put them in carrying
 
-		emp.secsSinceCompleted = 0;
-		emp.completedMessage = `+${mixed}`;
+				const attemptToMake = 1; // TK: making more than one at a time
+
+				// as long as we can take our minimum we take as many as exist in storage up to the current carry capacity
+				emp.carrying = inventory.tryRemoveIngredients(attemptToMake);
+
+				if (emp.carrying.getTotal() > 0) {
+					// if we have any ingredients at all, move on
+					// TK: possibly will need to wait for minimum amounts and do a canRemove check first
+					emp.currentAction = action.nextAction;
+				}
+
+				break;
+			case mixerActionTypes.Mixing:
+				// calculate amount to make based on carried ingredients too
+
+				const toMake = emp.carrying || new TraitsSet(); // TK: making more than one per end-of-cycle
+				// possibly we need to have a .multiply method on traitsSet that allows it to be rapidly scaled
+				// 2 per ingredient, etc. or maybe * (10 - level) or something so common ingredients make more?
+				// does the number of cycles actually matter here?
+
+				if (toMake.getTotal() > 0) {
+					const made = storage.addTraits(
+						toMake,
+						attributes.maximumRarityLevel, // TK: this could be added to by more experienced employees
+						worldState.traitGenerator,
+						attributes
+					);
+
+					const madeTotal = made.getTotal();
+
+					worldState.totalTraitsProduced += madeTotal;
+					worldState.totalTraitsWasted += toMake.getTotal() - madeTotal;
+
+					emp.secsSinceCompleted = 0;
+					emp.completedMessage = `+${madeTotal}`;
+					emp.currentAction = action.nextAction;
+					break;
+				} else {
+					// go back to fetching
+					emp.currentAction = action.nextAction;
+				}
+
+			default:
+				console.error("Invalid action: " + action.action);
+				break;
+		}
 	}
 }

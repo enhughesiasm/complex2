@@ -1,37 +1,44 @@
 [
 	{
+		"level": 0,
 		"name": "neutral",
 		"display": "Neutral",
-		"level": 0
+		"ingredientDisplay": "Basic"
 	},
 	{
+		"level": 1,
 		"name": "positive_basic",
 		"display": "Positive",
-		"level": 1
+		"ingredientDisplay": "Common"
 	},
 	{
+		"level": 2,
 		"name": "negative_basic",
 		"display": "Negative",
-		"level": 2
+		"ingredientDisplay": "Uncommon"
 	},
 	{
+		"level": 3,
 		"name": "preferences_basic",
 		"display": "Preferences",
-		"level": 3
+		"ingredientDisplay": "Rare"
 	},
 	{
+		"level": 4,
 		"name": "positive_rare",
 		"display": "Rare Positive",
-		"level": 4
+		"ingredientDisplay": "Special"
 	},
 	{
+		"level": 5,
 		"name": "negative_rare",
 		"display": "Rare Negative",
-		"level": 5
+		"ingredientDisplay": "Legendary"
 	},
 	{
+		"level": 6,
 		"name": "preferences_rare",
 		"display": "Rare Preferences",
-		"level": 6
+		"ingredientDisplay": "Secret"
 	}
 ]

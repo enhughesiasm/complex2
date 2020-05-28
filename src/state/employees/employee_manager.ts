@@ -30,7 +30,7 @@ export default class Employees {
 	}
 
 	canHire(worldState: WorldState): boolean {
-		return true || worldState?.favours >= this.getHireCost();
+		return worldState?.favours >= this.getHireCost();
 	}
 
 	hire(): void {

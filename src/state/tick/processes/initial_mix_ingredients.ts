@@ -1,4 +1,3 @@
-import { ingredientLevel } from "./../../data/ingredient_levels";
 import { toast } from "react-toastify";
 import WorldState from "../../world_state";
 
@@ -26,13 +25,14 @@ export const initialMixIngredients_progress = {
 
 		if (operations.handMixIngredientsProgress === 0) {
 			// need to start, so we need ingredients
-			if (inventory.getIngredientAmount(ingredientLevel.Basic) <= 0) {
+			if (inventory.getIngredientAmount(0) <= 0) {
+				// always level 0
 				// can't mix
 				return;
 			}
 
 			// can mix, use up ingredient and begin process
-			inventory.changeIngredientAmount(ingredientLevel.Basic, -1);
+			inventory.changeIngredientAmount(0, -1); // always level 0, always one ingredient cost
 		}
 
 		// manual mixing process
@@ -81,7 +81,9 @@ export const initialMixIngredients_complete = {
 					storage.initialStorageTraits.length <
 					storage.currentMaxInitialStorageSize
 				) {
-					storage.addToInitialStorage(traitGenerator.generateSingle());
+					storage.addToInitialStorage(
+						traitGenerator.generateSingle(worldState.playerAttributes)
+					);
 				} else {
 					toast.error(
 						`Out of space! Had to throw away ${mixed} trait${

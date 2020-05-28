@@ -1,47 +1,39 @@
-import { ingredientLevel } from "./../data/ingredient_levels";
-
-// export interface IInventory {
-// 	ingredients: Map<string, number>;
-// 	materials: Map<string, number>;
-
-// 	getIngredientAmount(level: ingredientLevel): number;
-// 	setIngredientAmount(level: ingredientLevel, amount: number): void;
-// }
+import TraitsSet from "../trait_storage/traits_set";
+import rarities from "../traits/rarity_levels";
 
 export default class Inventory {
-	ingredients: Map<string, number>;
-	materials: Map<string, number>;
+	ingredients: TraitsSet;
+	materials: Map<string, number>; // TK actuall plan this
 
 	constructor() {
-		this.ingredients = new Map<string, number>();
+		this.ingredients = new TraitsSet();
 		this.materials = new Map<string, number>();
 
-		for (let i of Object.keys(ingredientLevel)) {
-			this.ingredients.set(
-				i as ingredientLevel,
-				i === ingredientLevel.Basic ? 0 : 0
-			);
+		for (let i of rarities.rarityLevels) {
+			this.ingredients.set(i.level, 0);
 		}
 	}
 
 	getTotalIngredientCount(): number {
-		let total = 0;
-		this.ingredients.forEach((i) => (total += i.valueOf()));
-		return total;
+		return this.ingredients.getTotal();
 	}
 
-	getIngredientAmount(level: ingredientLevel): number {
+	getIngredientAmount(level: number): number {
 		const amount = this.ingredients.get(level);
 		if (amount === null || amount === undefined)
 			throw new Error("changing nonexistent level");
 		return amount || 0;
 	}
 
-	setIngredientAmount(level: ingredientLevel, amount: number): void {
+	setIngredientAmount(level: number, amount: number): void {
 		this.ingredients.set(level, amount);
 	}
 
-	changeIngredientAmount(level: ingredientLevel, amount: number): void {
-		this.ingredients.set(level, this.getIngredientAmount(level) + amount);
+	changeIngredientAmount(level: number, amount: number): void {
+		this.ingredients.change(level, amount);
+	}
+
+	tryRemoveIngredients(amount: number): TraitsSet {
+		return this.ingredients.removeRarestFirst(amount);
 	}
 }
