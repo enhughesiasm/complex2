@@ -7,6 +7,7 @@ import ShopTab from "../tabs/shop/shop_tab";
 import Enumerable from "linq";
 import EmployeesTab from "../tabs/employees/employees_tab";
 import StorageTab from "../tabs/storage/storage_tab";
+import FontAwesome from "../shared/font_awesome";
 
 interface MainProps {}
 
@@ -25,7 +26,77 @@ const Main: React.SFC<MainProps> = (props) => {
 	return (
 		<>
 			<main className="column is-full-height">
-				<div className="notification is-dark">top-main</div>
+				<div className="notification is-dark">
+					{" "}
+					<div className="tile is-child box is-size-7 is-paddingless">
+						{/* TK move this to a much better place in the UI; also maybe it doesn't make sense */}
+						{/* TK maybe a big ol' configuration screen? with many similar options */}
+						<div>
+							Minimum Delivery Batch Size:{" "}
+							{worldState.playerAttributes.minimumDeliveryBatchSize}
+							<span
+								className="buttons"
+								style={{ display: "inline-flex", marginLeft: ".3rem" }}
+							>
+								<button
+									className="button is-rounded is-info is-super-small"
+									disabled={
+										worldState.playerAttributes.minimumDeliveryBatchSize === 1
+									}
+									onClick={() =>
+										worldState.playerAttributes.minimumDeliveryBatchSize--
+									}
+								>
+									<FontAwesome icon="minus" />
+								</button>
+								{/* TK typable amount... if this ends up making it into the game */}
+								<button
+									className="button is-rounded is-info is-super-small"
+									disabled={
+										worldState.playerAttributes.minimumDeliveryBatchSize ===
+										worldState.playerAttributes.deliveryCarryCapacity
+									}
+									onClick={() =>
+										worldState.playerAttributes.minimumDeliveryBatchSize++
+									}
+								>
+									<FontAwesome icon="plus" />
+								</button>
+							</span>
+						</div>
+						<div>
+							Rarity Level: {worldState.playerAttributes.maximumRarityLevel}
+							<span
+								className="buttons"
+								style={{ display: "inline-flex", marginLeft: ".3rem" }}
+							>
+								<button
+									className="button is-rounded is-info is-super-small"
+									disabled={
+										worldState.playerAttributes.maximumRarityLevel === 0
+									}
+									onClick={() =>
+										worldState.playerAttributes.maximumRarityLevel--
+									}
+								>
+									<FontAwesome icon="minus" />
+								</button>
+								{/* TK typable amount... if this ends up making it into the game */}
+								<button
+									className="button is-rounded is-info is-super-small"
+									disabled={
+										worldState.playerAttributes.maximumRarityLevel === 20
+									}
+									onClick={() =>
+										worldState.playerAttributes.maximumRarityLevel++
+									}
+								>
+									<FontAwesome icon="plus" />
+								</button>
+							</span>
+						</div>
+					</div>
+				</div>
 				{worldState.activeTab === GameTabType.HOME && <HomeTab />}
 				{worldState.activeTab === GameTabType.LETTERS && <LettersTab />}
 				{worldState.activeTab === GameTabType.SHOP && <ShopTab />}

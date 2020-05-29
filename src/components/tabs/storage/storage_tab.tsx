@@ -13,24 +13,7 @@ const StorageTab: React.FC = (props) => {
 			<section className="box">
 				<h2 className="subtitle">STORAGE</h2>
 			</section>
-			<div>
-				Rarity Level: {worldState.playerAttributes.maximumRarityLevel}
-				<button
-					className="button is-rounded is-info is-small"
-					disabled={worldState.playerAttributes.maximumRarityLevel === 0}
-					onClick={() => worldState.playerAttributes.maximumRarityLevel--}
-				>
-					<FontAwesome icon="minus" />
-				</button>
-				{/* TK typable amount... if this ends up making it into the game */}
-				<button
-					className="button is-rounded is-info is-small"
-					disabled={worldState.playerAttributes.maximumRarityLevel === 20}
-					onClick={() => worldState.playerAttributes.maximumRarityLevel++}
-				>
-					<FontAwesome icon="plus" />
-				</button>
-			</div>
+
 			<section className="tile is-ancestor is-vertical">
 				<div className="tile is-parent">
 					<div className="tile is-child">

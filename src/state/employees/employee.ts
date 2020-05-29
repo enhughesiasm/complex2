@@ -56,5 +56,7 @@ export default class Employee {
 	assign(jobType: JobTypes): void {
 		this.assignedJob = jobType;
 		this.currentJobProgress = 0;
+		this.currentAction = undefined;
+		this.carrying = undefined;
 	}
 }

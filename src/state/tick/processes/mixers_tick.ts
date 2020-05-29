@@ -104,7 +104,7 @@ function tickMixer(
 			case mixerActionTypes.Mixing:
 				// calculate amount to make based on carried ingredients too
 
-				const toMake = emp.carrying || new TraitsSet(); // TK: making more than one per end-of-cycle
+				const toMake = emp.carrying ?? new TraitsSet(); // TK: making more than one per end-of-cycle
 				// possibly we need to have a .multiply method on traitsSet that allows it to be rapidly scaled
 				// 2 per ingredient, etc. or maybe * (10 - level) or something so common ingredients make more?
 				// does the number of cycles actually matter here?

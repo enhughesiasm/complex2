@@ -114,7 +114,7 @@ export default class TraitsSet {
 			console.error(
 				`bug in moveFractionUpLevel: fraction: ${fraction}; initial: ${initialTotal}; final: ${finalTotal} `
 			);
-			console.log(this.traits);
+			console.error(this.traits);
 		}
 	}
 

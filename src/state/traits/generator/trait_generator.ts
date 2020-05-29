@@ -127,6 +127,6 @@ export default class TraitGenerator implements ITraitGenerator {
 
 		levelNum = getWeightedRandomInteger(0, allowedMax, weighting);
 
-		return rarityLevels.find((l) => l.level === levelNum) || rarityLevels[0];
+		return rarityLevels.find((l) => l.level === levelNum) ?? rarityLevels[0];
 	}
 }

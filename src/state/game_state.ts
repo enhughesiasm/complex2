@@ -2,6 +2,7 @@ import { version, tickLengthMs } from "./constants";
 import { GameTabType } from "./game_tabs";
 
 import WorldState from "./world_state";
+import GameHistory from "./history/game_history";
 
 export default class GameState {
 	version: string = version;
@@ -11,6 +12,9 @@ export default class GameState {
 
 	// state
 	worldState: WorldState;
+
+	// transient state we can rebuild after loading
+	history: GameHistory = new GameHistory();
 
 	constructor(worldState: WorldState) {
 		this.worldState = worldState;

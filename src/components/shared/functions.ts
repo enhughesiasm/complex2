@@ -116,8 +116,8 @@ export function submitToAnalytics(
 	if (window.gtag) {
 		window.gtag("event", action, {
 			event_category: category,
-			event_label: label || "",
-			value: value || 0,
+			event_label: label ?? "",
+			value: value ?? 0,
 		});
 	}
 }

@@ -22,7 +22,7 @@ export default class Inventory {
 		const amount = this.ingredients.get(level);
 		if (amount === null || amount === undefined)
 			throw new Error("changing nonexistent level");
-		return amount || 0;
+		return amount ?? 0;
 	}
 
 	setIngredientAmount(level: number, amount: number): void {

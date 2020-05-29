@@ -41,7 +41,7 @@ const Tab: React.FC<ITabProps> = ({
 							}
 						}}
 					>
-						<FontAwesome icon={icon || "circle"} status={iconStatus} />
+						<FontAwesome icon={icon ?? "circle"} status={iconStatus} />
 
 						{children}
 					</a>

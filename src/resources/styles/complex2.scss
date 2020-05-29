@@ -5,6 +5,29 @@
 // 	font-variant-numeric: slashed-zero tabular-nums;
 // }
 
+// TK: fix up rarity colourscheme and make them look good everywhere. this'll do for visual differentation for now
+.is-rarity-0 {
+	background: whitesmoke;
+}
+.is-rarity-1 {
+	background: rgba(0, 0, 255, 0.404);
+}
+.is-rarity-2 {
+	background: rgba(0, 128, 0, 0.301);
+}
+.is-rarity-3 {
+	background: rgba(255, 255, 0, 0.329);
+}
+.is-rarity-4 {
+	background: rgba(255, 0, 0, 0.329);
+}
+.is-rarity-5 {
+	background: rgba(255, 166, 0, 0.37);
+}
+.is-rarity-6 {
+	background: rgba(128, 0, 128, 0.424);
+}
+
 .smallPrint {
 	font-size: 75%;
 	font-style: italic;

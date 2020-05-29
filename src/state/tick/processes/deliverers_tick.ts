@@ -121,7 +121,7 @@ function tickDeliverer(
 				break;
 			case deliveryActionTypes.Delivering:
 				// perform the delivery
-				const toDeliver = emp.carrying || new TraitsSet();
+				const toDeliver = emp.carrying ?? new TraitsSet();
 				if (toDeliver.getTotal() === 0) {
 					// indicates a bug elsewhere but won't affect behaviour
 					console.error("Unexpectedly delivering 0 traits.");

@@ -41,9 +41,13 @@ export function tick_game(delta_sec: number, gameState: GameState): GameState {
 						g.onCompletion(worldState);
 					}
 				});
-
-			isTicking = false;
 		});
+
+		// lastly update the history
+		gameState.history.update(gameState.worldState, delta_sec);
+
+		isTicking = false;
+
 		return nextState;
 	} catch (e) {
 		console.error("Uh-oh, couldn't calculate the next tick.", e);

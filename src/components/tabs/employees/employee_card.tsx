@@ -62,7 +62,7 @@ const EmployeeCard: React.FC<IEmployeeCardProps> = ({ employee }) => {
 						<span className="has-text-weight-bold">Currently: </span>
 					</div>
 					<div className="card-footer-item">
-						{employee.currentAction || "Idle"}
+						{employee.currentAction ?? "Idle"}
 						{employee.carrying && (
 							<span> ({employee.carrying.getTotal()})</span>
 						)}
@@ -81,7 +81,7 @@ const EmployeeCard: React.FC<IEmployeeCardProps> = ({ employee }) => {
 						{employee.secsSinceCompleted > 0 && (
 							<TemporaryText
 								secsSinceStart={employee.secsSinceCompleted}
-								text={employee.completedMessage || ""}
+								text={employee.completedMessage ?? ""}
 							/>
 						)}
 					</div>
