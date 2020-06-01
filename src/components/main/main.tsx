@@ -8,6 +8,7 @@ import Enumerable from "linq";
 import EmployeesTab from "../tabs/employees/employees_tab";
 import StorageTab from "../tabs/storage/storage_tab";
 import FontAwesome from "../shared/font_awesome";
+import PrelifeMapTab from "../prelife_map/prelife_map_tab";
 
 interface MainProps {}
 
@@ -18,6 +19,7 @@ const implementedTabs = Enumerable.from([
 	GameTabType.SHOP,
 	GameTabType.EMPLOYEES,
 	GameTabType.STORAGE,
+	GameTabType.MAP,
 ]);
 
 const Main: React.SFC<MainProps> = (props) => {
@@ -102,8 +104,11 @@ const Main: React.SFC<MainProps> = (props) => {
 				{worldState.activeTab === GameTabType.SHOP && <ShopTab />}
 				{worldState.activeTab === GameTabType.EMPLOYEES && <EmployeesTab />}
 				{worldState.activeTab === GameTabType.STORAGE && <StorageTab />}
+				{worldState.activeTab === GameTabType.MAP && <PrelifeMapTab />}
 				{!implementedTabs.contains(worldState.activeTab) && (
-					<span>tab {worldState.activeTab} not implemented in main</span>
+					<span>
+						tab {worldState.activeTab} not implemented in main, check array
+					</span>
 				)}
 			</main>
 		</>

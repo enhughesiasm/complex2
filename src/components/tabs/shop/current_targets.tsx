@@ -28,7 +28,7 @@ const CurrentTargets: React.FC = () => {
 					{/* TK cool transitions for when they overtake each other */}
 					<div className="tile is-parent wrap-child-tiles">
 						{nextTargets.map((t) => (
-							<Target target={t} />
+							<Target key={t.id} target={t} />
 						))}
 					</div>
 				</>
@@ -38,7 +38,7 @@ const CurrentTargets: React.FC = () => {
 					<h4 className="subtitle">Completed Targets:</h4>
 					<div className="tile is-parent wrap-child-tiles">
 						{completedTargets.map((t) => (
-							<Target target={t} />
+							<Target key={t.id} target={t} />
 						))}
 					</div>
 				</>

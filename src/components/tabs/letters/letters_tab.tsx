@@ -34,6 +34,7 @@ const LettersTab: React.FC = (props) => {
 
 						{worldState.letterManager.getInboxLetters().map((l, i) => (
 							<div
+								key={l.id}
 								onClick={() => {
 									setActiveIndex(i);
 									worldState.letterManager.markAsRead(l.id);

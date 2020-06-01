@@ -61,6 +61,16 @@ const TabsList: React.FC = (props) => {
 			>
 				STORAGE
 			</Tab>
+			<Tab
+				icon={"globe-europe"}
+				iconStatus={"primary"}
+				type={GameTabType.MAP}
+				enabled={true} // TK: revisit this
+				visible={true}
+				needsAttention={false}
+			>
+				MAP
+			</Tab>
 		</ul>
 	);
 };

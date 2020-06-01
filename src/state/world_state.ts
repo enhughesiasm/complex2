@@ -14,6 +14,7 @@ import { ITickProcess } from "./tick/ITickProcess";
 import initialProcesses from "./tick/initial_processes";
 import Employees from "./employees/employee_manager";
 import LettersManager from "./letters/letters_manager";
+import PrelifeMap from "./prelife_map/prelife_map";
 
 export default class WorldState {
 	debug: boolean = false; // overwritten in load_state if necessary
@@ -46,6 +47,8 @@ export default class WorldState {
 	employees: Employees = new Employees();
 
 	storage: TraitStorage = new TraitStorage();
+
+	prelifeMap: PrelifeMap = new PrelifeMap();
 
 	[index: string]: any;
 }

@@ -33,8 +33,7 @@ const EmployeesSummary: React.FC = () => {
 						<UnassignedRow unassigned={unassigned} />
 						{worldState.employees.unlockedJobs.map((job) => {
 							return (
-								<>
-									{" "}
+								<React.Fragment key={job}>
 									{job === JobTypes.Gathering && (
 										<BasicRow jobType={job} statsPrefix="Ingredients" />
 									)}
@@ -44,7 +43,7 @@ const EmployeesSummary: React.FC = () => {
 									{job === JobTypes.Delivering && (
 										<BasicRow jobType={job} statsPrefix="DeliveredTraits" />
 									)}
-								</>
+								</React.Fragment>
 							);
 						})}
 					</tbody>

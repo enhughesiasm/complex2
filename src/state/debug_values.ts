@@ -6,7 +6,7 @@ import { JobTypes } from "./jobs/job_types";
 const debugValues: WorldState = new WorldState();
 
 debugValues.debug = true;
-debugValues.activeTab = GameTabType.EMPLOYEES;
+debugValues.activeTab = GameTabType.MAP;
 
 debugValues.storage.initialStorageTraits.push(
 	debugValues.traitGenerator.generateSingle(debugValues.playerAttributes)

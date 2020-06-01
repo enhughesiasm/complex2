@@ -43,6 +43,7 @@ const BasicRow: React.FC<IBasicEmployeeRowProps> = ({
 				)[0];
 				return (
 					<td
+						key={`${statsPrefix}${i}`}
 						className={
 							"is-rarity-" +
 							i +

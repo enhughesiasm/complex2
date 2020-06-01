@@ -15,6 +15,7 @@ export default class GameState {
 
 	// transient state we can rebuild after loading
 	history: GameHistory = new GameHistory();
+	//renderMap: RenderMap = new RenderMap();
 
 	constructor(worldState: WorldState) {
 		this.worldState = worldState;
