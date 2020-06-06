@@ -114,7 +114,4 @@ table.is-centered {
 	font-size: 0.4rem;
 }
 
-@import "node_modules/bulma/bulma";
-// @import 'node_modules/bulma-extensions/bulma-tooltip/dist/css/bulma-tooltip.sass';
-@import "node_modules/bulma-extensions/bulma-quickview/dist/css/bulma-quickview.sass";
-@import "node_modules/bulma-extensions/bulma-divider/dist/css/bulma-divider.sass";
+@import "bulma.scss";

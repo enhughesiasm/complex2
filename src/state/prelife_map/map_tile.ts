@@ -2,13 +2,63 @@ import { MapTileType } from "./map_tile_types";
 
 export default class MapTile {
 	type = MapTileType.GRASS;
+	size: number;
+	routeCode: string;
 	explored = false;
+	position: [number, number];
+	resources: number = -1;
 
-	constructor(type: MapTileType) {
+	nextTileOnRoute?: MapTile;
+	prevTileOnRoute?: MapTile;
+
+	constructor(
+		type: MapTileType,
+		pos: [number, number],
+		size: number,
+		routeCode: string,
+		explored: boolean,
+		resources: number
+	) {
 		this.type = type;
+		this.position = pos;
+		this.routeCode = routeCode;
+		this.size = size;
+		this.explored = explored;
+
+		if (resources >= 0) {
+			this.resources = resources;
+		}
 	}
 
 	setType(type: MapTileType) {
 		this.type = type;
+	}
+
+	getCoordsTopLeft(): [number, number] {
+		return [this.position[0] * this.size, this.position[1] * this.size];
+	}
+
+	getCoordsCenter(): [number, number] {
+		return [
+			this.position[0] * this.size + Math.floor(this.size / 2),
+			this.position[1] * this.size + Math.floor(this.size / 2),
+		];
+	}
+
+	getCoordsRandom(): [number, number] {
+		return [
+			this.position[0] * this.size + Math.floor(Math.random() * this.size),
+			this.position[1] * this.size + Math.floor(Math.random() * this.size),
+		];
+	}
+
+	/** returns true if the tiles are in the same position */
+	is(tile: MapTile | undefined): boolean {
+		if (tile === undefined) return false;
+
+		return (
+			this.position[0] === tile.position[0] &&
+			this.position[1] === tile.position[1]
+		);
 	}
 }

@@ -165,7 +165,11 @@ export default class GameState {
 	hireEmployee(): void {
 		if (this.worldState.employees.canHire(this.worldState)) {
 			const cost = this.worldState.employees.getHireCost();
-			this.worldState.employees.hire();
+			this.worldState.employees.hire(
+				this.worldState.prelifeMap.getTile(
+					this.worldState.prelifeMap.COMPLEX_POSITION
+				)
+			);
 			this.spendFavours(cost);
 		} else {
 			console.error("tried to hire employee while unable");

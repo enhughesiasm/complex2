@@ -1,44 +1,57 @@
 import { MapTileType } from "./map_tile_types";
 import MapTile from "./map_tile";
+import { map, route, explored, resources } from "./map_definition.json";
 
-// TK: redo this in a much smarter way! it'll do for now...
-export function generateMap(width: number, height: number): MapTile[][] {
+export function generateMap(tileSize: number): MapTile[][] {
 	let tiles: MapTile[][] = [];
 
-	for (let i = 0; i < width; i++) {
-		tiles[i] = [];
-		for (let j = 0; j < height; j++) {
-			tiles[i][j] = new MapTile(MapTileType.GRASS);
+	const width = map[0].length;
+	const height = map.length;
+
+	for (let col = 0; col < width; col++) {
+		tiles[col] = [];
+		for (let row = 0; row < height; row++) {
+			const typeStr = map[row][col];
+			let type = MapTileType.NONE;
+
+			switch (typeStr) {
+				case ".":
+					type = MapTileType.GRASS;
+					break;
+				case "M":
+					type = MapTileType.MOUNTAIN;
+					break;
+				case "R":
+					type = MapTileType.RIVER;
+					break;
+				case "S":
+					type = MapTileType.SHOP;
+					break;
+				case "C":
+					type = MapTileType.COMPLEX;
+					break;
+				case "D":
+					type = MapTileType.ROAD;
+					break;
+				case "O":
+					type = MapTileType.CITY;
+					break;
+				case "H":
+					type = MapTileType.HILL;
+					break;
+			}
+
+			// store positions as x,y even though we're reading them as y,x from the JSON
+			tiles[col][row] = new MapTile(
+				type,
+				[col, row],
+				tileSize,
+				route[row][col],
+				explored[row][col] === "*",
+				parseInt(resources[row][col])
+			);
 		}
 	}
-
-	// add mountains
-	for (let i = 0; i < width; i++) {
-		for (let j = 0; j < height; j++) {
-			if (i < 3 && j < 4) {
-				tiles[i][j].type = MapTileType.MOUNTAIN;
-			}
-			if (i === 0) {
-				tiles[i][j].type = MapTileType.MOUNTAIN;
-			}
-		}
-	}
-
-	tiles[3][2].type = MapTileType.RIVER;
-	for (let i = 0; i < width; i++) {
-		for (let j = 0; j < height; j++) {
-			if (i > 3 && j == 3 && i < 17) {
-				tiles[i][j].type = MapTileType.RIVER;
-			}
-			if (i === 16 && j > 3) {
-				tiles[i][j].type = MapTileType.RIVER;
-			}
-		}
-	}
-
-	// add points of interest
-	tiles[1][2].type = MapTileType.COMPLEX;
-	tiles[11][4].type = MapTileType.SHOP;
 
 	return tiles;
 }

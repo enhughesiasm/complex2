@@ -8,16 +8,16 @@ const TileLayer: React.FC = () => {
 	const { worldState } = useContext(AppContext);
 
 	const { prelifeMap } = worldState;
-	console.log(prelifeMap.tiles);
 
 	return (
 		<Layer>
-			{prelifeMap.tiles.map((column, i) => (
-				<React.Fragment key={`column${i}`}>
-					{prelifeMap.tiles[i].map((tile, j) => (
+			{prelifeMap.tiles.map((col, colNo) => (
+				<React.Fragment key={`col${colNo}`}>
+					{prelifeMap.tiles[colNo].map((tile, rowNo) => (
 						<Tile
-							x={i * prelifeMap.TILE_SIZE}
-							y={j * prelifeMap.TILE_SIZE}
+							key={rowNo * prelifeMap.MAP_WIDTH + colNo}
+							x={colNo * prelifeMap.TILE_SIZE}
+							y={rowNo * prelifeMap.TILE_SIZE}
 							size={prelifeMap.TILE_SIZE}
 							tile={tile}
 						/>

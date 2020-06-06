@@ -35,7 +35,7 @@ export default class PlayerAttributes {
 	e_mix_baseSpeed = 20;
 
 	// employee deliverers
-	e_travel_baseSpeed = 5;
+	e_travel_baseSpeed = 20; // speed through an individual tile
 	deliveryCarryCapacity = 5;
-	minimumDeliveryBatchSize = 3; // TK: expose this as clickable option
+	minimumDeliveryBatchSize = 1; // TK: expose this as clickable option
 }

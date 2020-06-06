@@ -1,4 +1,3 @@
-import moment from "moment";
 import { JobTypes } from "./../../jobs/job_types";
 import WorldState from "../../world_state";
 import Employee from "../../employees/employee";

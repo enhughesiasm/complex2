@@ -36,13 +36,18 @@ if (process) {
 	process.enabled = true;
 }
 
-debugValues.employees.hire();
-debugValues.employees.hire();
-debugValues.employees.hire();
-
-debugValues.employees.all[0].assign(JobTypes.Gathering);
-debugValues.employees.all[1].assign(JobTypes.Mixing);
-debugValues.employees.all[2].assign(JobTypes.Delivering);
+debugValues.employees.hire(
+	debugValues.prelifeMap.getTile(debugValues.prelifeMap.COMPLEX_POSITION),
+	JobTypes.Gathering
+);
+debugValues.employees.hire(
+	debugValues.prelifeMap.getTile(debugValues.prelifeMap.COMPLEX_POSITION),
+	JobTypes.Mixing
+);
+debugValues.employees.hire(
+	debugValues.prelifeMap.getTile(debugValues.prelifeMap.COMPLEX_POSITION),
+	JobTypes.Delivering
+);
 
 debugValues.targets
 	.find((a) => a.id === targetIDs.UnlockNewJobs)

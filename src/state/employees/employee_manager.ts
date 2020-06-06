@@ -3,6 +3,7 @@ import Employee from "./employee";
 import { JobTypes } from "../jobs/job_types";
 import WorldState from "../world_state";
 import { roundToNearest as roundUpToNearest } from "../../components/shared/functions";
+import MapTile from "../prelife_map/map_tile";
 
 export default class Employees {
 	unlocked: boolean = false;
@@ -33,8 +34,7 @@ export default class Employees {
 		return worldState?.favours >= this.getHireCost();
 	}
 
-	hire(): void {
-		// TK: take cost, calculate cost etc
-		this.all.push(new Employee());
+	hire(startTile: MapTile, jobType: JobTypes = JobTypes.NONE): void {
+		this.all.push(new Employee(startTile, jobType));
 	}
 }

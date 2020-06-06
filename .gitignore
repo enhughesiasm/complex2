@@ -44,6 +44,7 @@ node_modules
 .env
 
 TODO.txt
+TODO_visuals.txt
 
 # allow typescript types
 !*.d.ts

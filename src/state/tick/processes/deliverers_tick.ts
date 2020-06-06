@@ -1,6 +1,3 @@
-import { toast } from "react-toastify";
-import { ITraitGenerator } from "./../../traits/generator/ITraitGenerator";
-import moment from "moment";
 import { JobTypes } from "./../../jobs/job_types";
 import WorldState from "../../world_state";
 import Employee from "../../employees/employee";
@@ -8,6 +5,7 @@ import PlayerAttributes from "../../player_attributes";
 import TraitStorage from "../../trait_storage/trait_storage";
 import TraitsSet from "../../trait_storage/traits_set";
 import IAction from "./IAction";
+import PrelifeMap from "../../prelife_map/prelife_map";
 
 const deliveryActionTypes = {
 	Fetching: "Fetching",
@@ -28,7 +26,11 @@ const deliveryActions: Array<IAction> = [
 		action: deliveryActionTypes.Travelling,
 		nextAction: deliveryActionTypes.Delivering,
 		getSpeed(attributes: PlayerAttributes) {
-			return attributes.e_travel_baseSpeed;
+			// TK yeah this is stupid but it's less stupid than how I previously did it... refactor later!
+			console.error(
+				"bug elsewhere! shouldn't be calling getSpeed for a travelling job"
+			);
+			return 0;
 		},
 	},
 	{
@@ -42,7 +44,11 @@ const deliveryActions: Array<IAction> = [
 		action: deliveryActionTypes.Returning,
 		nextAction: deliveryActionTypes.Fetching,
 		getSpeed(attributes: PlayerAttributes) {
-			return attributes.e_travel_baseSpeed;
+			// TK yeah this is stupid but it's less stupid than how I previously did it... refactor later!
+			console.error(
+				"bug elsewhere! shouldn't be calling getSpeed for a travelling job"
+			);
+			return 0;
 		},
 	},
 ];
@@ -88,10 +94,28 @@ function tickDeliverer(
 	const action = deliveryActions.find((a) => a.action === emp.currentAction);
 	if (!action) return;
 
-	emp.currentJobProgress +=
-		action.getSpeed(attributes) * attributes.overallWorkFactor * delta_sec;
+	switch (action.action) {
+		case deliveryActionTypes.Fetching:
+		case deliveryActionTypes.Delivering:
+			const currentWorkSpeed =
+				action.getSpeed(attributes) * attributes.overallWorkFactor * delta_sec;
 
-	emp.secsSinceCompleted += delta_sec;
+			emp.currentWorkSpeed = currentWorkSpeed;
+			emp.currentJobProgress += currentWorkSpeed;
+
+			emp.secsSinceCompleted += delta_sec;
+
+			break;
+		case deliveryActionTypes.Travelling:
+		case deliveryActionTypes.Returning:
+			emp.currentJobProgress = 0;
+			emp.secsSinceCompleted += delta_sec;
+			handleMoving(emp, action, worldState.prelifeMap, worldState);
+			break;
+		default:
+			console.log(`unknown deliverer action: ${action.action}`);
+			break;
+	}
 
 	let completed = 0;
 	while (emp.currentJobProgress >= 100) {
@@ -100,47 +124,92 @@ function tickDeliverer(
 	}
 
 	if (completed > 0) {
-		emp.currentJobProgress = 0;
+		handleCompletions(emp, action, storage, attributes, worldState);
+	}
+}
 
-		// TK: add experience gain
-		switch (action.action) {
-			case deliveryActionTypes.Fetching:
-				// pick up traits
-				if (storage.canRemove(attributes.minimumDeliveryBatchSize)) {
-					// as long as we can take our minimum we take as many as exist in storage up to the current carry capacity
-					emp.carrying = storage.removeTraits(attributes.deliveryCarryCapacity);
+function handleCompletions(
+	emp: Employee,
+	action: IAction,
+	storage: TraitStorage,
+	attributes: PlayerAttributes,
+	worldState: WorldState
+) {
+	emp.currentJobProgress = 0;
 
-					if (emp.carrying.getTotal() >= attributes.minimumDeliveryBatchSize) {
-						emp.currentAction = action.nextAction;
+	switch (action.action) {
+		case deliveryActionTypes.Fetching:
+			// pick up traits
+			if (storage.canRemove(attributes.minimumDeliveryBatchSize)) {
+				// as long as we can take our minimum we take as many as exist in storage up to the current carry capacity
+				emp.carrying = storage.removeTraits(attributes.deliveryCarryCapacity);
+
+				if (emp.carrying.getTotal() >= attributes.minimumDeliveryBatchSize) {
+					if (emp.currentTile.nextTileOnRoute) {
+						emp.setDestinationTile(emp.currentTile.nextTileOnRoute);
 					}
-				}
-				break;
-			case deliveryActionTypes.Travelling:
-				// nothing to do, just arrive
-				emp.currentAction = action.nextAction;
-				break;
-			case deliveryActionTypes.Delivering:
-				// perform the delivery
-				const toDeliver = emp.carrying ?? new TraitsSet();
-				if (toDeliver.getTotal() === 0) {
-					// indicates a bug elsewhere but won't affect behaviour
-					console.error("Unexpectedly delivering 0 traits.");
-				}
-				worldState.shop.deliverTraitsSet(toDeliver, worldState);
-				const delivered = toDeliver.getTotal();
 
-				emp.carrying = undefined;
-				emp.currentAction = action.nextAction;
-				emp.secsSinceCompleted = 0;
-				emp.completedMessage = `+${delivered}`;
-				break;
-			case deliveryActionTypes.Returning:
-				// nothing to do, just arrive
-				emp.currentAction = action.nextAction;
-				break;
-			default:
-				console.error("Invalid action: " + action.action);
-				break;
+					emp.currentAction = action.nextAction;
+				}
+			} else {
+				// nothing to fetch, remain in fetching state
+			}
+
+			break;
+		case deliveryActionTypes.Delivering:
+			// perform the delivery
+			const toDeliver = emp.carrying ?? new TraitsSet();
+			if (toDeliver.getTotal() === 0) {
+				// indicates a bug elsewhere but won't affect behaviour
+				console.error("Unexpectedly delivering 0 traits.");
+			}
+			worldState.shop.deliverTraitsSet(toDeliver, worldState);
+			const delivered = toDeliver.getTotal();
+
+			emp.carrying = undefined;
+
+			emp.secsSinceCompleted = 0;
+			emp.completedMessage = `+${delivered}`;
+			// TK: add experience gain
+
+			if (emp.currentTile.prevTileOnRoute) {
+				emp.setDestinationTile(emp.currentTile.prevTileOnRoute);
+			}
+
+			emp.currentAction = action.nextAction;
+
+			break;
+		default:
+			console.error("Invalid action: " + action.action);
+			break;
+	}
+}
+
+function handleMoving(
+	emp: Employee,
+	action: IAction,
+	map: PrelifeMap,
+	worldState: WorldState
+) {
+	const finalDestination =
+		action.action === deliveryActionTypes.Travelling
+			? map.getShopTile()
+			: map.getComplexTile();
+
+	if (emp.currentTile.is(finalDestination)) {
+		console.log("finally arrived");
+		emp.destinationTile = undefined;
+		emp.currentAction = action.nextAction;
+		return;
+	}
+
+	if (emp.currentTile.is(emp.destinationTile)) {
+		const nextTile =
+			action.action === deliveryActionTypes.Travelling
+				? emp.currentTile.nextTileOnRoute
+				: emp.currentTile.prevTileOnRoute;
+		if (nextTile) {
+			emp.setDestinationTile(nextTile);
 		}
 	}
 }

@@ -33,6 +33,7 @@ const Main: React.SFC<MainProps> = (props) => {
 					<div className="tile is-child box is-size-7 is-paddingless">
 						{/* TK move this to a much better place in the UI; also maybe it doesn't make sense */}
 						{/* TK maybe a big ol' configuration screen? with many similar options */}
+						<div>{worldState.employees.all.length}</div>
 						<div>
 							Minimum Delivery Batch Size:{" "}
 							{worldState.playerAttributes.minimumDeliveryBatchSize}
