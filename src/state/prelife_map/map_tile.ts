@@ -8,6 +8,8 @@ export default class MapTile {
 	position: [number, number];
 	resources: number = -1;
 
+	moveSpeedFactor: number = 1;
+
 	nextTileOnRoute?: MapTile;
 	prevTileOnRoute?: MapTile;
 
@@ -27,6 +29,21 @@ export default class MapTile {
 
 		if (resources >= 0) {
 			this.resources = resources;
+		}
+
+		switch (type) {
+			case MapTileType.MOUNTAIN:
+				this.moveSpeedFactor = 0.5;
+				break;
+			case MapTileType.RIVER:
+				this.moveSpeedFactor = 0.5;
+				break;
+			case MapTileType.HILL:
+				this.moveSpeedFactor = 0.75;
+				break;
+			case MapTileType.ROAD:
+				this.moveSpeedFactor = 1.25;
+				break;
 		}
 	}
 

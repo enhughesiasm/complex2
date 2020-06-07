@@ -197,8 +197,7 @@ function handleMoving(
 			: map.getComplexTile();
 
 	if (emp.currentTile.is(finalDestination)) {
-		console.log("finally arrived");
-		emp.destinationTile = undefined;
+		emp.setDestinationTile(undefined);
 		emp.currentAction = action.nextAction;
 		return;
 	}

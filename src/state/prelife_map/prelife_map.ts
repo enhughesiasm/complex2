@@ -5,7 +5,7 @@ import MapTile from "./map_tile";
 import { generateMap } from "./generate_map";
 import { ensure } from "../../components/shared/functions";
 
-export enum direction {
+export enum Direction {
 	N,
 	S,
 	E,
@@ -14,6 +14,7 @@ export enum direction {
 	NE,
 	SW,
 	SE,
+	NONE,
 }
 
 /** holds data about the actual world */
@@ -22,7 +23,7 @@ export default class PrelifeMap {
 
 	tiles: MapTile[][];
 
-	readonly TILE_SIZE: number = 32;
+	readonly TILE_SIZE: number = 64;
 	readonly MAP_WIDTH: number;
 	readonly MAP_HEIGHT: number;
 	readonly STATUS_HEIGHT: number = 50;
@@ -104,72 +105,76 @@ export default class PrelifeMap {
 		return this.tiles[this.COMPLEX_POSITION[0]][this.COMPLEX_POSITION[1]];
 	}
 
-	// /** returns the edge position between two adjacent tiles, between [0,0] and [100,100], where [50,50] is the exact tile centre */
-	// getSubDestinationBetween(origin: MapTile, dest: MapTile): [number, number] {
-	// 	const dir = this.getDirectionBetweenTwoTiles(origin, dest);
+	getResourceTile(level: number): MapTile {
+		const tiles = this.tiles.flat().filter((a) => a.resources === level);
 
-	// 	switch (dir) {
-	// 		case direction.N:
-	// 			return [50, 0]; // top centre
-	// 		case direction.NE:
-	// 			return [100, 0]; // top right
-	// 		case direction.E:
-	// 			return [100, 50]; // middle right
-	// 		case direction.SE:
-	// 			return [100, 100]; // bottom right
-	// 		case direction.S:
-	// 			return [50, 100]; // bottom middle
-	// 		case direction.SW:
-	// 			return [0, 100]; // bottom left
-	// 		case direction.W:
-	// 			return [0, 50]; // middle left
-	// 		case direction.NW:
-	// 			return [0, 0];
-	// 		default:
-	// 			// if origin and dest are the same
-	// 			return [50, 50];
-	// 	}
-	// }
+		if (tiles.length === 1) return tiles[0];
 
-	getDirectionBetweenTwoTiles(
-		origin: MapTile,
-		dest: MapTile
-	): direction | undefined {
+		// don't hide the bug elsewhere that's causing this
+		throw new Error(`Can't find tile with resource level ${level}`);
+	}
+
+	getNextTileBetween(from: MapTile, to: MapTile) {
+		const dir: Direction = this.getDirectionBetweenTwoTiles(from, to);
+
+		switch (dir) {
+			case Direction.NONE:
+				return from;
+			case Direction.N:
+				return this.tiles[from.position[0]][from.position[1] - 1];
+			case Direction.NE:
+				return this.tiles[from.position[0] + 1][from.position[1] - 1];
+			case Direction.E:
+				return this.tiles[from.position[0] + 1][from.position[1]];
+			case Direction.SE:
+				return this.tiles[from.position[0] + 1][from.position[1] + 1];
+			case Direction.S:
+				return this.tiles[from.position[0]][from.position[1] + 1];
+			case Direction.SW:
+				return this.tiles[from.position[0] - 1][from.position[1] + 1];
+			case Direction.W:
+				return this.tiles[from.position[0] - 1][from.position[1]];
+			case Direction.NW:
+				return this.tiles[from.position[0] - 1][from.position[1] - 1];
+		}
+	}
+
+	getDirectionBetweenTwoTiles(origin: MapTile, dest: MapTile): Direction {
 		if (origin.position[0] < dest.position[0]) {
 			// E
 			if (origin.position[1] < dest.position[1]) {
 				// S
-				return direction.SE;
+				return Direction.SE;
 			} else if (origin.position[1] > dest.position[1]) {
 				// N
-				return direction.NE;
+				return Direction.NE;
 			} else {
 				// just E
-				return direction.E;
+				return Direction.E;
 			}
 		} else if (origin.position[0] > dest.position[0]) {
 			// W
 			if (origin.position[1] < dest.position[1]) {
 				// S
-				return direction.SW;
+				return Direction.SW;
 			} else if (origin.position[1] > dest.position[1]) {
 				// N
-				return direction.NW;
+				return Direction.NW;
 			} else {
 				// just W
-				return direction.W;
+				return Direction.W;
 			}
 		} else {
 			// neither E nor W
 			if (origin.position[1] < dest.position[1]) {
 				// S
-				return direction.S;
+				return Direction.S;
 			} else if (origin.position[1] > dest.position[1]) {
 				// N
-				return direction.N;
+				return Direction.N;
 			} else {
 				// tiles are the same
-				return undefined;
+				return Direction.NONE;
 			}
 		}
 	}

@@ -35,7 +35,7 @@ export default class TraitGenerator implements ITraitGenerator {
 	maxPossibleLevel: number = Math.max(...rarityLevels.map((a) => a.level));
 
 	generateSingle(attributes: PlayerAttributes): ITrait {
-		const rarityLevel = this.chooseTraitRarity(attributes.maximumRarityLevel);
+		const rarityLevel = this.chooseTraitRarity(attributes.unlockedRarityLevel);
 		return assembleSingle(rarityLevel, attributes.rarityIncreaseBonusChance);
 	}
 
@@ -98,11 +98,11 @@ export default class TraitGenerator implements ITraitGenerator {
 
 		// maxRarityLevel can go higher than maxRarityLevel (i.e. should be renamed 😂)
 		// so we iterate that many times to give higher chances for traits to be rarer
-		for (let i = 0; i < attributes.maximumRarityLevel; i++) {
+		for (let i = 0; i < attributes.unlockedRarityLevel; i++) {
 			traits.moveFractionUpLevel(
 				attributes.rarityIncreaseFlatRate,
 				attributes.rarityIncreaseBonusChance,
-				Math.min(attributes.maximumRarityLevel, maxPermittedLevel) // there's still a cap
+				Math.min(attributes.unlockedRarityLevel, maxPermittedLevel) // there's still a cap
 			);
 		}
 

@@ -112,7 +112,7 @@ function tickMixer(
 				if (toMake.getTotal() > 0) {
 					const made = storage.addTraits(
 						toMake,
-						attributes.maximumRarityLevel, // TK: this could be added to by more experienced employees
+						attributes.unlockedRarityLevel, // TK: this could be added to by more experienced employees
 						worldState.traitGenerator,
 						attributes
 					);

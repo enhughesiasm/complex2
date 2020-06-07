@@ -65,15 +65,27 @@ export default class Employee {
 		this.currentTile = this.initialTile;
 	}
 
-	getMoveSpeed(attributes: PlayerAttributes, delta_sec: number): number {
+	getMoveSpeed(
+		attributes: PlayerAttributes,
+		map: PrelifeMap,
+		delta_sec: number
+	): number {
 		return (
-			attributes.e_travel_baseSpeed * attributes.overallWorkFactor * delta_sec
+			attributes.e_travel_baseSpeed *
+			attributes.overallWorkFactor *
+			this.currentTile.moveSpeedFactor *
+			map.TILE_SIZE * // independent of tile size
+			delta_sec // independent of time
 		);
 	}
 
-	setDestinationTile(dest: MapTile): void {
+	setDestinationTile(dest: MapTile | undefined): void {
 		this.destinationTile = dest;
-		this.destCoOrds = dest.getCoordsCenter();
+		if (dest) {
+			this.destCoOrds = dest.getCoordsCenter();
+		} else {
+			this.destCoOrds = this.currentTile.getCoordsRandom();
+		}
 	}
 
 	moveTowardsDestCoords(
@@ -92,7 +104,7 @@ export default class Employee {
 
 		const speed = Math.max(
 			absoluteMinimumSpeed,
-			this.getMoveSpeed(attributes, delta_sec)
+			this.getMoveSpeed(attributes, map, delta_sec)
 		);
 
 		const direction: [number, number] = this.getVectorToDestination(speed);

@@ -68,7 +68,7 @@ const Main: React.SFC<MainProps> = (props) => {
 							</span>
 						</div>
 						<div>
-							Rarity Level: {worldState.playerAttributes.maximumRarityLevel}
+							Rarity Level: {worldState.playerAttributes.unlockedRarityLevel}
 							<span
 								className="buttons"
 								style={{ display: "inline-flex", marginLeft: ".3rem" }}
@@ -76,10 +76,10 @@ const Main: React.SFC<MainProps> = (props) => {
 								<button
 									className="button is-rounded is-info is-super-small"
 									disabled={
-										worldState.playerAttributes.maximumRarityLevel === 0
+										worldState.playerAttributes.unlockedRarityLevel === 0
 									}
 									onClick={() =>
-										worldState.playerAttributes.maximumRarityLevel--
+										worldState.playerAttributes.unlockedRarityLevel--
 									}
 								>
 									<FontAwesome icon="minus" />
@@ -88,10 +88,10 @@ const Main: React.SFC<MainProps> = (props) => {
 								<button
 									className="button is-rounded is-info is-super-small"
 									disabled={
-										worldState.playerAttributes.maximumRarityLevel === 20
+										worldState.playerAttributes.unlockedRarityLevel === 20
 									}
 									onClick={() =>
-										worldState.playerAttributes.maximumRarityLevel++
+										worldState.playerAttributes.unlockedRarityLevel++
 									}
 								>
 									<FontAwesome icon="plus" />

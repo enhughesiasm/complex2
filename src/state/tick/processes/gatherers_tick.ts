@@ -3,6 +3,46 @@ import WorldState from "../../world_state";
 import Employee from "../../employees/employee";
 import PlayerAttributes from "../../player_attributes";
 import Inventory from "../../inventory/inventory";
+import IAction from "./IAction";
+import PrelifeMap from "../../prelife_map/prelife_map";
+
+const gathererActionTypes = {
+	Travelling: "Travelling",
+	Gathering: "Gathering",
+	Returning: "Returning",
+};
+
+const gathererActions: Array<IAction> = [
+	{
+		action: gathererActionTypes.Travelling,
+		nextAction: gathererActionTypes.Gathering,
+		getSpeed(attributes: PlayerAttributes) {
+			// TK yeah this is stupid but it's less stupid than how I previously did it... refactor later!
+			console.error(
+				"bug elsewhere! shouldn't be calling getSpeed for a travelling job"
+			);
+			return 0;
+		},
+	},
+	{
+		action: gathererActionTypes.Gathering,
+		nextAction: gathererActionTypes.Returning,
+		getSpeed(attributes: PlayerAttributes) {
+			return attributes.e_gath_baseSpeed;
+		},
+	},
+	{
+		action: gathererActionTypes.Returning,
+		nextAction: gathererActionTypes.Travelling,
+		getSpeed(attributes: PlayerAttributes) {
+			// TK yeah this is stupid but it's less stupid than how I previously did it... refactor later!
+			console.error(
+				"bug elsewhere! shouldn't be calling getSpeed for a travelling job"
+			);
+			return 0;
+		},
+	},
+];
 
 export const gatherers_tick = {
 	enabled: true,
@@ -18,7 +58,9 @@ export const gatherers_tick = {
 
 		if (gatherers.length === 0) return;
 
-		gatherers.forEach((g) => tickGatherer(g, attributes, inventory, delta_sec));
+		gatherers.forEach((g) =>
+			tickGatherer(g, attributes, inventory, worldState, delta_sec)
+		);
 	},
 };
 
@@ -26,32 +68,139 @@ function tickGatherer(
 	emp: Employee,
 	attributes: PlayerAttributes,
 	inventory: Inventory,
+	worldState: WorldState,
 	delta_sec: number
 ) {
-	// TK
-	// this is just BASIC ingredients. need to have them TRAVEL to a location, then gather, then return
-	// state machines for each type...!
-	// jobStatus == Gather_Travel, etc
+	// TK: quite possibly all this should be shared among ALL employees and only their list of actions
+	// changes when a job is assigned...
+	if (!emp.currentAction) {
+		emp.currentAction = gathererActions[0].action;
+	}
 
-	// TK also needs to take into account employee experience
-	emp.currentJobProgress +=
-		attributes.e_gath_baseSpeed * attributes.overallWorkFactor * delta_sec;
-	emp.currentAction = "Gathering";
-	emp.secsSinceCompleted += delta_sec;
+	const { prelifeMap: map } = worldState;
 
-	let gathered = 0;
+	const action = gathererActions.find((a) => a.action === emp.currentAction);
+	if (!action) return;
+
+	switch (action.action) {
+		case gathererActionTypes.Gathering:
+			const currentWorkSpeed =
+				action.getSpeed(attributes) * attributes.overallWorkFactor * delta_sec;
+
+			emp.currentWorkSpeed = currentWorkSpeed;
+			emp.currentJobProgress += currentWorkSpeed;
+
+			emp.secsSinceCompleted += delta_sec;
+
+			break;
+		case gathererActionTypes.Travelling:
+			emp.currentJobProgress = 0;
+			emp.secsSinceCompleted += delta_sec;
+			handleTravelling(emp, action, map, worldState);
+			break;
+		case gathererActionTypes.Returning:
+			emp.currentJobProgress = 0;
+			emp.secsSinceCompleted += delta_sec;
+			handleReturning(emp, action, map, worldState);
+			break;
+		default:
+			console.log(`unknown gatherer action: ${action.action}`);
+			break;
+	}
+
+	let completed = 0;
 	while (emp.currentJobProgress >= 100) {
-		gathered++;
+		completed++;
 		emp.currentJobProgress -= 100;
 	}
 
-	if (gathered > 0) {
-		emp.currentJobProgress = 0;
-		// TK add experience here
-		inventory.changeIngredientAmount(0, gathered); // TK only gathers on level 0 atm!!
-		emp.secsSinceCompleted = 0;
-		emp.completedMessage = `+${gathered}`; // `+${gathered} basic ingredient${
-		// 	gathered > 1 ? "s" : ""
-		// }`;
+	if (completed > 0) {
+		handleCompletions(completed, emp, action, inventory, worldState);
+	}
+}
+
+function handleCompletions(
+	completedAmount: number,
+	emp: Employee,
+	action: IAction,
+	inventory: Inventory,
+	worldState: WorldState
+): void {
+	// TK: gatherers need to gather a) more and b) different rarities
+	const amountGathered = completedAmount;
+	const gatheredLevel = 0;
+
+	// TK add experience here
+	inventory.changeIngredientAmount(gatheredLevel, amountGathered);
+	emp.secsSinceCompleted = 0;
+	emp.completedMessage = `+${completedAmount}`; // `+${gathered} basic ingredient${
+
+	emp.currentJobProgress = 0;
+	emp.setDestinationTile(undefined);
+	emp.currentAction = action.nextAction;
+}
+
+function handleTravelling(
+	emp: Employee,
+	action: IAction,
+	map: PrelifeMap,
+	worldState: WorldState
+): void {
+	const { playerAttributes: attributes } = worldState;
+
+	if (emp.destinationTile && !emp.currentTile.is(emp.destinationTile)) {
+		// still travelling, no need to update
+		return;
+	}
+
+	// TK choose best rarity depending on a) unlocks and b) discoveries
+	const resourceRarity = attributes.unlockedRarityLevel;
+
+	const resourceTile = map.getResourceTile(resourceRarity);
+
+	if (emp.currentTile.is(resourceTile)) {
+		// arrived
+		emp.setDestinationTile(undefined);
+		emp.currentAction = action.nextAction;
+		return;
+	}
+
+	if (!emp.destinationTile || emp.currentTile.is(emp.destinationTile)) {
+		const nextTile = map.getNextTileBetween(emp.currentTile, resourceTile);
+
+		if (nextTile) {
+			emp.setDestinationTile(nextTile);
+		}
+	}
+}
+
+function handleReturning(
+	emp: Employee,
+	action: IAction,
+	map: PrelifeMap,
+	worldState: WorldState
+): void {
+	const { playerAttributes: attributes } = worldState;
+
+	if (emp.destinationTile && !emp.currentTile.is(emp.destinationTile)) {
+		// still travelling, no need to update
+		return;
+	}
+
+	const homeTile = map.getComplexTile();
+
+	if (emp.currentTile.is(homeTile)) {
+		// arrived
+		emp.setDestinationTile(undefined);
+		emp.currentAction = action.nextAction;
+		return;
+	}
+
+	if (!emp.destinationTile || emp.currentTile.is(emp.destinationTile)) {
+		const nextTile = map.getNextTileBetween(emp.currentTile, homeTile);
+
+		if (nextTile) {
+			emp.setDestinationTile(nextTile);
+		}
 	}
 }

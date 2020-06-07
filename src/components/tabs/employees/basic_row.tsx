@@ -35,7 +35,7 @@ const BasicRow: React.FC<IBasicEmployeeRowProps> = ({
 			<td>avgHap</td>
 			{[
 				...Array(
-					Math.min(worldState.playerAttributes.maximumRarityLevel + 1, 7)
+					Math.min(worldState.playerAttributes.unlockedRarityLevel + 1, 7)
 				),
 			].map((a, i) => {
 				const stat = gameState.history.stats.filter(
