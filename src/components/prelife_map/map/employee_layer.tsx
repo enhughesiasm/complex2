@@ -11,6 +11,7 @@ const employeeColours = {
 	DELIVERY: "red",
 	GATHERING: "darkgreen",
 	MIXING: "black",
+	EXPLORING: "brown",
 };
 
 function getColour(jobType: JobTypes): string {
@@ -21,6 +22,8 @@ function getColour(jobType: JobTypes): string {
 			return employeeColours.GATHERING;
 		case JobTypes.Mixing:
 			return employeeColours.MIXING;
+		case JobTypes.Exploring:
+			return employeeColours.EXPLORING;
 		default:
 			return employeeColours.DEFAULT;
 	}

@@ -2,6 +2,7 @@ export default class PlayerAttributes {
 	overallWorkFactor: number = 1;
 
 	unlockedRarityLevel = 0; // this is a basic upgrade
+
 	rarityIncreaseFlatRate = 0.02;
 	rarityIncreaseBonusChance = 0.1; // adding to this is a POWERFUL upgrade
 
@@ -13,6 +14,9 @@ export default class PlayerAttributes {
 	// simple tasks like fetching ingredients etc
 	simple_task_baseSpeed = 40;
 
+	// all employees base travel speed
+	e_travel_baseSpeed = 0.35;
+
 	// employee gatherers
 	e_gath_baseSpeed = 30;
 
@@ -20,9 +24,11 @@ export default class PlayerAttributes {
 	e_mix_baseSpeed = 20;
 
 	// employee deliverers
-	e_travel_baseSpeed = 0.35; // speed through an individual tile
 	deliveryCarryCapacity = 20;
 	minimumDeliveryBatchSize = 1; // TK: expose this as clickable option
+
+	// employee explorers
+	e_explore_baseSpeed = 1; // time to fully explore a tile
 
 	/* INITIAL - AT HOME - JOB SPEEDS */
 	// base speed for initial gathering

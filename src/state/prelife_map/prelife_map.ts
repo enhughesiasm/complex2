@@ -114,6 +114,45 @@ export default class PrelifeMap {
 		throw new Error(`Can't find tile with resource level ${level}`);
 	}
 
+	isResourceDiscovered(level: number): boolean {
+		return this.getResourceTile(level).explored;
+	}
+
+	getDiscoveredResources(): number[] {
+		return this.tiles
+			.flat()
+			.filter((a) => a.resources >= 0 && a.explored)
+			.map((a) => a.resources);
+	}
+
+	getNearestUnexploredTile(origin: MapTile): MapTile | undefined {
+		const unexploredTiles = this.tiles
+			.flat()
+			.filter((a) => !a.explored)
+			.map((tile) => {
+				return {
+					position: tile.position,
+					distance: this.getDistanceBetweenTiles(origin, tile),
+				};
+			})
+			.sort((a, b) =>
+				a.distance < b.distance ? -1 : a.distance > b.distance ? 1 : 0
+			);
+
+		if (unexploredTiles.length > 0) {
+			return this.getTile(unexploredTiles[0].position);
+		}
+
+		return undefined;
+	}
+
+	getDistanceBetweenTiles(origin: MapTile, dest: MapTile) {
+		return (
+			Math.abs(origin.position[0] - dest.position[0]) +
+			Math.abs(origin.position[1] - dest.position[1])
+		);
+	}
+
 	getNextTileBetween(from: MapTile, to: MapTile) {
 		const dir: Direction = this.getDirectionBetweenTwoTiles(from, to);
 

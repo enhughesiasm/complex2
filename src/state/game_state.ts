@@ -1,3 +1,4 @@
+import { JobTypes } from "./jobs/job_types";
 import { version, tickLengthMs } from "./constants";
 import { GameTabType } from "./game_tabs";
 
@@ -162,13 +163,14 @@ export default class GameState {
 		}
 	}
 
-	hireEmployee(): void {
+	hireEmployee(assignedJob: JobTypes): void {
 		if (this.worldState.employees.canHire(this.worldState)) {
 			const cost = this.worldState.employees.getHireCost();
 			this.worldState.employees.hire(
 				this.worldState.prelifeMap.getTile(
 					this.worldState.prelifeMap.COMPLEX_POSITION
-				)
+				),
+				assignedJob
 			);
 			this.spendFavours(cost);
 		} else {

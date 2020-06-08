@@ -30,6 +30,15 @@ $link-hover: #f57191;
 $dark: $grey-darker;
 $light: $white-ter;
 
+// rarities
+$rarity0: whitesmoke;
+$rarity1: rgba(0, 0, 255, 0.404);
+$rarity2: rgba(0, 128, 0, 0.301);
+$rarity3: rgba(255, 255, 0, 0.329);
+$rarity4: rgba(255, 0, 0, 0.329);
+$rarity5: rgba(255, 166, 0, 0.37);
+$rarity6: rgba(128, 0, 128, 0.424);
+
 :root {
 	--primary: #{$primary};
 	--info: #{$info};
@@ -40,6 +49,13 @@ $light: $white-ter;
 	--link-hover: #{$link-hover};
 	--dark: #{$dark};
 	--light: #{$light};
+	--rarity0: #{$rarity0};
+	--rarity1: #{$rarity1};
+	--rarity2: #{$rarity2};
+	--rarity3: #{$rarity3};
+	--rarity4: #{$rarity4};
+	--rarity5: #{$rarity5};
+	--rarity6: #{$rarity6};
 }
 
 $turquoise: $primary;

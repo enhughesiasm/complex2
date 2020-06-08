@@ -5,6 +5,7 @@ import PlayerAttributes from "../../player_attributes";
 import Inventory from "../../inventory/inventory";
 import IAction from "./IAction";
 import PrelifeMap from "../../prelife_map/prelife_map";
+import rarities from "../../traits/rarity_levels";
 
 const gathererActionTypes = {
 	Travelling: "Travelling",
@@ -126,11 +127,16 @@ function handleCompletions(
 	inventory: Inventory,
 	worldState: WorldState
 ): void {
-	// TK: gatherers need to gather a) more and b) different rarities
+	// TK: gatherers need to gather more
 	const amountGathered = completedAmount;
-	const gatheredLevel = 0;
+	const gatheredLevel = emp.currentTile.resources;
+
+	if (gatheredLevel < 0 || gatheredLevel > rarities.maxLevel) {
+		throw new Error(`Gathered impossible resource: ${gatheredLevel}`);
+	}
 
 	// TK add experience here
+	// TK this should move to carrying, and then be dumped into the inventory on Return below
 	inventory.changeIngredientAmount(gatheredLevel, amountGathered);
 	emp.secsSinceCompleted = 0;
 	emp.completedMessage = `+${completedAmount}`; // `+${gathered} basic ingredient${
@@ -153,10 +159,22 @@ function handleTravelling(
 		return;
 	}
 
-	// TK choose best rarity depending on a) unlocks and b) discoveries
-	const resourceRarity = attributes.unlockedRarityLevel;
+	// choose best rarity that has been a) unlocked and b) discovered
+	const highestUnlocked = Math.min(
+		attributes.unlockedRarityLevel,
+		rarities.maxLevel
+	);
 
-	const resourceTile = map.getResourceTile(resourceRarity);
+	const discovered = map.getDiscoveredResources();
+
+	let rarity = 0;
+	discovered.forEach((level) => {
+		if (level > rarity && level <= highestUnlocked) {
+			rarity = level;
+		}
+	});
+
+	const resourceTile = map.getResourceTile(rarity);
 
 	if (emp.currentTile.is(resourceTile)) {
 		// arrived

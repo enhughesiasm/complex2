@@ -12,7 +12,11 @@ require("./customise.scss");
 // app specific
 require("./complex2.scss");
 
-const styleVariables = {
+interface IIndexable {
+	[key: string]: any;
+}
+
+const styleVariables: IIndexable = {
 	primary: getComputedStyle(document.documentElement).getPropertyValue(
 		"--primary"
 	),
@@ -29,6 +33,27 @@ const styleVariables = {
 	link: getComputedStyle(document.documentElement).getPropertyValue("--link"),
 	linkHover: getComputedStyle(document.documentElement).getPropertyValue(
 		"--link-hover"
+	),
+	rarity0: getComputedStyle(document.documentElement).getPropertyValue(
+		"--rarity0"
+	),
+	rarity1: getComputedStyle(document.documentElement).getPropertyValue(
+		"--rarity1"
+	),
+	rarity2: getComputedStyle(document.documentElement).getPropertyValue(
+		"--rarity2"
+	),
+	rarity3: getComputedStyle(document.documentElement).getPropertyValue(
+		"--rarity3"
+	),
+	rarity4: getComputedStyle(document.documentElement).getPropertyValue(
+		"--rarity4"
+	),
+	rarity5: getComputedStyle(document.documentElement).getPropertyValue(
+		"--rarity5"
+	),
+	rarity6: getComputedStyle(document.documentElement).getPropertyValue(
+		"--rarity6"
 	),
 };
 

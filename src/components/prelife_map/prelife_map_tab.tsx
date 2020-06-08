@@ -4,6 +4,7 @@ import TileLayer from "./map/tile_layer";
 import AppContext from "../../state/app_context";
 import EmployeeLayer from "./map/employee_layer";
 import StatusBar from "./map/status_bar";
+import ResourcesLayer from "./map/resources_layer";
 
 const PrelifeMapTab: React.FC = () => {
 	const { worldState } = useContext(AppContext);
@@ -28,6 +29,7 @@ const PrelifeMapTab: React.FC = () => {
 						<AppContext.Provider value={value}>
 							<StatusBar />
 							<TileLayer />
+							<ResourcesLayer />
 							<EmployeeLayer />
 						</AppContext.Provider>
 					</Stage>

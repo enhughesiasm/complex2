@@ -8,7 +8,7 @@ import MapTile from "../prelife_map/map_tile";
 export default class Employees {
 	unlocked: boolean = false;
 
-	unlockedJobs: Array<JobTypes> = [JobTypes.Gathering];
+	unlockedJobs: Array<JobTypes> = [JobTypes.Gathering, JobTypes.Exploring]; // TK: should just be Gathering at start
 
 	all: Array<Employee> = [];
 

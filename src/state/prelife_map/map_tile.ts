@@ -5,6 +5,7 @@ export default class MapTile {
 	size: number;
 	routeCode: string;
 	explored = false;
+	explorationCompletion = 0;
 	position: [number, number];
 	resources: number = -1;
 
@@ -26,6 +27,7 @@ export default class MapTile {
 		this.routeCode = routeCode;
 		this.size = size;
 		this.explored = explored;
+		this.explorationCompletion = explored ? 100 : 0;
 
 		if (resources >= 0) {
 			this.resources = resources;

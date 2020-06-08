@@ -6,7 +6,7 @@ import { JobTypes } from "./jobs/job_types";
 const debugValues: WorldState = new WorldState();
 
 debugValues.debug = true;
-debugValues.activeTab = GameTabType.MAP;
+debugValues.activeTab = GameTabType.EMPLOYEES;
 
 debugValues.storage.initialStorageTraits.push(
 	debugValues.traitGenerator.generateSingle(debugValues.playerAttributes)
@@ -47,6 +47,10 @@ debugValues.employees.hire(
 debugValues.employees.hire(
 	debugValues.prelifeMap.getTile(debugValues.prelifeMap.COMPLEX_POSITION),
 	JobTypes.Delivering
+);
+debugValues.employees.hire(
+	debugValues.prelifeMap.getTile(debugValues.prelifeMap.COMPLEX_POSITION),
+	JobTypes.Exploring
 );
 
 debugValues.targets

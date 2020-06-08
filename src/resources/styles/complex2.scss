@@ -1,31 +1,25 @@
 @import "variables.scss";
 
-// .number {
-// 	font-family: "Comic Sans MS";
-// 	font-variant-numeric: slashed-zero tabular-nums;
-// }
-
-// TK: fix up rarity colourscheme and make them look good everywhere. this'll do for visual differentation for now
 .is-rarity-0 {
-	background: whitesmoke;
+	background: $rarity0;
 }
 .is-rarity-1 {
-	background: rgba(0, 0, 255, 0.404);
+	background: $rarity1;
 }
 .is-rarity-2 {
-	background: rgba(0, 128, 0, 0.301);
+	background: $rarity2;
 }
 .is-rarity-3 {
-	background: rgba(255, 255, 0, 0.329);
+	background: $rarity3;
 }
 .is-rarity-4 {
-	background: rgba(255, 0, 0, 0.329);
+	background: $rarity4;
 }
 .is-rarity-5 {
-	background: rgba(255, 166, 0, 0.37);
+	background: $rarity5;
 }
 .is-rarity-6 {
-	background: rgba(128, 0, 128, 0.424);
+	background: $rarity6;
 }
 
 .smallPrint {

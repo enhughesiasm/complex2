@@ -9,6 +9,7 @@ import EmployeesTab from "../tabs/employees/employees_tab";
 import StorageTab from "../tabs/storage/storage_tab";
 import FontAwesome from "../shared/font_awesome";
 import PrelifeMapTab from "../prelife_map/prelife_map_tab";
+import { maxRarityFactor } from "../../state/constants";
 
 interface MainProps {}
 
@@ -88,7 +89,8 @@ const Main: React.SFC<MainProps> = (props) => {
 								<button
 									className="button is-rounded is-info is-super-small"
 									disabled={
-										worldState.playerAttributes.unlockedRarityLevel === 20
+										worldState.playerAttributes.unlockedRarityLevel ===
+										maxRarityFactor
 									}
 									onClick={() =>
 										worldState.playerAttributes.unlockedRarityLevel++
