@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import AppContext from "../../../state/app_context";
 
-import { Rect, Layer } from "react-konva";
+import { Layer } from "react-konva";
 import Tile from "./tile";
 
 const TileLayer: React.FC = () => {

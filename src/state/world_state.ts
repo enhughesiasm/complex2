@@ -15,6 +15,8 @@ import initialProcesses from "./tick/initial_processes";
 import Employees from "./employees/employee_manager";
 import LettersManager from "./letters/letters_manager";
 import PrelifeMap from "./prelife_map/prelife_map";
+import Research from "./research/research";
+import researchTree from "./data/research_tree";
 
 export default class WorldState {
 	debug: boolean = false; // overwritten in load_state if necessary
@@ -49,6 +51,8 @@ export default class WorldState {
 	storage: TraitStorage = new TraitStorage();
 
 	prelifeMap: PrelifeMap = new PrelifeMap();
+
+	research: Research = new Research(researchTree);
 
 	[index: string]: any;
 }

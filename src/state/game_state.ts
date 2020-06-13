@@ -1,3 +1,4 @@
+import { IResearchItem } from "./research/IResearchItem";
 import { JobTypes } from "./jobs/job_types";
 import { version, tickLengthMs } from "./constants";
 import { GameTabType } from "./game_tabs";
@@ -10,6 +11,7 @@ export default class GameState {
 	tickLengthMs: number = tickLengthMs;
 
 	patchNotesActive: boolean = false;
+	isDefault: boolean = false;
 
 	// state
 	worldState: WorldState;
@@ -18,7 +20,8 @@ export default class GameState {
 	history: GameHistory = new GameHistory();
 	//renderMap: RenderMap = new RenderMap();
 
-	constructor(worldState: WorldState) {
+	constructor(worldState: WorldState, isDefault: boolean) {
+		this.isDefault = isDefault;
 		this.worldState = worldState;
 	}
 
@@ -175,6 +178,16 @@ export default class GameState {
 			this.spendFavours(cost);
 		} else {
 			console.error("tried to hire employee while unable");
+		}
+	}
+
+	setResearch(id: string | undefined) {
+		if (this.isDefault) {
+			console.error("default game state!");
+		}
+
+		if (id) {
+			this.worldState.research.setResearch(id, this.worldState);
 		}
 	}
 

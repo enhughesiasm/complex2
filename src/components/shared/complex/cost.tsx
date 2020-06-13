@@ -12,7 +12,7 @@ const Cost: React.FC<CostProps> = ({ amount }) => {
 	return (
 		<>
 			{/* TK TODO - this needs a friendly number approach for higher costs */}
-			<span className="has-text-weight-bold">{amount}</span> {}
+			<span className="has-text-weight-bold is-family-code">{amount}</span> {}
 			<FontAwesome
 				icon="thumbs-up"
 				size="small"

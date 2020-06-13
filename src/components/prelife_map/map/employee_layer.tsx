@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import AppContext from "../../../state/app_context";
 
-import { Rect, Layer, Circle } from "react-konva";
+import { Layer, Circle } from "react-konva";
 import Konva from "konva";
 import { JobTypes } from "../../../state/jobs/job_types";
 
@@ -32,13 +32,13 @@ function getColour(jobType: JobTypes): string {
 const EmployeeLayer: React.FC = () => {
 	const { worldState } = useContext(AppContext);
 
-	const { prelifeMap } = worldState;
+	// const { prelifeMap } = worldState;
 
 	return (
 		<Layer>
 			{worldState.employees.all.map((e) => {
 				if (!e.currentTile) {
-					return;
+					return <></>;
 				}
 
 				return (

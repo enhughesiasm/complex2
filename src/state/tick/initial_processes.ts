@@ -16,6 +16,7 @@ import {
 } from "./processes/gather_basic_ingredients";
 import { ITickProcess } from "./ITickProcess";
 import { gatherers_tick } from "./processes/gatherers_tick";
+import { researchers_tick } from "./processes/researchers_tick";
 
 const initialProcesses: Array<ITickProcess> = [
 	// initial gather
@@ -41,6 +42,7 @@ const initialProcesses: Array<ITickProcess> = [
 
 	deliverers_tick,
 	explorers_tick,
+	researchers_tick,
 ];
 
 export default initialProcesses;

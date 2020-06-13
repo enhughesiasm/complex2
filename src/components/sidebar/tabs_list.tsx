@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import Tab from "./tab";
 import { GameTabType } from "../../state/game_tabs";
 import AppContext from "../../state/app_context";
+import { JobTypes } from "../../state/jobs/job_types";
 
 const TabsList: React.FC = (props) => {
 	const { worldState } = useContext(AppContext);
@@ -52,6 +53,20 @@ const TabsList: React.FC = (props) => {
 				EMPLOYEES
 			</Tab>
 			<Tab
+				icon={"flask"}
+				iconStatus={"success"}
+				type={GameTabType.RESEARCH}
+				enabled={true} // TK: revisit this
+				visible={
+					worldState.employees.unlockedJobs.filter(
+						(e) => e === JobTypes.Researching
+					).length > 0
+				}
+				needsAttention={false}
+			>
+				RESEARCH
+			</Tab>
+			<Tab
 				icon={"circle"}
 				iconStatus={"light"}
 				type={GameTabType.STORAGE}
@@ -63,7 +78,7 @@ const TabsList: React.FC = (props) => {
 			</Tab>
 			<Tab
 				icon={"globe-europe"}
-				iconStatus={"primary"}
+				iconStatus={"success"}
 				type={GameTabType.MAP}
 				enabled={true} // TK: revisit this
 				visible={true}

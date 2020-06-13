@@ -1,7 +1,6 @@
 import React, { useContext } from "react";
 import AppContext from "../../../state/app_context";
 import rarities from "../../../state/traits/rarity_levels";
-import FontAwesome from "../../shared/font_awesome";
 // import rarities from './../../'
 
 const StorageTab: React.FC = (props) => {

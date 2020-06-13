@@ -10,6 +10,7 @@ import StorageTab from "../tabs/storage/storage_tab";
 import FontAwesome from "../shared/font_awesome";
 import PrelifeMapTab from "../prelife_map/prelife_map_tab";
 import { maxRarityFactor } from "../../state/constants";
+import ResearchTab from "../tabs/research/research_tab";
 
 interface MainProps {}
 
@@ -21,6 +22,7 @@ const implementedTabs = Enumerable.from([
 	GameTabType.EMPLOYEES,
 	GameTabType.STORAGE,
 	GameTabType.MAP,
+	GameTabType.RESEARCH,
 ]);
 
 const Main: React.SFC<MainProps> = (props) => {
@@ -107,6 +109,7 @@ const Main: React.SFC<MainProps> = (props) => {
 				{worldState.activeTab === GameTabType.SHOP && <ShopTab />}
 				{worldState.activeTab === GameTabType.EMPLOYEES && <EmployeesTab />}
 				{worldState.activeTab === GameTabType.STORAGE && <StorageTab />}
+				{worldState.activeTab === GameTabType.RESEARCH && <ResearchTab />}
 				{worldState.activeTab === GameTabType.MAP && <PrelifeMapTab />}
 				{!implementedTabs.contains(worldState.activeTab) && (
 					<span>

@@ -1,6 +1,6 @@
+import { JobTypes } from "./../jobs/job_types";
 import { employeeBaseCost, employeeCostGrowthExponent } from "./../constants";
 import Employee from "./employee";
-import { JobTypes } from "../jobs/job_types";
 import WorldState from "../world_state";
 import { roundToNearest as roundUpToNearest } from "../../components/shared/functions";
 import MapTile from "../prelife_map/map_tile";
@@ -8,7 +8,7 @@ import MapTile from "../prelife_map/map_tile";
 export default class Employees {
 	unlocked: boolean = false;
 
-	unlockedJobs: Array<JobTypes> = [JobTypes.Gathering, JobTypes.Exploring]; // TK: should just be Gathering at start
+	unlockedJobs: Array<JobTypes> = [JobTypes.Gathering];
 
 	all: Array<Employee> = [];
 
@@ -36,5 +36,9 @@ export default class Employees {
 
 	hire(startTile: MapTile, jobType: JobTypes = JobTypes.NONE): void {
 		this.all.push(new Employee(startTile, jobType));
+	}
+
+	getAmountAssigned(jobType: JobTypes): number {
+		return this.all.filter((a) => a.assignedJob === jobType).length;
 	}
 }

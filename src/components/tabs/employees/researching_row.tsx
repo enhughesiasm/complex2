@@ -3,18 +3,18 @@ import AppContext from "../../../state/app_context";
 import { JobTypes } from "../../../state/jobs/job_types";
 import CostButton from "../../shared/complex/cost_button";
 
-const ExploringRow: React.FC = () => {
+const ResearchingRow: React.FC = () => {
 	const { worldState, gameState } = useContext(AppContext);
 
-	const { prelifeMap } = worldState;
+	// const { prelifeMap } = worldState;
 
 	const working = worldState.employees.all.filter(
-		(e) => e.assignedJob === JobTypes.Exploring
+		(e) => e.assignedJob === JobTypes.Researching
 	).length;
 
 	return (
 		<tr>
-			<td className="has-text-weight-bold">{JobTypes.Exploring}</td>
+			<td className="has-text-weight-bold">{JobTypes.Researching}</td>
 			<td>
 				<span
 					className={
@@ -31,7 +31,7 @@ const ExploringRow: React.FC = () => {
 					text="hire"
 					amount={worldState.employees.getHireCost()}
 					canAfford={worldState.employees.canHire(worldState)}
-					onPurchase={() => gameState.hireEmployee(JobTypes.Exploring)}
+					onPurchase={() => gameState.hireEmployee(JobTypes.Researching)}
 				/>
 			</td>
 			<td>avgHap</td>
@@ -40,24 +40,10 @@ const ExploringRow: React.FC = () => {
 					Math.min(worldState.playerAttributes.unlockedRarityLevel + 1, 7)
 				),
 			].map((a, i) => {
-				const discovered = prelifeMap.isResourceDiscovered(i);
-				return (
-					<td
-						key={i}
-						className={
-							"is-rarity-" +
-							i +
-							" " +
-							"has-text-" +
-							(discovered ? "success" : "danger")
-						}
-					>
-						{discovered ? "Discovered" : "Undiscovered"}
-					</td>
-				);
+				return <td key={i}>.</td>;
 			})}
 		</tr>
 	);
 };
 
-export default ExploringRow;
+export default ResearchingRow;

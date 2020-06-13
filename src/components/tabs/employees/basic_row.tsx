@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import AppContext from "../../../state/app_context";
 import { JobTypes } from "../../../state/jobs/job_types";
 import { historyMonitorTypes } from "../../../state/history/history_monitors";
+import CostButton from "../../shared/complex/cost_button";
 
 interface IBasicEmployeeRowProps {
 	jobType: JobTypes;
@@ -31,6 +32,14 @@ const BasicRow: React.FC<IBasicEmployeeRowProps> = ({
 					{working}
 				</span>{" "}
 				{working === 1 ? "person" : "people"}
+			</td>
+			<td>
+				<CostButton
+					text="hire"
+					amount={worldState.employees.getHireCost()}
+					canAfford={worldState.employees.canHire(worldState)}
+					onPurchase={() => gameState.hireEmployee(jobType)}
+				/>
 			</td>
 			<td>avgHap</td>
 			{[

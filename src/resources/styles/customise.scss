@@ -16,9 +16,12 @@ html {
 body,
 #app,
 #complexPage {
-	height: 100%;
-	min-height: 100%;
+	min-height: 100vh;
 }
+
+// .columns .column.is-full-height {
+// 	//padding-bottom: 0 !important;
+// }
 
 .sidebarFooter {
 	position: sticky;
@@ -35,58 +38,58 @@ body,
 //     padding: 1rem 1.5rem;
 // }
 
-.has-background-primary,
-.has-background-dark {
-	&:not(.is-light) {
-		.title {
-			color: $white-ter;
-		}
-		.subtitle {
-			color: $white-ter;
-		}
-		a {
-			color: $white-ter;
-		}
-		p {
-			color: $white-ter;
-		}
-		.content {
-			color: $white-ter;
-		}
-	}
-}
+// .has-background-primary,
+// .has-background-dark {
+// 	&:not(.is-light) {
+// 		.title {
+// 			color: $white-ter;
+// 		}
+// 		.subtitle {
+// 			color: $white-ter;
+// 		}
+// 		a {
+// 			color: $white-ter;
+// 		}
+// 		p {
+// 			color: $white-ter;
+// 		}
+// 		.content {
+// 			color: $white-ter;
+// 		}
+// 	}
+// }
 
-$lightenOpacity: 0.2;
+// $lightenOpacity: 0.2;
 
-.has-background-danger {
-	&.is-light {
-		background-color: rgba($danger, $lightenOpacity) !important;
-	}
-}
+// .has-background-danger {
+// 	&.is-light {
+// 		background-color: rgba($danger, $lightenOpacity) !important;
+// 	}
+// }
 
-.has-background-success {
-	&.is-light {
-		background-color: rgba($success, $lightenOpacity) !important;
-	}
-}
+// .has-background-success {
+// 	&.is-light {
+// 		background-color: rgba($success, $lightenOpacity) !important;
+// 	}
+// }
 
-.has-background-warning {
-	&.is-light {
-		background-color: rgba($warning, $lightenOpacity) !important;
-	}
-}
+// .has-background-warning {
+// 	&.is-light {
+// 		background-color: rgba($warning, $lightenOpacity) !important;
+// 	}
+// }
 
-.has-background-primary {
-	&.is-light {
-		background-color: rgba($primary, $lightenOpacity) !important;
-	}
-}
+// .has-background-primary {
+// 	&.is-light {
+// 		background-color: rgba($primary, $lightenOpacity) !important;
+// 	}
+// }
 
-.has-background-dark {
-	&.is-light {
-		background-color: rgba($dark, $lightenOpacity) !important;
-	}
-}
+// .has-background-dark {
+// 	&.is-light {
+// 		background-color: rgba($dark, $lightenOpacity) !important;
+// 	}
+// }
 
 p.has-drop-cap::first-letter {
 	font-size: 60px;

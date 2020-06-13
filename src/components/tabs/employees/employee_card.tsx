@@ -15,7 +15,7 @@ const EmployeeCard: React.FC<IEmployeeCardProps> = ({ employee }) => {
 	return (
 		<div className="tile is-child is-4" style={{ padding: "1rem" }}>
 			<div className="card">
-				<div className="card-header has-background-primary is-light">
+				<div className="card-header has-background-info-light has-text-success">
 					<div className="card-header-title content">{employee.name}</div>
 				</div>
 				<div className="card-content table-container">

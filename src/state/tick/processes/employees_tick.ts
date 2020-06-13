@@ -1,7 +1,6 @@
 import WorldState from "../../world_state";
 import Employee from "../../employees/employee";
 import PlayerAttributes from "../../player_attributes";
-import { lerp } from "../../../components/shared/functions";
 
 export const employees_tick = {
 	enabled: false,

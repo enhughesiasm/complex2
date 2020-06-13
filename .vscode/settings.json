@@ -3,5 +3,6 @@
 		"**/build": true,
 		"**/libs": true,
 		"**/node_modules": true
-	}
+	},
+	"editor.codeActionsOnSave": ["source.addMissingImports"]
 }

@@ -1,4 +1,3 @@
-import { ITraitGenerator } from "./../../traits/generator/ITraitGenerator";
 import { JobTypes } from "./../../jobs/job_types";
 import WorldState from "../../world_state";
 import Employee from "../../employees/employee";
@@ -35,12 +34,7 @@ export const mixers_tick = {
 	priority: 22,
 
 	run(worldState: WorldState, delta_sec: number) {
-		const {
-			employees,
-			playerAttributes: attributes,
-			traitGenerator: generator,
-			storage,
-		} = worldState;
+		const { employees, playerAttributes: attributes, storage } = worldState;
 
 		const mixers = employees.all.filter(
 			(a) => a.assignedJob === JobTypes.Mixing
@@ -125,12 +119,12 @@ function tickMixer(
 					emp.secsSinceCompleted = 0;
 					emp.completedMessage = `+${madeTotal}`;
 					emp.currentAction = action.nextAction;
-					break;
 				} else {
 					// go back to fetching
 					emp.currentAction = action.nextAction;
 				}
 
+				break;
 			default:
 				console.error("Invalid action: " + action.action);
 				break;

@@ -6,10 +6,15 @@ const SidebarStatus: React.FC = (props) => {
 	const { worldState } = useContext(AppContext);
 
 	return (
-		<aside className="has-text-centered notification is-light">
-			<div className="notification is-warning">
+		<aside className="has-text-centered">
+			<div
+				className="notification is-warning is-flex"
+				style={{ justifyContent: "center", alignItems: "center" }}
+			>
 				<span className="has-text-weight-bold">Favours: </span>
-				<span className="">{worldState.favours}</span>
+				<span className="is-size-4 pl-1 is-family-code">
+					{worldState.favours}
+				</span>
 			</div>
 			<div className="is-divider" data-content="TRAITS temp"></div>
 			<div>

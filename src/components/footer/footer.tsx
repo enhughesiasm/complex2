@@ -7,13 +7,13 @@ const Footer: React.FC = (props) => {
 
 	return (
 		<>
-			<aside className="sidebarFooter has-background-dark has-text-light is-size-7">
+			<aside className="sidebarFooter is-size-7">
 				<span>v{gameState.version}&nbsp;</span>
 				<button
-					className="button is-light is-small is-rounded"
+					className="button is-success is-small is-rounded"
 					onClick={gameState.togglePatchNotes}
 				>
-					changelog
+					about
 				</button>
 				<span>
 					&copy;{" "}

@@ -10,7 +10,7 @@ interface IAppContext {
 const temp_ws = new WorldState();
 // these defaults will be ignored as the Provider provides an actual value
 const defaults: IAppContext = {
-	gameState: new GameState(temp_ws),
+	gameState: new GameState(temp_ws, true),
 	worldState: temp_ws,
 };
 

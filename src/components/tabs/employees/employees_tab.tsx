@@ -1,15 +1,11 @@
 import React, { useContext } from "react";
 import AppContext from "../../../state/app_context";
 
-// import { useTransition, animated } from "react-spring";
 import EmployeeCard from "./employee_card";
-import FontAwesome from "../../shared/font_awesome";
-import Cost from "../../shared/complex/cost";
-import CostButton from "../../shared/complex/cost_button";
 import EmployeesSummary from "./employees_summary";
 
 const EmployeesTab: React.FC = (props) => {
-	const { gameState, worldState } = useContext(AppContext);
+	const { worldState } = useContext(AppContext);
 
 	// const surroundingsTransition = useTransition(
 	// 	gameState.areSurroundingsUnlocked(),

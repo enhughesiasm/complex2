@@ -5,6 +5,7 @@ import { JobTypes } from "../../../state/jobs/job_types";
 import UnassignedRow from "./unassigned_row";
 import BasicRow from "./basic_row";
 import ExploringRow from "./exploring_row";
+import ResearchingRow from "./researching_row";
 
 const EmployeesSummary: React.FC = () => {
 	const { worldState, gameState } = useContext(AppContext);
@@ -59,6 +60,7 @@ const EmployeesSummary: React.FC = () => {
 										<BasicRow jobType={job} statsPrefix="DeliveredTraits" />
 									)}
 									{job === JobTypes.Exploring && <ExploringRow />}
+									{job === JobTypes.Researching && <ResearchingRow />}
 								</React.Fragment>
 							);
 						})}

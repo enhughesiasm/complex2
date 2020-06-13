@@ -13,7 +13,7 @@ const Sidebar: React.SFC<SidebarProps> = (props) => {
 
 	return (
 		<>
-			<section className="column is-one-fifth has-background-dark has-text-white is-full-height">
+			<section className="column is-one-fifth has-text-white has-background-primary is-full-height">
 				<Title />
 				<SidebarNav />
 				<SidebarStatus />

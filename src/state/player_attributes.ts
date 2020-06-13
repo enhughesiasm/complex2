@@ -23,6 +23,8 @@ export default class PlayerAttributes {
 	// employee mixers
 	e_mix_baseSpeed = 20;
 
+	e_research_baseSpeed = 2;
+
 	// employee deliverers
 	deliveryCarryCapacity = 20;
 	minimumDeliveryBatchSize = 1; // TK: expose this as clickable option

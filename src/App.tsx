@@ -26,7 +26,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
 		super(props);
 
 		const worldState = loadWorldState();
-		const gameState = new GameState(worldState);
+		const gameState = new GameState(worldState, false);
 
 		this.state = {
 			lastTickTime: moment(),

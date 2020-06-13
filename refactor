@@ -1,0 +1,37 @@
+-> useState / useEffect to cache things to prevent rerenders (see ResearchHover)
+
+
+-------------------
+
+- pure functions don't have hidden dependencies - all dependencies are passed in as parameters
+
+- pass direct values rather than entire objects that have values
+
+ - objects are immutable, internal state is set at construction, and no subsequent modifications are allowed
+
+only get; no set;
+get has no side effects, it cannot change things
+
+setters are "give me an object based on this object but with the following change"
+ timeOfDay.WithMinute(newMinute) : TimeOfDay
+
+other functions return new copies of objects with the correct properties set 
+
+look at that recursive stack!
+
+Stack<T> interface
+
+Empty<T> implements Stack<T>
+depth: 0
+pop() exception
+
+NonEmpty - 
+constructor (T newTop, Stack<T> previous)
+top = newTop;
+tail = previous
+
+depth() return tail.depth + 1
+pop() return tail;
+top() return top;
+
+NB: T has to be immutable!

@@ -59,12 +59,7 @@ export const deliverers_tick = {
 	priority: 23,
 
 	run(worldState: WorldState, delta_sec: number) {
-		const {
-			employees,
-			playerAttributes: attributes,
-			traitGenerator: generator,
-			storage,
-		} = worldState;
+		const { employees, playerAttributes: attributes, storage } = worldState;
 
 		const deliverers = employees.all.filter(
 			(a) => a.assignedJob === JobTypes.Delivering

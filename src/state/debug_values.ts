@@ -6,7 +6,7 @@ import { JobTypes } from "./jobs/job_types";
 const debugValues: WorldState = new WorldState();
 
 debugValues.debug = true;
-debugValues.activeTab = GameTabType.EMPLOYEES;
+debugValues.activeTab = GameTabType.RESEARCH;
 
 debugValues.storage.initialStorageTraits.push(
 	debugValues.traitGenerator.generateSingle(debugValues.playerAttributes)
@@ -36,6 +36,12 @@ if (process) {
 	process.enabled = true;
 }
 
+debugValues.targets
+	.find((a) => a.id === targetIDs.UnlockNewJobs)
+	?.claim(debugValues);
+
+debugValues.employees.unlockedJobs.push(JobTypes.Researching);
+
 debugValues.employees.hire(
 	debugValues.prelifeMap.getTile(debugValues.prelifeMap.COMPLEX_POSITION),
 	JobTypes.Gathering
@@ -50,11 +56,23 @@ debugValues.employees.hire(
 );
 debugValues.employees.hire(
 	debugValues.prelifeMap.getTile(debugValues.prelifeMap.COMPLEX_POSITION),
-	JobTypes.Exploring
+	JobTypes.Researching
 );
-
-debugValues.targets
-	.find((a) => a.id === targetIDs.UnlockNewJobs)
-	?.claim(debugValues);
+// debugValues.employees.hire(
+// 	debugValues.prelifeMap.getTile(debugValues.prelifeMap.COMPLEX_POSITION),
+// 	JobTypes.Researching
+// );
+// debugValues.employees.hire(
+// 	debugValues.prelifeMap.getTile(debugValues.prelifeMap.COMPLEX_POSITION),
+// 	JobTypes.Researching
+// );
+// debugValues.employees.hire(
+// 	debugValues.prelifeMap.getTile(debugValues.prelifeMap.COMPLEX_POSITION),
+// 	JobTypes.Researching
+// );
+// debugValues.employees.hire(
+// 	debugValues.prelifeMap.getTile(debugValues.prelifeMap.COMPLEX_POSITION),
+// 	JobTypes.Researching
+// );
 
 export default debugValues;

@@ -198,8 +198,6 @@ function handleReturning(
 	map: PrelifeMap,
 	worldState: WorldState
 ): void {
-	const { playerAttributes: attributes } = worldState;
-
 	if (emp.destinationTile && !emp.currentTile.is(emp.destinationTile)) {
 		// still travelling, no need to update
 		return;
