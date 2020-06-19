@@ -233,6 +233,96 @@ span.bubbles {
 	}
 }
 
-/* tree */
-// @import "./tree.scss";
-@import "./treeflex.css";
+$bigSize: 35px;
+$littleSize: 20px;
+
+@keyframes bigglow {
+	0% {
+		transform: translate(15px, 6px);
+		opacity: 0.5;
+		width: 0;
+		height: 0;
+	}
+	50% {
+		transform: translate(0, 4px);
+		opacity: 0.2;
+		width: $bigSize;
+		height: $bigSize;
+	}
+	100% {
+		transform: translate(15px, 6px);
+		opacity: 0.5;
+		width: 0;
+		height: 0;
+	}
+}
+
+@keyframes littleglow {
+	0% {
+		transform: translate(0, 0px);
+		opacity: 0.3;
+		width: $littleSize;
+		height: $littleSize;
+	}
+	50% {
+		transform: translate(5px, 0px);
+		opacity: 0.1;
+		width: $littleSize / 2;
+		height: $littleSize / 2;
+	}
+	100% {
+		transform: translate(0, 0px);
+		opacity: 0.3;
+		width: $littleSize;
+		height: $littleSize;
+	}
+}
+
+.glow {
+	position: relative;
+	justify-content: center;
+	align-items: center;
+
+	.inner-glow {
+		position: absolute;
+		opacity: 0;
+		border-radius: 100px;
+		height: 0;
+		width: 0;
+		left: 55px;
+		animation: bigglow 8s infinite;
+		z-index: 1000000;
+	}
+
+	// &::before {
+	// 	$size: 20px;
+	// 	content: "";
+	// 	border-radius: 100px;
+	// 	height: $size;
+	// 	width: $size;
+	// 	position: absolute;
+	// 	left: 60px;
+	// 	animation: littleglow 2.5s infinite;
+	// 	animation-delay: 1s;
+	// 	z-index: 1000000;
+	// }
+
+	$rarityList: $rarity0 $rarity1 $rarity2 $rarity3 $rarity4 $rarity5 $rarity6;
+	@mixin get-rarity($index) {
+		background-color: nth($rarityList, $index);
+	}
+
+	@for $i from 0 through 6 {
+		&.rarity-#{$i} {
+			// &::after {
+			// 	@include get-rarity($i + 1);
+			// }
+			// &::before {
+			// 	@include get-rarity($i + 1);
+			// }
+			.inner-glow {
+				@include get-rarity($i + 1);
+			}
+		}
+	}
+}

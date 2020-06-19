@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { IResearchItem } from "../../../state/research/IResearchItem";
 import AppContext from "../../../state/app_context";
+import Cost from "../../shared/complex/cost";
 
 interface IResearchNodeProps {
 	nodeData?: IResearchItem;
@@ -9,25 +10,36 @@ interface IResearchNodeProps {
 const ResearchNode: React.FC<IResearchNodeProps> = ({ nodeData }) => {
 	const { worldState, gameState } = useContext(AppContext);
 
+	const { research } = worldState;
+
+	const [remainingCost, setRemainingCost] = useState(
+		nodeData?.costRemaining ?? nodeData?.cost ?? 0
+	);
+
+	const item = research.getItem(nodeData?.research_id ?? "");
+
+	useEffect(() => {
+		setRemainingCost(item.costRemaining ?? item.cost);
+	}, [item, item.costRemaining]);
+
 	let background = "";
 
-	if (nodeData) {
-		const node = worldState.research.getItem(nodeData?.research_id);
+	background = item.completed
+		? "has-background-success-light"
+		: item.prerequisitesMet(worldState)
+		? "has-background-primary-light"
+		: "has-background-danger-light";
 
-		background = node.completeClaimed
-			? "has-background-success"
-			: node.prerequisitesMet(worldState)
-			? "has-background-primary"
-			: "has-background-danger";
+	const foreground =
+		background === "has-background-light" ? "has-text-dark" : "has-text-dark";
 
-		if (worldState.research.currentId === node.research_id) {
-			background = "has-background-info";
-		}
+	if (worldState.research.currentId === item.research_id) {
+		background = "has-background-info-light";
 	}
 
 	return (
 		<h2
-			className={"subtitle has-text-white " + background}
+			className={"subtitle " + foreground + " " + background}
 			style={{
 				border: "1px solid black",
 				background: "white",
@@ -40,6 +52,15 @@ const ResearchNode: React.FC<IResearchNodeProps> = ({ nodeData }) => {
 			}}
 		>
 			{nodeData?.name}
+			{remainingCost > 0 && (
+				<p>
+					<Cost
+						amount={remainingCost}
+						style_negative="dark"
+						style_positive="success"
+					/>
+				</p>
+			)}
 		</h2>
 	);
 };

@@ -32,11 +32,14 @@ const HandsTrait: React.FC<HandsTraitProps> = (props) => {
 					{props.tag}
 				</span>
 			)}
-			<span className="imgContainer">
-				{[...Array(bubbles)].map((a, i) => (
-					<div key={i} className="bubble" />
-				))}
-				<img alt={"trait: " + props.trait.name} src={image} />
+			<span className={"imgContainer"}>
+				<span className={"glow is-flex rarity-" + props.trait.rarity}>
+					<span
+						className={"inner-glow"}
+						style={{ animationDelay: Math.random() * 8 + "s" }}
+					></span>
+					<img alt={"trait: " + props.trait.name} src={image} />
+				</span>
 			</span>
 			<span className="traitName is-small-caps">{props.trait.name}</span>
 

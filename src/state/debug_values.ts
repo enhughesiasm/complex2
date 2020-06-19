@@ -2,6 +2,7 @@ import WorldState from "./world_state";
 import { GameTabType } from "./game_tabs";
 import { targetIDs } from "./targets/target_ids";
 import { JobTypes } from "./jobs/job_types";
+import ResearchIds from "./data/research_items/r_ids";
 
 const debugValues: WorldState = new WorldState();
 
@@ -9,10 +10,16 @@ debugValues.debug = true;
 debugValues.activeTab = GameTabType.RESEARCH;
 
 debugValues.storage.initialStorageTraits.push(
-	debugValues.traitGenerator.generateSingle(debugValues.playerAttributes)
+	debugValues.traitGenerator.generateSingle(
+		debugValues.playerAttributes,
+		debugValues.research
+	)
 );
 debugValues.storage.initialStorageTraits.push(
-	debugValues.traitGenerator.generateSingle(debugValues.playerAttributes)
+	debugValues.traitGenerator.generateSingle(
+		debugValues.playerAttributes,
+		debugValues.research
+	)
 );
 
 debugValues.inventory.setIngredientAmount(0, 5);
@@ -29,7 +36,7 @@ debugValues.employees.unlocked = true;
 
 debugValues.letterManager.markAllRead();
 
-debugValues.favours = 1000;
+debugValues.favours = 118000;
 
 const process = debugValues.processList.find((a) => a.id === "EMPLOYEES_TICK");
 if (process) {
@@ -58,6 +65,15 @@ debugValues.employees.hire(
 	debugValues.prelifeMap.getTile(debugValues.prelifeMap.COMPLEX_POSITION),
 	JobTypes.Researching
 );
+
+debugValues.research.markComplete(ResearchIds.Researchers, debugValues);
+debugValues.research.markComplete(ResearchIds.Building, debugValues);
+
+debugValues.employees.hire(
+	debugValues.prelifeMap.getTile(debugValues.prelifeMap.COMPLEX_POSITION),
+	JobTypes.Building
+);
+
 // debugValues.employees.hire(
 // 	debugValues.prelifeMap.getTile(debugValues.prelifeMap.COMPLEX_POSITION),
 // 	JobTypes.Researching

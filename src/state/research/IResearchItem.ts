@@ -4,11 +4,15 @@ export interface IResearchItem {
 	research_id: string;
 	name: string;
 	description: string;
+	cost: number;
+	costRemaining?: number;
 	unlocked: boolean;
 	prerequisitesMet(worldState: WorldState): boolean;
 	progressPercent: number;
 	researchDifficulty: number;
-	completeClaimed: boolean;
-	onComplete(worldState: WorldState): void;
+	completed: boolean;
 	children: Array<IResearchItem>;
+
+	onComplete(worldState: WorldState): void;
+	getValue(): number;
 }

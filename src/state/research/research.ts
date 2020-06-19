@@ -7,18 +7,39 @@ export default class Research {
 	currentId?: string;
 	hoverId?: string;
 
+	maxDepth?: number;
+	maxWidth?: number;
+
 	constructor(tree: IResearchItem) {
 		this.tree = tree;
+	}
+
+	getMaxDepth(): number {
+		if (this.maxDepth) return this.maxDepth;
+
+		const getDepth = (node: IResearchItem): number =>
+			1 +
+			(node.children.length > 0
+				? Math.max(...node.children.map((c) => getDepth(c)))
+				: 0);
+
+		this.maxDepth = getDepth(this.tree);
+
+		return this.maxDepth;
 	}
 
 	setHover(node: IResearchItem | undefined) {
 		this.hoverId = node?.research_id;
 	}
 
-	setResearch(id: string, worldState: WorldState) {
+	clearResearch(): void {
+		this.currentId = undefined;
+	}
+
+	setResearch(id: string, worldState: WorldState): void {
 		const node = this.getItem(id);
 
-		if (node.progressPercent >= 100 || node.completeClaimed) return; // TK handle repeatable research
+		if (node.progressPercent >= 100 || node.completed) return; // TK handle repeatable research
 		if (!node.prerequisitesMet(worldState)) return;
 
 		this.currentId = node.research_id;
@@ -30,9 +51,21 @@ export default class Research {
 
 			node.onComplete(worldState);
 			node.progressPercent = 100;
-			node.completeClaimed = true;
+			node.completed = true;
 			this.currentId = undefined;
 		}
+	}
+
+	markComplete(id: string, worldState: WorldState): void {
+		if (!id) return;
+
+		const node = this.getItem(id);
+		if (!node) return;
+
+		node.completed = true;
+		node.costRemaining = 0;
+		node.progressPercent = 100;
+		node.onComplete(worldState);
 	}
 
 	getItem(id: string): IResearchItem {

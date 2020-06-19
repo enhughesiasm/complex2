@@ -5,7 +5,7 @@ import {
 	clamp,
 } from "./../../../components/shared/functions";
 import rarities, { IRarityLevel } from "../rarity_levels";
-import { ITraitGenerator } from "./ITraitGenerator";
+
 import generateTraitName from "./names/generate_names";
 import {
 	create_guid,
@@ -14,6 +14,7 @@ import {
 import ITrait from "../ITrait";
 import PlayerAttributes from "../../player_attributes";
 import TraitsSet from "../../trait_storage/traits_set";
+import Research from "../../research/research";
 
 const rarityLevels = rarities.rarityLevels;
 
@@ -31,11 +32,13 @@ function assembleSingle(l: IRarityLevel, nuanceFraction: number): ITrait {
 	};
 }
 
-export default class TraitGenerator implements ITraitGenerator {
+export default class TraitGenerator {
 	maxPossibleLevel: number = Math.max(...rarityLevels.map((a) => a.level));
 
-	generateSingle(attributes: PlayerAttributes): ITrait {
-		const rarityLevel = this.chooseTraitRarity(attributes.unlockedRarityLevel);
+	generateSingle(attributes: PlayerAttributes, research: Research): ITrait {
+		const rarityLevel = this.chooseTraitRarity(
+			attributes.getRarityLevel(research)
+		);
 		return assembleSingle(rarityLevel, attributes.rarityIncreaseBonusChance);
 	}
 
@@ -50,6 +53,7 @@ export default class TraitGenerator implements ITraitGenerator {
 	generateMany(
 		ingredients: TraitsSet,
 		attributes: PlayerAttributes,
+		research: Research,
 		maxPermittedLevel: number
 	): TraitsSet {
 		const traits = new TraitsSet();
@@ -98,11 +102,12 @@ export default class TraitGenerator implements ITraitGenerator {
 
 		// maxRarityLevel can go higher than maxRarityLevel (i.e. should be renamed 😂)
 		// so we iterate that many times to give higher chances for traits to be rarer
-		for (let i = 0; i < attributes.unlockedRarityLevel; i++) {
+		const unlockedRarityLevel = attributes.getRarityLevel(research);
+		for (let i = 0; i < unlockedRarityLevel; i++) {
 			traits.moveFractionUpLevel(
 				attributes.rarityIncreaseFlatRate,
 				attributes.rarityIncreaseBonusChance,
-				Math.min(attributes.unlockedRarityLevel, maxPermittedLevel) // there's still a cap
+				Math.min(unlockedRarityLevel, maxPermittedLevel) // there's still a cap
 			);
 		}
 

@@ -37,7 +37,10 @@ const ExploringRow: React.FC = () => {
 			<td>avgHap</td>
 			{[
 				...Array(
-					Math.min(worldState.playerAttributes.unlockedRarityLevel + 1, 7)
+					Math.min(
+						worldState.playerAttributes.getRarityLevel(worldState.research) + 1,
+						7
+					)
 				),
 			].map((a, i) => {
 				const discovered = prelifeMap.isResourceDiscovered(i);

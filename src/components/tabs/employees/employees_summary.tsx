@@ -6,6 +6,7 @@ import UnassignedRow from "./unassigned_row";
 import BasicRow from "./basic_row";
 import ExploringRow from "./exploring_row";
 import ResearchingRow from "./researching_row";
+import BuildingRow from "./building_row";
 
 const EmployeesSummary: React.FC = () => {
 	const { worldState, gameState } = useContext(AppContext);
@@ -46,7 +47,7 @@ const EmployeesSummary: React.FC = () => {
 				<table className="table">
 					<tbody>
 						{/* TK: probably some duplication in these components - refactor! */}
-						<UnassignedRow unassigned={unassigned} />
+						{unassigned > 0 && <UnassignedRow unassigned={unassigned} />}
 						{worldState.employees.unlockedJobs.map((job) => {
 							return (
 								<React.Fragment key={job}>
@@ -61,6 +62,7 @@ const EmployeesSummary: React.FC = () => {
 									)}
 									{job === JobTypes.Exploring && <ExploringRow />}
 									{job === JobTypes.Researching && <ResearchingRow />}
+									{job === JobTypes.Building && <BuildingRow />}
 								</React.Fragment>
 							);
 						})}

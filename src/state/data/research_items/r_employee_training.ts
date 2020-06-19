@@ -4,20 +4,23 @@ import ResearchIds from "./r_ids";
 import WorldState from "../../world_state";
 
 export const r_employee_training: IResearchItem = {
-	research_id: ResearchIds.EmployeeTraining,
+	research_id: ResearchIds.BasicEmployeeTraining,
 	children: [r_carry_capacity],
 	unlocked: false,
-	name: "Employee Training",
-	description: "Speed up basic tasks and unlock future trainings.",
+	name: "Basic Employee Training",
+	cost: 100,
+	description: "Speed up simple tasks.",
 	progressPercent: 0,
 	researchDifficulty: 1,
 	prerequisitesMet(worldState: WorldState): boolean {
 		// const { research } = worldState;
 		return this.unlocked && true;
 	},
-	completeClaimed: false,
+	completed: false,
 	onComplete(worldState: WorldState): void {
-		worldState.playerAttributes.deliveryCarryCapacity += 5;
 		this.children.forEach((c) => (c.unlocked = true));
+	},
+	getValue(): number {
+		return 1.5;
 	},
 };

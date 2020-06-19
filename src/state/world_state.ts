@@ -1,7 +1,6 @@
 import moment, { Moment } from "moment";
 import { GameTabType } from "./game_tabs";
 import { targets, ITarget } from "./targets/targets";
-import { ITraitGenerator } from "./traits/generator/ITraitGenerator";
 import TraitGenerator from "./traits/generator/trait_generator";
 import Inventory from "./inventory/inventory";
 import Flags from "./world_flags";
@@ -28,6 +27,7 @@ export default class WorldState {
 	now: Moment = moment();
 
 	favours: number = 0;
+	favoursSpent: number = 0;
 	totalTraitsProduced: number = 0;
 	totalTraitsWasted: number = 0;
 
@@ -44,7 +44,7 @@ export default class WorldState {
 	shop: Shop = new Shop();
 	targets: Array<ITarget> = targets;
 
-	traitGenerator: ITraitGenerator = new TraitGenerator();
+	traitGenerator: TraitGenerator = new TraitGenerator();
 
 	employees: Employees = new Employees();
 
@@ -53,6 +53,18 @@ export default class WorldState {
 	prelifeMap: PrelifeMap = new PrelifeMap();
 
 	research: Research = new Research(researchTree);
+
+	spendFavours(amount: number): boolean {
+		if (this.favours >= amount) {
+			this.favours -= amount;
+			this.favoursSpent += amount;
+			return true;
+		}
+		console.error(
+			`Tried to spend ${amount} favours, only have ${this.favours}. Check the stack - missing a check somewhere!`
+		);
+		return false;
+	}
 
 	[index: string]: any;
 }

@@ -2,10 +2,12 @@ const ResearchIds = {
 	Researchers: "Researchers",
 	Exploration: "Exploration",
 
-	TraitRarity: "TraitRarity",
+	TraitRarityPrefix: "TraitRarity",
 
-	EmployeeTraining: "EmployeeTraining",
-	CarryCapacity: "CarryCapacity",
+	BasicEmployeeTraining: "EmployeeTraining",
+	Backpack: "CarryCapacity",
+
+	Building: "Building",
 };
 
 export default ResearchIds;

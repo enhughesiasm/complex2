@@ -5,6 +5,7 @@ import PlayerAttributes from "../../player_attributes";
 import TraitStorage from "../../trait_storage/trait_storage";
 import IAction from "./IAction";
 import TraitsSet from "../../trait_storage/traits_set";
+import Research from "../../research/research";
 
 const mixerActionTypes = {
 	Fetching: "Fetching",
@@ -15,14 +16,14 @@ const mixerActions: Array<IAction> = [
 	{
 		action: mixerActionTypes.Fetching,
 		nextAction: mixerActionTypes.Mixing,
-		getSpeed(attributes: PlayerAttributes) {
-			return attributes.simple_task_baseSpeed;
+		getSpeed(attributes: PlayerAttributes, research: Research) {
+			return attributes.getSimpleTaskSpeed(research);
 		},
 	},
 	{
 		action: mixerActionTypes.Mixing,
 		nextAction: mixerActionTypes.Fetching,
-		getSpeed(attributes: PlayerAttributes) {
+		getSpeed(attributes: PlayerAttributes, research: Research) {
 			return attributes.e_mix_baseSpeed;
 		},
 	},
@@ -55,7 +56,7 @@ function tickMixer(
 	worldState: WorldState,
 	delta_sec: number
 ) {
-	const { inventory } = worldState;
+	const { inventory, research } = worldState;
 
 	if (!emp.currentAction) {
 		emp.currentAction = mixerActions[0].action;
@@ -65,7 +66,9 @@ function tickMixer(
 	if (!action) return;
 
 	emp.currentJobProgress +=
-		action.getSpeed(attributes) * attributes.overallWorkFactor * delta_sec;
+		action.getSpeed(attributes, research) *
+		attributes.overallWorkFactor *
+		delta_sec;
 
 	emp.secsSinceCompleted += delta_sec;
 
@@ -106,9 +109,10 @@ function tickMixer(
 				if (toMake.getTotal() > 0) {
 					const made = storage.addTraits(
 						toMake,
-						attributes.unlockedRarityLevel, // TK: this could be added to by more experienced employees
+						attributes.getRarityLevel(worldState.research), // TK: this could be added to by more experienced employees
 						worldState.traitGenerator,
-						attributes
+						attributes,
+						research
 					);
 
 					const madeTotal = made.getTotal();

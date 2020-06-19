@@ -36,7 +36,12 @@ const SidebarStatus: React.FC = (props) => {
 					}
 				>
 					{worldState.storage.getTotalStored()} /{" "}
-					{worldState.storage.getCapacity()}
+					{worldState.storage.getCapacity()} (
+					{
+						rarities.getLevel(worldState.storage.getHighestRarity())
+							.ingredientDisplay
+					}
+					)
 				</span>
 			</div>
 			<div>

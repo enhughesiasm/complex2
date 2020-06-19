@@ -14,14 +14,14 @@ const researcherActions: Array<IAction> = [
 	{
 		action: researcherActionTypes.Idle,
 		nextAction: researcherActionTypes.Researching,
-		getSpeed(attributes: PlayerAttributes) {
+		getSpeed(attributes: PlayerAttributes, research: Research) {
 			return 0;
 		},
 	},
 	{
 		action: researcherActionTypes.Researching,
 		nextAction: researcherActionTypes.Idle,
-		getSpeed(attributes: PlayerAttributes) {
+		getSpeed(attributes: PlayerAttributes, research: Research) {
 			return attributes.e_research_baseSpeed;
 		},
 	},
@@ -77,20 +77,60 @@ function tickResearcher(
 				return;
 			}
 
-			const current = research.getItem(research.currentId);
+			const researchItem = research.getItem(research.currentId);
 
 			const difficulty =
-				(current.researchDifficulty + 1) * (current.researchDifficulty + 1);
+				(researchItem.researchDifficulty + 1) *
+				(researchItem.researchDifficulty + 1);
 
 			const researchProgress =
-				(action.getSpeed(attributes) *
+				(action.getSpeed(attributes, research) *
 					attributes.overallWorkFactor *
 					delta_sec) /
 				difficulty;
 
-			current.progressPercent += researchProgress;
-			emp.secsSinceCompleted += delta_sec;
-			emp.currentJobProgress = current.progressPercent;
+			if (researchItem.costRemaining === undefined) {
+				researchItem.costRemaining = researchItem.cost;
+			}
+
+			const costRemainingPercent =
+				(100 * researchItem.costRemaining) / researchItem.cost;
+			const progressRemainingPercent = 100 - researchItem.progressPercent;
+
+			if (costRemainingPercent >= progressRemainingPercent) {
+				// on this cycle, we pay for the next chunk of work, if we can
+				let progressFavourCost = Math.max(
+					Math.floor(researchProgress * 0.01 * researchItem.cost),
+					1
+				);
+
+				progressFavourCost = Math.min(
+					progressFavourCost,
+					researchItem.costRemaining
+				);
+
+				if (worldState.favours > 0) {
+					const amountToSpend = Math.min(
+						progressFavourCost,
+						worldState.favours
+					);
+					worldState.spendFavours(amountToSpend);
+					researchItem.costRemaining -= amountToSpend;
+				}
+			} else {
+				// we've paid, so make progress
+				researchItem.progressPercent += researchProgress;
+				emp.secsSinceCompleted += delta_sec;
+				emp.currentJobProgress = researchItem.progressPercent;
+			}
+
+			if (
+				researchItem.costRemaining > 0 &&
+				researchItem.progressPercent >= 100
+			) {
+				worldState.spendFavours(researchItem.costRemaining);
+				researchItem.costRemaining = 0;
+			}
 
 			break;
 		default:
@@ -120,7 +160,7 @@ function completeResearch(
 
 	const current = research.getItem(research.currentId);
 
-	if (current.progressPercent >= 100 && !current.completeClaimed) {
+	if (current.progressPercent >= 100 && !current.completed) {
 		research.completeCurrentResearch(worldState);
 	}
 

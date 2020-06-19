@@ -1,34 +1,32 @@
-import React, { useContext } from "react";
+import React, { useContext, useRef } from "react";
 import AppContext from "../../../state/app_context";
 import { JobTypes } from "../../../state/jobs/job_types";
-import Tree from "react-d3-tree";
-import ResearchNode from "./research_node";
-import { IResearchItem } from "../../../state/research/IResearchItem";
 import FontAwesome from "../../shared/font_awesome";
 import ResearchHover from "./research_hover";
+import ResearchTree from "./research_tree";
 
 const ResearchTab: React.FC = (props) => {
 	const { worldState } = useContext(AppContext);
+
+	const treeContainerRef = useRef(null);
 
 	const current =
 		worldState.research.currentId !== undefined
 			? worldState.research.getItem(worldState.research.currentId)
 			: undefined;
 
+	const assigned = worldState.employees.getAmountAssigned(JobTypes.Researching);
+
 	return (
 		<>
-			<section className="box">
+			{/* <section className="box">
 				<h2 className="subtitle">RESEARCH</h2>
-			</section>
+			</section> */}
 			<section className="tile is-ancestor is-vertical">
 				<div className="tile is-parent">
-					<div className="tile is-child">
-						Researchers:{" "}
-						{worldState.employees.getAmountAssigned(JobTypes.Researching)}
-					</div>
 					<div
-						className="tile is-child is-flex"
-						style={{ alignItems: "center" }}
+						className="tile is-child is-flex has-text-centered"
+						style={{ alignItems: "center", justifyContent: "center" }}
 					>
 						<div>
 							<span className="bubbles" />
@@ -40,54 +38,37 @@ const ResearchTab: React.FC = (props) => {
 							/>
 						</div>
 
-						<span className="ml-3">
-							Currently researching:{" "}
-							<span className="has-text-weight-bold">{current?.name}</span>
+						<span className="ml-6">
+							There {assigned !== 1 ? "are" : "is"} {assigned} researcher
+							{assigned !== 1 ? "s" : ""}, currently researching:{" "}
+							<span className="has-text-weight-bold">
+								{current?.name ?? "Nothing"}
+							</span>
 							<progress
-								className="progress"
+								className="progress is-success"
 								value={current?.progressPercent ?? 0}
 								max={100}
 							/>
 						</span>
+						<span className="is-pulled-right ml-6">
+							<button
+								className="button is-danger is-rounded is-small"
+								onClick={() => worldState.research.clearResearch()}
+							>
+								<FontAwesome size="small" icon="pause" />
+							</button>
+						</span>
 					</div>
 				</div>
 				<div className="tile is-parent">
-					<div className="tile is-child is-2 box has-background-dark has-text-white">
-						<ResearchHover />
-					</div>
-					<div className="tile is-child is-10" style={{ minHeight: "60vh" }}>
-						<Tree
-							data={worldState.research.tree}
-							nodeSvgShape={{
-								shape: "rect",
-								shapeProps: {
-									width: 0,
-									height: 20,
-									x: 0,
-									y: 0,
-								},
-							}}
-							transitionDuration={0}
-							zoomable={false}
-							zoom={1}
-							depthFactor={120}
-							collapsible={false}
-							orientation={"vertical"}
-							translate={{ x: 500, y: 20 }}
-							nodeSize={{ x: 200, y: 30 }}
-							allowForeignObjects
-							nodeLabelComponent={{
-								render: <ResearchNode />,
-								foreignObjectWrapper: {
-									y: 0,
-									x: -50,
-									height: 100,
-								},
-							}}
-							onMouseOver={(node) =>
-								worldState.research.setHover(node as IResearchItem)
-							}
-						/>
+					<ResearchHover />
+
+					<div
+						ref={treeContainerRef}
+						className="tile is-child is-10"
+						style={{ minHeight: "60vh" }}
+					>
+						<ResearchTree parentRef={treeContainerRef} />
 					</div>
 				</div>
 			</section>

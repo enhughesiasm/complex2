@@ -5,6 +5,7 @@ import PlayerAttributes from "../../player_attributes";
 import Inventory from "../../inventory/inventory";
 import IAction from "./IAction";
 import PrelifeMap from "../../prelife_map/prelife_map";
+import Research from "../../research/research";
 
 const explorerActionTypes = {
 	Travelling: "Travelling",
@@ -16,7 +17,7 @@ const explorerActions: Array<IAction> = [
 	{
 		action: explorerActionTypes.Travelling,
 		nextAction: explorerActionTypes.Exploring,
-		getSpeed(attributes: PlayerAttributes) {
+		getSpeed(attributes: PlayerAttributes, research: Research) {
 			// TK yeah this is stupid but it's less stupid than how I previously did it... refactor later!
 			console.error(
 				"bug elsewhere! shouldn't be calling getSpeed for a travelling job"
@@ -27,14 +28,14 @@ const explorerActions: Array<IAction> = [
 	{
 		action: explorerActionTypes.Exploring,
 		nextAction: explorerActionTypes.Travelling,
-		getSpeed(attributes: PlayerAttributes) {
+		getSpeed(attributes: PlayerAttributes, research: Research) {
 			return attributes.e_explore_baseSpeed;
 		},
 	},
 	{
 		action: explorerActionTypes.Finished,
 		nextAction: explorerActionTypes.Finished,
-		getSpeed(attributes: PlayerAttributes) {
+		getSpeed(attributes: PlayerAttributes, research: Research) {
 			return 0;
 		},
 	},
@@ -71,7 +72,7 @@ function tickExplorer(
 		emp.currentAction = explorerActions[0].action;
 	}
 
-	const { prelifeMap: map } = worldState;
+	const { prelifeMap: map, research } = worldState;
 
 	const action = explorerActions.find((a) => a.action === emp.currentAction);
 	if (!action) return;
@@ -79,7 +80,9 @@ function tickExplorer(
 	switch (action.action) {
 		case explorerActionTypes.Exploring:
 			const currentWorkSpeed =
-				action.getSpeed(attributes) * attributes.overallWorkFactor * delta_sec;
+				action.getSpeed(attributes, research) *
+				attributes.overallWorkFactor *
+				delta_sec;
 
 			emp.currentWorkSpeed = currentWorkSpeed;
 			emp.currentTile.explorationCompletion += currentWorkSpeed;

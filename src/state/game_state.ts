@@ -1,4 +1,3 @@
-import { IResearchItem } from "./research/IResearchItem";
 import { JobTypes } from "./jobs/job_types";
 import { version, tickLengthMs } from "./constants";
 import { GameTabType } from "./game_tabs";
@@ -27,18 +26,6 @@ export default class GameState {
 
 	togglePause() {
 		this.worldState.paused = !this.worldState.paused;
-	}
-
-	spendFavours(amount: number): boolean {
-		if (this.worldState.favours >= amount) {
-			this.worldState.favours -= amount;
-			this.worldState.favoursSpent += amount;
-			return true;
-		}
-		console.error(
-			`Tried to spend ${amount} favours, only have ${this.worldState.favours}. Check the stack - missing a check somewhere!`
-		);
-		return false;
 	}
 
 	gatherBasicIngredients(): void {
@@ -145,7 +132,7 @@ export default class GameState {
 	}
 
 	expandInitialStorage(): void {
-		if (this.spendFavours(this.getCost_ExpandInitialStorage())) {
+		if (this.worldState.spendFavours(this.getCost_ExpandInitialStorage())) {
 			this.worldState.storage.expandInitialStorage();
 		}
 	}
@@ -175,7 +162,7 @@ export default class GameState {
 				),
 				assignedJob
 			);
-			this.spendFavours(cost);
+			this.worldState.spendFavours(cost);
 		} else {
 			console.error("tried to hire employee while unable");
 		}

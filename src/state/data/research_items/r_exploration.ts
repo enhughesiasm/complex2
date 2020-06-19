@@ -6,18 +6,22 @@ const r_exploration: IResearchItem = {
 	research_id: ResearchIds.Exploration,
 	unlocked: false,
 	children: [],
-	name: "Explore",
+	name: "Exploration",
 	description: "Explore the world map",
+	cost: 200,
 	progressPercent: 0,
 	researchDifficulty: 1,
 	prerequisitesMet(worldState: WorldState): boolean {
 		// const { research } = worldState;
 		return this.unlocked && true;
 	},
-	completeClaimed: false,
+	completed: false,
 	onComplete(worldState: WorldState): void {
 		worldState.employees.unlockedJobs.push(JobTypes.Exploring);
 		this.children.forEach((c) => (c.unlocked = true));
+	},
+	getValue(): number {
+		return 0;
 	},
 };
 

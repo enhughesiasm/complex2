@@ -20,9 +20,9 @@ const EmployeesTab: React.FC = (props) => {
 
 	return (
 		<>
-			<section className="box">
+			{/* <section className="box">
 				<h2 className="subtitle">EMPLOYEES</h2>
-			</section>
+			</section> */}
 			<section className="tile is-ancestor is-vertical">
 				<div className="tile is-parent">
 					<div className="tile is-child">

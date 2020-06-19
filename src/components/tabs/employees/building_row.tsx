@@ -1,27 +1,20 @@
 import React, { useContext } from "react";
 import AppContext from "../../../state/app_context";
 import { JobTypes } from "../../../state/jobs/job_types";
-import { historyMonitorTypes } from "../../../state/history/history_monitors";
 import CostButton from "../../shared/complex/cost_button";
 
-interface IBasicEmployeeRowProps {
-	jobType: JobTypes;
-	statsPrefix: string;
-}
-
-const BasicRow: React.FC<IBasicEmployeeRowProps> = ({
-	jobType,
-	statsPrefix,
-}) => {
+const BuildingRow: React.FC = () => {
 	const { worldState, gameState } = useContext(AppContext);
 
+	// const { prelifeMap } = worldState;
+
 	const working = worldState.employees.all.filter(
-		(e) => e.assignedJob === jobType
+		(e) => e.assignedJob === JobTypes.Building
 	).length;
 
 	return (
 		<tr>
-			<td className="has-text-weight-bold">{jobType}</td>
+			<td className="has-text-weight-bold">{JobTypes.Building}</td>
 			<td>
 				<span
 					className={
@@ -38,7 +31,7 @@ const BasicRow: React.FC<IBasicEmployeeRowProps> = ({
 					text="hire"
 					amount={worldState.employees.getHireCost()}
 					canAfford={worldState.employees.canHire(worldState)}
-					onPurchase={() => gameState.hireEmployee(jobType)}
+					onPurchase={() => gameState.hireEmployee(JobTypes.Building)}
 				/>
 			</td>
 			<td>avgHap</td>
@@ -50,31 +43,10 @@ const BasicRow: React.FC<IBasicEmployeeRowProps> = ({
 					)
 				),
 			].map((a, i) => {
-				const stat = gameState.history.stats.filter(
-					(a) => a.name === historyMonitorTypes[`${statsPrefix}${i}`]
-				)[0];
-				return (
-					<td
-						key={`${statsPrefix}${i}`}
-						className={
-							"is-rarity-" +
-							i +
-							" " +
-							"has-text-" +
-							(stat.currentVelocitySec > 0
-								? "success"
-								: stat.currentVelocitySec < 0
-								? "danger"
-								: "primary")
-						}
-					>
-						{stat.currentVelocitySec.toFixed(2)}
-						/s
-					</td>
-				);
+				return <td key={i}>.</td>;
 			})}
 		</tr>
 	);
 };
 
-export default BasicRow;
+export default BuildingRow;

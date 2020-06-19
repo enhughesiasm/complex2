@@ -1,14 +1,14 @@
 import { IResearchItem } from "./../../research/IResearchItem";
 import ResearchIds from "./r_ids";
 import WorldState from "../../world_state";
-
-export const r_carry_capacity: IResearchItem = {
-	research_id: ResearchIds.Backpack,
-	name: "A Backpack",
-	description: "Will help your delivery people carry more traits.",
-	cost: 200,
-	children: [],
+import { JobTypes } from "../../jobs/job_types";
+const r_builders: IResearchItem = {
+	research_id: ResearchIds.Building,
 	unlocked: false,
+	children: [],
+	name: "Building",
+	description: "Construction will help you grow.",
+	cost: 500,
 	progressPercent: 0,
 	researchDifficulty: 1,
 	prerequisitesMet(worldState: WorldState): boolean {
@@ -17,9 +17,12 @@ export const r_carry_capacity: IResearchItem = {
 	},
 	completed: false,
 	onComplete(worldState: WorldState): void {
-		// worldState.playerAttributes.deliveryCarryCapacity += 5;
+		worldState.employees.unlockedJobs.push(JobTypes.Building);
+		this.children.forEach((c) => (c.unlocked = true));
 	},
 	getValue(): number {
-		return this.progressPercent >= 100 ? 25 : 0; // additional carry capacity
+		return 0;
 	},
 };
+
+export default r_builders;

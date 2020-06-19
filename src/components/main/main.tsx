@@ -28,6 +28,10 @@ const implementedTabs = Enumerable.from([
 const Main: React.SFC<MainProps> = (props) => {
 	const { worldState } = useContext(AppContext);
 
+	const rarityLevel = worldState.playerAttributes.getRarityLevel(
+		worldState.research
+	);
+
 	return (
 		<>
 			<main className="column is-full-height">
@@ -71,24 +75,24 @@ const Main: React.SFC<MainProps> = (props) => {
 							</span>
 						</div>
 						<div>
-							Rarity Level: {worldState.playerAttributes.unlockedRarityLevel}
-							<span
+							Rarity Level: {rarityLevel}
+							{/* <span
 								className="buttons"
 								style={{ display: "inline-flex", marginLeft: ".3rem" }}
-							>
-								<button
+							> */}
+							{/* <button
 									className="button is-rounded is-info is-super-small"
 									disabled={
-										worldState.playerAttributes.unlockedRarityLevel === 0
+										rarityLevel === 0
 									}
 									onClick={() =>
 										worldState.playerAttributes.unlockedRarityLevel--
 									}
 								>
-									<FontAwesome icon="minus" />
-								</button>
-								{/* TK typable amount... if this ends up making it into the game */}
-								<button
+									<FontAwesome icon="minus" /> */}
+							{/* </button> */}
+							{/* TK typable amount... if this ends up making it into the game */}
+							{/* <button
 									className="button is-rounded is-info is-super-small"
 									disabled={
 										worldState.playerAttributes.unlockedRarityLevel ===
@@ -99,8 +103,8 @@ const Main: React.SFC<MainProps> = (props) => {
 									}
 								>
 									<FontAwesome icon="plus" />
-								</button>
-							</span>
+								</button> */}
+							{/* </span> */}
 						</div>
 					</div>
 				</div>

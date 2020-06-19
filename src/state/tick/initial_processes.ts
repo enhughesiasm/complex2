@@ -1,3 +1,4 @@
+import { builders_tick } from "./processes/builders_tick";
 import { explorers_tick } from "./processes/explorers_tick";
 import { deliverers_tick } from "./processes/deliverers_tick";
 import { mixers_tick } from "./processes/mixers_tick";
@@ -34,15 +35,12 @@ const initialProcesses: Array<ITickProcess> = [
 	// employee management
 	employees_tick,
 
-	// gatherers
 	gatherers_tick,
-
-	//  mixers
 	mixers_tick,
-
 	deliverers_tick,
 	explorers_tick,
 	researchers_tick,
+	builders_tick,
 ];
 
 export default initialProcesses;

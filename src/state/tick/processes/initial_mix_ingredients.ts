@@ -64,6 +64,7 @@ export const initialMixIngredients_complete = {
 			worldOperations: operations,
 			traitGenerator,
 			storage,
+			playerAttributes: attributes,
 		} = worldState;
 
 		// manual mixing results
@@ -82,7 +83,7 @@ export const initialMixIngredients_complete = {
 					storage.currentMaxInitialStorageSize
 				) {
 					storage.addToInitialStorage(
-						traitGenerator.generateSingle(worldState.playerAttributes)
+						traitGenerator.generateSingleAtSpecificLevel(0, attributes) // always level 0
 					);
 				} else {
 					toast.error(

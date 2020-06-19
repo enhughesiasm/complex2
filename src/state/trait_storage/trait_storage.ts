@@ -1,8 +1,9 @@
-import { ITraitGenerator } from "./../traits/generator/ITraitGenerator";
 import ITrait from "../traits/ITrait";
 import initialStorages from "../data/initial_storages";
 import TraitsSet from "./traits_set";
 import PlayerAttributes from "../player_attributes";
+import TraitGenerator from "../traits/generator/trait_generator";
+import Research from "../research/research";
 
 export interface IInitialStorage {
 	name: string;
@@ -24,6 +25,10 @@ export default class TraitStorage {
 		return this.stored.getTotal();
 	}
 
+	getHighestRarity(): number {
+		return this.stored.getMaxNonZeroLevel();
+	}
+
 	isFull(): boolean {
 		return false; // this.storedAmount >= this.getCapacity();
 	}
@@ -32,8 +37,9 @@ export default class TraitStorage {
 	addTraits(
 		toMake: TraitsSet,
 		maximumRarityLevel: number,
-		generator: ITraitGenerator,
-		attributes: PlayerAttributes
+		generator: TraitGenerator,
+		attributes: PlayerAttributes,
+		research: Research
 	): TraitsSet {
 		if (!toMake || toMake.getTotal() <= 0 || maximumRarityLevel < 0)
 			return new TraitsSet();
@@ -60,6 +66,7 @@ export default class TraitStorage {
 		const madeTraits = generator.generateMany(
 			toMake,
 			attributes,
+			research,
 			maxPermittedLevel
 		);
 		this.stored.addTraitsSet(madeTraits);

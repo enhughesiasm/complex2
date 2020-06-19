@@ -1,4 +1,4 @@
-import { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from "react";
 
 const emptyRect = {
 	top: 0,
@@ -6,14 +6,14 @@ const emptyRect = {
 	bottom: 0,
 	left: 0,
 	width: 0,
-	height: 0
+	height: 0,
 };
 
-const getRects = el => {
+const getRects = (el) => {
 	if (!el)
 		return {
 			rect: undefined,
-			parentRect: undefined
+			parentRect: undefined,
 		};
 
 	const parentNode = el.parentNode;
@@ -30,7 +30,7 @@ const getRects = el => {
 	return { rect, parentRect };
 };
 
-export const useBoundingRects = ref => {
+export const useBoundingRects = (ref) => {
 	let [{ rect, parentRect }, setRects] = useState(getRects(ref.current));
 
 	const handleResize = () => {
@@ -41,10 +41,10 @@ export const useBoundingRects = ref => {
 
 	useLayoutEffect(() => {
 		handleResize();
-		window.addEventListener('resize', handleResize);
+		window.addEventListener("resize", handleResize);
 
 		return () => {
-			window.removeEventListener('resize', handleResize);
+			window.removeEventListener("resize", handleResize);
 		};
 	}, [handleResize]);
 

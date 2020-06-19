@@ -6,6 +6,7 @@ import Inventory from "../../inventory/inventory";
 import IAction from "./IAction";
 import PrelifeMap from "../../prelife_map/prelife_map";
 import rarities from "../../traits/rarity_levels";
+import Research from "../../research/research";
 
 const gathererActionTypes = {
 	Travelling: "Travelling",
@@ -17,7 +18,7 @@ const gathererActions: Array<IAction> = [
 	{
 		action: gathererActionTypes.Travelling,
 		nextAction: gathererActionTypes.Gathering,
-		getSpeed(attributes: PlayerAttributes) {
+		getSpeed(attributes: PlayerAttributes, research: Research) {
 			// TK yeah this is stupid but it's less stupid than how I previously did it... refactor later!
 			console.error(
 				"bug elsewhere! shouldn't be calling getSpeed for a travelling job"
@@ -28,14 +29,14 @@ const gathererActions: Array<IAction> = [
 	{
 		action: gathererActionTypes.Gathering,
 		nextAction: gathererActionTypes.Returning,
-		getSpeed(attributes: PlayerAttributes) {
+		getSpeed(attributes: PlayerAttributes, research: Research) {
 			return attributes.e_gath_baseSpeed;
 		},
 	},
 	{
 		action: gathererActionTypes.Returning,
 		nextAction: gathererActionTypes.Travelling,
-		getSpeed(attributes: PlayerAttributes) {
+		getSpeed(attributes: PlayerAttributes, research: Research) {
 			// TK yeah this is stupid but it's less stupid than how I previously did it... refactor later!
 			console.error(
 				"bug elsewhere! shouldn't be calling getSpeed for a travelling job"
@@ -78,7 +79,7 @@ function tickGatherer(
 		emp.currentAction = gathererActions[0].action;
 	}
 
-	const { prelifeMap: map } = worldState;
+	const { prelifeMap: map, research } = worldState;
 
 	const action = gathererActions.find((a) => a.action === emp.currentAction);
 	if (!action) return;
@@ -86,7 +87,9 @@ function tickGatherer(
 	switch (action.action) {
 		case gathererActionTypes.Gathering:
 			const currentWorkSpeed =
-				action.getSpeed(attributes) * attributes.overallWorkFactor * delta_sec;
+				action.getSpeed(attributes, research) *
+				attributes.overallWorkFactor *
+				delta_sec;
 
 			emp.currentWorkSpeed = currentWorkSpeed;
 			emp.currentJobProgress += currentWorkSpeed;
@@ -161,7 +164,7 @@ function handleTravelling(
 
 	// choose best rarity that has been a) unlocked and b) discovered
 	const highestUnlocked = Math.min(
-		attributes.unlockedRarityLevel,
+		attributes.getRarityLevel(worldState.research),
 		rarities.maxLevel
 	);
 

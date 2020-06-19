@@ -6,6 +6,7 @@ import TraitStorage from "../../trait_storage/trait_storage";
 import TraitsSet from "../../trait_storage/traits_set";
 import IAction from "./IAction";
 import PrelifeMap from "../../prelife_map/prelife_map";
+import Research from "../../research/research";
 
 const deliveryActionTypes = {
 	Fetching: "Fetching",
@@ -18,14 +19,14 @@ const deliveryActions: Array<IAction> = [
 	{
 		action: deliveryActionTypes.Fetching,
 		nextAction: deliveryActionTypes.Travelling,
-		getSpeed(attributes: PlayerAttributes) {
-			return attributes.simple_task_baseSpeed;
+		getSpeed(attributes: PlayerAttributes, research: Research) {
+			return attributes.getSimpleTaskSpeed(research);
 		},
 	},
 	{
 		action: deliveryActionTypes.Travelling,
 		nextAction: deliveryActionTypes.Delivering,
-		getSpeed(attributes: PlayerAttributes) {
+		getSpeed(attributes: PlayerAttributes, research: Research) {
 			// TK yeah this is stupid but it's less stupid than how I previously did it... refactor later!
 			console.error(
 				"bug elsewhere! shouldn't be calling getSpeed for a travelling job"
@@ -36,14 +37,14 @@ const deliveryActions: Array<IAction> = [
 	{
 		action: deliveryActionTypes.Delivering,
 		nextAction: deliveryActionTypes.Returning,
-		getSpeed(attributes: PlayerAttributes) {
-			return attributes.simple_task_baseSpeed;
+		getSpeed(attributes: PlayerAttributes, research: Research) {
+			return attributes.getSimpleTaskSpeed(research);
 		},
 	},
 	{
 		action: deliveryActionTypes.Returning,
 		nextAction: deliveryActionTypes.Fetching,
-		getSpeed(attributes: PlayerAttributes) {
+		getSpeed(attributes: PlayerAttributes, research: Research) {
 			// TK yeah this is stupid but it's less stupid than how I previously did it... refactor later!
 			console.error(
 				"bug elsewhere! shouldn't be calling getSpeed for a travelling job"
@@ -80,6 +81,8 @@ function tickDeliverer(
 	worldState: WorldState,
 	delta_sec: number
 ) {
+	const { research } = worldState;
+
 	// TK: quite possibly all this should be shared among ALL employees and only their list of actions
 	// changes when a job is assigned...
 	if (!emp.currentAction) {
@@ -93,7 +96,9 @@ function tickDeliverer(
 		case deliveryActionTypes.Fetching:
 		case deliveryActionTypes.Delivering:
 			const currentWorkSpeed =
-				action.getSpeed(attributes) * attributes.overallWorkFactor * delta_sec;
+				action.getSpeed(attributes, research) *
+				attributes.overallWorkFactor *
+				delta_sec;
 
 			emp.currentWorkSpeed = currentWorkSpeed;
 			emp.currentJobProgress += currentWorkSpeed;
@@ -132,12 +137,16 @@ function handleCompletions(
 ) {
 	emp.currentJobProgress = 0;
 
+	const { research } = worldState;
+
 	switch (action.action) {
 		case deliveryActionTypes.Fetching:
 			// pick up traits
 			if (storage.canRemove(attributes.minimumDeliveryBatchSize)) {
 				// as long as we can take our minimum we take as many as exist in storage up to the current carry capacity
-				emp.carrying = storage.removeTraits(attributes.deliveryCarryCapacity);
+				emp.carrying = storage.removeTraits(
+					attributes.getDeliveryCarryCapacity(research)
+				);
 
 				if (emp.carrying.getTotal() >= attributes.minimumDeliveryBatchSize) {
 					if (emp.currentTile.nextTileOnRoute) {
