@@ -152,6 +152,32 @@ export default class TraitsSet {
 		return removed;
 	}
 
+	/** returns a new TraitSet containing the amount of stored traits up to the desired amount, rarest first */
+	peekRarestFirst(desiredAmount: number): TraitsSet {
+		if (desiredAmount <= 0) return new TraitsSet(); // removed none, return empty set
+
+		let removed = new TraitsSet();
+		let amountRemaining = desiredAmount;
+
+		for (let i = rarities.maxLevel; i >= 0; i--) {
+			if (amountRemaining === 0) break;
+
+			if (amountRemaining < 0) {
+				console.error("I screwed up in removeRarestFirst!");
+			}
+
+			const levelAmount = this.get(i);
+			const amountToTake = Math.min(
+				levelAmount,
+				desiredAmount - removed.getTotal()
+			);
+			removed.set(i, amountToTake);
+			amountRemaining -= amountToTake;
+		}
+
+		return removed;
+	}
+
 	/** mutates this traitsSet and returns a new one containing the removed traits */
 	removeCommonFirst(desiredAmount: number): TraitsSet {
 		if (desiredAmount <= 0) return new TraitsSet(); // removed none, return empty set

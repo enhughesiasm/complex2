@@ -1,3 +1,4 @@
+import { DebugBox } from "./debug_box";
 import React, { useContext } from "react";
 import HomeTab from "../tabs/home/home_tab";
 import AppContext from "../../state/app_context";
@@ -6,10 +7,8 @@ import { GameTabType } from "../../state/game_tabs";
 import ShopTab from "../tabs/shop/shop_tab";
 import Enumerable from "linq";
 import EmployeesTab from "../tabs/employees/employees_tab";
-import StorageTab from "../tabs/storage/storage_tab";
-import FontAwesome from "../shared/font_awesome";
+import ComplexTab from "../tabs/complex/complex_tab";
 import PrelifeMapTab from "../prelife_map/prelife_map_tab";
-import { maxRarityFactor } from "../../state/constants";
 import ResearchTab from "../tabs/research/research_tab";
 
 interface MainProps {}
@@ -20,7 +19,7 @@ const implementedTabs = Enumerable.from([
 	GameTabType.LETTERS,
 	GameTabType.SHOP,
 	GameTabType.EMPLOYEES,
-	GameTabType.STORAGE,
+	GameTabType.COMPLEX,
 	GameTabType.MAP,
 	GameTabType.RESEARCH,
 ]);
@@ -28,91 +27,15 @@ const implementedTabs = Enumerable.from([
 const Main: React.SFC<MainProps> = (props) => {
 	const { worldState } = useContext(AppContext);
 
-	const rarityLevel = worldState.playerAttributes.getRarityLevel(
-		worldState.research
-	);
-
 	return (
 		<>
-			<main className="column is-full-height">
-				<div className="notification is-dark">
-					{" "}
-					<div className="tile is-child box is-size-7 is-paddingless">
-						{/* TK move this to a much better place in the UI; also maybe it doesn't make sense */}
-						{/* TK maybe a big ol' configuration screen? with many similar options */}
-						<div>{worldState.employees.all.length}</div>
-						<div>
-							Minimum Delivery Batch Size:{" "}
-							{worldState.playerAttributes.minimumDeliveryBatchSize}
-							<span
-								className="buttons"
-								style={{ display: "inline-flex", marginLeft: ".3rem" }}
-							>
-								<button
-									className="button is-rounded is-info is-super-small"
-									disabled={
-										worldState.playerAttributes.minimumDeliveryBatchSize === 1
-									}
-									onClick={() =>
-										worldState.playerAttributes.minimumDeliveryBatchSize--
-									}
-								>
-									<FontAwesome icon="minus" />
-								</button>
-								{/* TK typable amount... if this ends up making it into the game */}
-								<button
-									className="button is-rounded is-info is-super-small"
-									disabled={
-										worldState.playerAttributes.minimumDeliveryBatchSize ===
-										worldState.playerAttributes.deliveryCarryCapacity
-									}
-									onClick={() =>
-										worldState.playerAttributes.minimumDeliveryBatchSize++
-									}
-								>
-									<FontAwesome icon="plus" />
-								</button>
-							</span>
-						</div>
-						<div>
-							Rarity Level: {rarityLevel}
-							{/* <span
-								className="buttons"
-								style={{ display: "inline-flex", marginLeft: ".3rem" }}
-							> */}
-							{/* <button
-									className="button is-rounded is-info is-super-small"
-									disabled={
-										rarityLevel === 0
-									}
-									onClick={() =>
-										worldState.playerAttributes.unlockedRarityLevel--
-									}
-								>
-									<FontAwesome icon="minus" /> */}
-							{/* </button> */}
-							{/* TK typable amount... if this ends up making it into the game */}
-							{/* <button
-									className="button is-rounded is-info is-super-small"
-									disabled={
-										worldState.playerAttributes.unlockedRarityLevel ===
-										maxRarityFactor
-									}
-									onClick={() =>
-										worldState.playerAttributes.unlockedRarityLevel++
-									}
-								>
-									<FontAwesome icon="plus" />
-								</button> */}
-							{/* </span> */}
-						</div>
-					</div>
-				</div>
+			<main className="column is-full-height pt-6">
+				{/* <DebugBox /> */}
 				{worldState.activeTab === GameTabType.HOME && <HomeTab />}
 				{worldState.activeTab === GameTabType.LETTERS && <LettersTab />}
 				{worldState.activeTab === GameTabType.SHOP && <ShopTab />}
 				{worldState.activeTab === GameTabType.EMPLOYEES && <EmployeesTab />}
-				{worldState.activeTab === GameTabType.STORAGE && <StorageTab />}
+				{worldState.activeTab === GameTabType.COMPLEX && <ComplexTab />}
 				{worldState.activeTab === GameTabType.RESEARCH && <ResearchTab />}
 				{worldState.activeTab === GameTabType.MAP && <PrelifeMapTab />}
 				{!implementedTabs.contains(worldState.activeTab) && (

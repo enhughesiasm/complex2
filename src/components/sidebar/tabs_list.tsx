@@ -67,14 +67,14 @@ const TabsList: React.FC = (props) => {
 				RESEARCH
 			</Tab>
 			<Tab
-				icon={"circle"}
+				icon={"industry"}
 				iconStatus={"light"}
-				type={GameTabType.STORAGE}
+				type={GameTabType.COMPLEX}
 				enabled={worldState.employees.unlocked}
 				visible={worldState.employees.unlocked}
 				needsAttention={worldState.storage.isFull()}
 			>
-				STORAGE
+				COMPLEX
 			</Tab>
 			<Tab
 				icon={"globe-europe"}

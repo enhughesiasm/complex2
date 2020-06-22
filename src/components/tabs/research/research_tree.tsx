@@ -28,50 +28,55 @@ const ResearchTree: React.FC<IResearchTreeProps> = ({ parentRef }) => {
 	}
 
 	return (
-		<Tree
-			data={research.tree}
-			nodeSvgShape={{
-				shape: "rect",
-				shapeProps: {
-					width: 0,
-					height: 20,
-					x: 0,
-					y: 0,
-				},
-			}}
-			transitionDuration={0}
-			zoomable={false}
-			zoom={1}
-			depthFactor={depthHeight}
-			collapsible={false}
-			orientation={"vertical"}
-			translate={{
-				x: dimensions.width / 2,
-				y: 20,
-			}}
-			nodeSize={{
-				x: dimensions.width / 6,
-				y: 30,
-			}}
-			allowForeignObjects
-			nodeLabelComponent={{
-				render: <ResearchNode />,
-				foreignObjectWrapper: {
-					y: 0,
-					x: -50,
-					height: 100,
-				},
-			}}
-			onMouseOver={(node) =>
-				worldState.research.setHover(node as IResearchItem)
-			}
-			styles={{
-				links: {
-					stroke: styleVariables.primary,
-					strokeWidth: 4,
-				},
-			}}
-		/>
+		<>
+			{dimensions && dimensions.width > 0 && (
+				<Tree
+					data={research.tree}
+					nodeSvgShape={{
+						shape: "rect",
+						shapeProps: {
+							width: 0,
+							height: 20,
+							x: 0,
+							y: 0,
+						},
+					}}
+					transitionDuration={0}
+					zoomable={false}
+					zoom={1}
+					depthFactor={depthHeight}
+					collapsible={false}
+					orientation={"vertical"}
+					translate={{
+						x: dimensions.width / 2,
+						y: 20,
+					}}
+					nodeSize={{
+						x: dimensions.width / 6,
+						y: 30,
+					}}
+					allowForeignObjects
+					nodeLabelComponent={{
+						render: <ResearchNode />,
+						foreignObjectWrapper: {
+							y: 0,
+							x: -50,
+							height: 100,
+							// width: 200,
+						},
+					}}
+					onMouseOver={(node) =>
+						worldState.research.setHover(node as IResearchItem)
+					}
+					styles={{
+						links: {
+							stroke: styleVariables.primary,
+							strokeWidth: 4,
+						},
+					}}
+				/>
+			)}
+		</>
 	);
 };
 

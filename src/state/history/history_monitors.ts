@@ -34,8 +34,6 @@ export const historyMonitorTypes: IHistoryMonitorTypes = {
 	DeliveredTraits6: "Traits_Delivered_Secret",
 };
 
-type StatusKey = "online" | "offline" | "busy" | "dnd";
-
 // TK generate this more smartly without all the repetition
 const historyMonitors: Array<IHistoryMonitor> = [
 	{

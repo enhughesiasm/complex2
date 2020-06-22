@@ -10,6 +10,9 @@
 	}
 }
 
+$table-cell-border-width: 0;
+$table-striped-row-even-background-color: #f1f1f1;
+
 html {
 	height: 100%;
 }
@@ -111,6 +114,10 @@ table.is-centered {
 	td {
 		text-align: center !important;
 	}
+}
+
+.is-unselectable {
+	user-select: none;
 }
 
 .button.is-super-small {

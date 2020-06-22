@@ -17,6 +17,6 @@ export function useDimensions(ref) {
 
 	useLayoutEffect(() => {
 		setDimensions(ref?.current?.getBoundingClientRect().toJSON());
-	}, [windowDimensions.width, ref, ref.current]);
+	}, [windowDimensions.width, ref.current]);
 	return { ref: ref, dimensions: dimensions ?? emptyRect };
 }

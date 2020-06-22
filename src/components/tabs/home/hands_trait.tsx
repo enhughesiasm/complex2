@@ -18,8 +18,6 @@ interface HandsTraitProps {
 const HandsTrait: React.FC<HandsTraitProps> = (props) => {
 	const [image] = useState(chooseRandomElement(images));
 
-	const bubbles = 10;
-
 	return (
 		<div
 			className="handsTrait"

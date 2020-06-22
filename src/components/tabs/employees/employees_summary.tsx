@@ -44,7 +44,7 @@ const EmployeesSummary: React.FC = () => {
 				))}
 			</select>
 			<div className="panel">
-				<table className="table">
+				<table className="table is-striped">
 					<tbody>
 						{/* TK: probably some duplication in these components - refactor! */}
 						{unassigned > 0 && <UnassignedRow unassigned={unassigned} />}

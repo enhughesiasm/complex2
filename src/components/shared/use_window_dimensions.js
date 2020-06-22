@@ -1,10 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useLayoutEffect } from "react";
 
 function getWindowDimensions() {
 	const { innerWidth: width, innerHeight: height } = window;
 	return {
 		width,
-		height
+		height,
 	};
 }
 
@@ -13,13 +13,13 @@ export default function useWindowDimensions() {
 		getWindowDimensions()
 	);
 
-	useEffect(() => {
+	useLayoutEffect(() => {
 		function handleResize() {
 			setWindowDimensions(getWindowDimensions());
 		}
 
-		window.addEventListener('resize', handleResize);
-		return () => window.removeEventListener('resize', handleResize);
+		window.addEventListener("resize", handleResize);
+		return () => window.removeEventListener("resize", handleResize);
 	}, []);
 
 	return windowDimensions;

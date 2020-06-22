@@ -46,9 +46,6 @@ export function tick_game(delta_sec: number, gameState: GameState): GameState {
 			worldState.prelifeMap.update(worldState);
 		});
 
-		// // update render map
-		// gameState.renderMap.update(gameState.worldState.prelifeMap);
-
 		// lastly update the history
 		gameState.history.update(gameState.worldState, delta_sec);
 

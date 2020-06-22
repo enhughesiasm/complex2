@@ -7,7 +7,7 @@ import ResearchIds from "./data/research_items/r_ids";
 const debugValues: WorldState = new WorldState();
 
 debugValues.debug = true;
-debugValues.activeTab = GameTabType.RESEARCH;
+debugValues.activeTab = GameTabType.COMPLEX;
 
 debugValues.storage.initialStorageTraits.push(
 	debugValues.traitGenerator.generateSingle(

@@ -4,6 +4,7 @@ import Employee from "./employee";
 import WorldState from "../world_state";
 import { roundToNearest as roundUpToNearest } from "../../components/shared/functions";
 import MapTile from "../prelife_map/map_tile";
+import TraitsSet from "../trait_storage/traits_set";
 
 export default class Employees {
 	unlocked: boolean = false;
@@ -11,6 +12,24 @@ export default class Employees {
 	unlockedJobs: Array<JobTypes> = [JobTypes.Gathering];
 
 	all: Array<Employee> = [];
+
+	deliverers(): Array<Employee> {
+		return this.all.filter((a) => a.assignedJob === JobTypes.Delivering);
+	}
+
+	getTotalCarriedByDeliverers(): number {
+		return this.deliverers()
+			.filter((e) => e.carrying !== undefined)
+			.map((e) => (e.carrying ?? new TraitsSet()).getTotal())
+			.reduce((a, b) => a + b, 0);
+	}
+
+	getCarriedByDeliverers(level: number): number {
+		return this.deliverers()
+			.filter((e) => e.carrying !== undefined)
+			.map((e) => (e.carrying ?? new TraitsSet()).get(level))
+			.reduce((a, b) => a + b, 0);
+	}
 
 	getHireCost(): number {
 		const currentAmount = this.all.length;

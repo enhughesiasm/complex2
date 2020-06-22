@@ -1,3 +1,4 @@
+import { StatNames } from "./stat_names";
 import Denque from "denque";
 import WorldState from "../world_state";
 import { ensure } from "../../components/shared/functions";
@@ -70,5 +71,17 @@ export default class GameHistory {
 			);
 			stat.add(tr.func(worldState), delta_sec);
 		});
+	}
+
+	get(statName: string): number {
+		switch (statName) {
+			case StatNames.DeliveryPerS:
+				return 1; // this is insane
+				break;
+			default:
+				console.error(`unimplemented stat: ${statName}`);
+		}
+
+		return 0;
 	}
 }

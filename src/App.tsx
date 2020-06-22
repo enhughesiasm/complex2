@@ -10,6 +10,8 @@ import QuickviewContainer from "./components/quickviews/quickview_container";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import WorldState from "./state/world_state";
+import UIState from "./state/ui_state";
+import { tick_ui } from "./state/tick/tick_ui";
 
 interface IAppProps {}
 
@@ -17,6 +19,7 @@ interface IAppState {
 	lastTickTime: moment.Moment;
 	worldState: WorldState;
 	gameState: GameState;
+	uiState: UIState;
 }
 
 export default class App extends React.Component<IAppProps, IAppState> {
@@ -28,10 +31,13 @@ export default class App extends React.Component<IAppProps, IAppState> {
 		const worldState = loadWorldState();
 		const gameState = new GameState(worldState, false);
 
+		const uiState = new UIState();
+
 		this.state = {
 			lastTickTime: moment(),
 			gameState: gameState,
 			worldState: worldState,
+			uiState: uiState,
 		};
 	}
 
@@ -48,10 +54,17 @@ export default class App extends React.Component<IAppProps, IAppState> {
 
 		const new_game_state = tick_game(delta_sec, this.state.gameState);
 
+		const new_ui_state = tick_ui(
+			delta_sec,
+			this.state.gameState,
+			this.state.uiState
+		);
+
 		// TODO TK: is this mad? why process the game state just to rewrite the world state?
 		this.setState({
 			lastTickTime: moment(),
 			worldState: new_game_state.worldState,
+			uiState: new_ui_state,
 		});
 	}
 
@@ -62,6 +75,7 @@ export default class App extends React.Component<IAppProps, IAppState> {
 					value={{
 						worldState: this.state.worldState,
 						gameState: this.state.gameState,
+						uiState: this.state.uiState,
 					}}
 				>
 					<div id="complexPage" className="columns is-full-height">

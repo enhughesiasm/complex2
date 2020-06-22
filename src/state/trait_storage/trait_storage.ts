@@ -29,8 +29,12 @@ export default class TraitStorage {
 		return this.stored.getMaxNonZeroLevel();
 	}
 
+	getAmount(level: number) {
+		return this.stored.get(level);
+	}
+
 	isFull(): boolean {
-		return false; // this.storedAmount >= this.getCapacity();
+		return this.getTotalStored() >= this.getCapacity();
 	}
 
 	/** add traits to storage and return the amount that were successfully added */
@@ -86,6 +90,12 @@ export default class TraitStorage {
 	removeTraits(amount: number): TraitsSet {
 		if (amount <= 0) return new TraitsSet();
 		return this.stored.removeRarestFirst(amount);
+	}
+
+	/** get as many traits as possible up to a desired amount, from the rarest levels first, WITHOUT modifying storage */
+	peekRarestFirst(desiredAmount: number): TraitsSet {
+		if (desiredAmount <= 0) return new TraitsSet();
+		return this.stored.peekRarestFirst(desiredAmount);
 	}
 
 	/* INITIAL HOME STORAGE BELOW */
