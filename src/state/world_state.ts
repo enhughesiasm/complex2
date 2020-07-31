@@ -16,6 +16,7 @@ import LettersManager from "./letters/letters_manager";
 import PrelifeMap from "./prelife_map/prelife_map";
 import Research from "./research/research";
 import researchTree from "./data/research_tree";
+import ComplexArea from "./complex_area/complex_area";
 
 export default class WorldState {
 	debug: boolean = false; // overwritten in load_state if necessary
@@ -51,6 +52,8 @@ export default class WorldState {
 	storage: TraitStorage = new TraitStorage();
 
 	prelifeMap: PrelifeMap = new PrelifeMap();
+
+	complexArea: ComplexArea = new ComplexArea();
 
 	research: Research = new Research(researchTree);
 

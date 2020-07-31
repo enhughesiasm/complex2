@@ -1,8 +1,13 @@
 export const version = "0.0.1";
 export const tickLengthMs = 40;
 
+export const MAP_TILE_SIZE = 64;
+export const COMPLEX_MAP_TILE_SIZE = 32;
+
 export const employeeBaseCost = 10;
 export const employeeCostGrowthExponent = 1.5;
+
+export const buildingCostGrowthExponent = 1.5;
 
 // targets ui, how many to display
 export const targetsToShow = 3;

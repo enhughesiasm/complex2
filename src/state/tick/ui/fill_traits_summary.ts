@@ -20,6 +20,18 @@ export function fillTraitsSummary(
 
 	const totalStored = storage.getTotalStored();
 
+	const toShow = Math.min(visual_traits_maxAmount, totalStored);
+
+	if (uiState.traitsSummaryTraits.length > totalStored) {
+		const toRemove = uiState.traitsSummaryTraits.length - totalStored;
+		uiState.traitsSummaryTraits.splice(0, toRemove);
+	}
+
+	if (uiState.traitsSummaryTraits.length > toShow) {
+		const toRemove = uiState.traitsSummaryTraits.length - toShow;
+		uiState.traitsSummaryTraits.splice(0, toRemove);
+	}
+
 	if (
 		totalStored > uiState.traitsSummaryTraits.length &&
 		history.get(StatNames.DeliveryPerS) > 0 &&
@@ -29,8 +41,6 @@ export function fillTraitsSummary(
 		uiState.traitsSummaryTraits.splice(0, 1);
 		uiState.traitsSummaryAccumulatedSeconds = 0;
 	}
-
-	const toShow = Math.min(visual_traits_maxAmount, totalStored);
 
 	const missing = toShow - uiState.traitsSummaryTraits.length;
 
@@ -50,10 +60,5 @@ export function fillTraitsSummary(
 					);
 				}
 			});
-	}
-
-	if (uiState.traitsSummaryTraits.length > totalStored) {
-		const toRemove = uiState.traitsSummaryTraits.length - totalStored;
-		uiState.traitsSummaryTraits.splice(0, toRemove);
 	}
 }

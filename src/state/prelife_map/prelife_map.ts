@@ -1,3 +1,4 @@
+import { MAP_TILE_SIZE } from "./../constants";
 import { MapTileType } from "./map_tile_types";
 import WorldState from "../world_state";
 import { GameTabType } from "../game_tabs";
@@ -23,7 +24,7 @@ export default class PrelifeMap {
 
 	tiles: MapTile[][];
 
-	readonly TILE_SIZE: number = 64;
+	readonly TILE_SIZE: number = MAP_TILE_SIZE;
 	readonly MAP_WIDTH: number;
 	readonly MAP_HEIGHT: number;
 	readonly STATUS_HEIGHT: number = 50;

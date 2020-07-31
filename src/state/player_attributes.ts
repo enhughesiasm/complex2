@@ -1,6 +1,7 @@
 import { maxRarityFactor } from "./constants";
 import Research from "./research/research";
 import ResearchIds from "./data/research_items/r_ids";
+import { BuildingTypes } from "./complex_area/buildings/building_types";
 
 export default class PlayerAttributes {
 	overallWorkFactor: number = 1;
@@ -72,6 +73,8 @@ export default class PlayerAttributes {
 
 	// base speed for initial delivery
 	handDeliveryProgressPerSecond: number = 10;
+
+	buildableBuildings: Array<BuildingTypes> = [BuildingTypes.TEST];
 
 	getDeliveryCarryCapacity(research: Research): number {
 		return (

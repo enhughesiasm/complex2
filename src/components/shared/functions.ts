@@ -158,7 +158,7 @@ export function ensure<T>(
 	message: string = "This value was promised to be there."
 ): T {
 	if (argument === undefined || argument === null) {
-		throw new TypeError(message);
+		throw new TypeError(`${message}`);
 	}
 
 	return argument;

@@ -18,11 +18,14 @@ const StorageSummary = () => {
 		<div>
 			<BigNumber amount={worldState.storage.getTotalStored()} /> /{" "}
 			<BigNumber amount={worldState.storage.getCapacity()} />
-			{traitTransitions.map(({ item, props, key }) => (
-				<animated.div key={key} style={props}>
+			{uiState.traitsSummaryTraits.map((t) => (
+				<HandsTrait key={t.id} trait={t} />
+			))}
+			{/* {traitTransitions.map(({ item, props, key }) => (
+				<animated.div key={item.id} style={props}>
 					<HandsTrait trait={item} />
 				</animated.div>
-			))}
+			))} */}
 		</div>
 	);
 };
